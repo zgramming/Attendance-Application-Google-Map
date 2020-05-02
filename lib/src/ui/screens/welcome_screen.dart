@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:location/location.dart';
 
 import '../screens/maps_screen.dart';
 
@@ -34,10 +35,25 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      commonF.initPermission(context);
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.paused) {
+      if (!await commonF.serviceEnabled()) {
+        Navigator.of(context).pop();
+      } else if (await commonF.checkLocationPermission() != PermissionStatus.granted) {
+        Navigator.of(context).pop();
+      }
+      print("Trigger Paused");
     }
+    if (state == AppLifecycleState.resumed) {
+      // commonF.initPermission(context);
+      if (!await commonF.serviceEnabled()) {
+        commonF.initPermission(context);
+      } else if (await commonF.checkLocationPermission() != PermissionStatus.granted) {
+        commonF.initPermission(context);
+      }
+      print("Trigger Resumed");
+    }
+
     super.didChangeAppLifecycleState(state);
   }
 
@@ -76,11 +92,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             Consumer<ZAbsenProvider>(
               builder: (_, absenProvider, __) => ButtonAttendance(
+                // left: 20,
+                right: 60,
                 hideFabAnimation: _hideFloatingButton,
                 onTapAttendence: () {
-                  absenProvider.getCurrentPosition().then((_) => Future.delayed(
-                      Duration(milliseconds: 500),
-                      () => Navigator.of(context).pushNamed(MapScreen.routeNamed)));
+                  absenProvider.getCurrentPosition().then(
+                        (_) => Future.delayed(
+                          Duration(milliseconds: 300),
+                          () => Navigator.of(context).pushNamed(MapScreen.routeNamed),
+                        ),
+                      );
                 },
                 onTapGoHome: () => print('go home'),
               ),
