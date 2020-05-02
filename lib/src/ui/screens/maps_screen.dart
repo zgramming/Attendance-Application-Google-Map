@@ -8,6 +8,7 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/zabsen_provider.dart';
+import './widgets/live_clock.dart';
 
 class MapScreen extends StatefulWidget {
   static const routeNamed = "/map-screen";
@@ -16,19 +17,8 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  // Geolocator geolocator;
   Completer<GoogleMapController> _controller = Completer();
-
   GoogleMapController mapController;
-  // static Position currentPosition = Position(latitude: 0, longitude: 0);
-  // StreamSubscription<Position> realTimePosition;
-  // static double latitude_current = 31.9414246;
-  // static double longitude_current = 35.8880857;
-  @override
-  void initState() {
-    // geolocator = Geolocator();
-    super.initState();
-  }
 
   void getLocation(ZAbsenProvider provider) async {
     Location location = Location();
@@ -40,24 +30,7 @@ class _MapScreenState extends State<MapScreen> {
       provider.setTrackingLocation(currentLocation);
       print('Halooooooo $currentLocation');
     });
-    // _gotToCenterUser(provider);
-    // final locationOption = LocationOptions(accuracy: LocationAccuracy.best, timeInterval: 500);
-    // realTimePosition = geolocator.getPositionStream(locationOption).listen((position) {
-    //   if (position == null) {
-    //     currentPosition = Position(latitude: 0, longitude: 0);
-    //   }
-    // setState(() {
-    //   currentPosition = position;
-    //   print(currentPosition);
-    //   _gotToCenterUser();
-    // });
-    // });
   }
-
-  // static final CameraPosition _centerLocationUser = CameraPosition(
-  //   target: LatLng(latitude_current, longitude_current),
-  //   zoom: 17.5,
-  // );
 
   Future<void> _gotToCenterUser(ZAbsenProvider provider) async {
     final GoogleMapController controller = await _controller.future;
@@ -70,7 +43,6 @@ class _MapScreenState extends State<MapScreen> {
         ),
       ),
     );
-    print('goto Center');
   }
 
   @override
@@ -137,13 +109,13 @@ class _MapScreenState extends State<MapScreen> {
                               onPressed: () => '',
                               // Navigator.of(context).pushNamed(MapScreen.routeNamed),
                               padding: EdgeInsets.symmetric(horizontal: 6.0),
-                              buttonTitle: globalF.formatHoursMinutesSeconds(DateTime.now()),
+                              child: LiveClock(),
                             ),
                           ),
                           Flexible(
                             child: ButtonCustom(
                               padding: EdgeInsets.symmetric(horizontal: 6.0),
-                              buttonTitle: globalF.formatHoursMinutesSeconds(DateTime.now()),
+                              child: LiveClock(),
                               onPressed: () => '',
                             ),
                           ),
