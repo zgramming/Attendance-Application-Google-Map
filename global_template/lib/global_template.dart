@@ -15,7 +15,7 @@ export './variable/const_text/const_text.dart';
 export './variable/sizes/sizes.dart';
 export './variable/theme/app_theme.dart';
 
-export './widgets/reusable/animation/bounce.dart';
+export './widgets/reusable/animation/rotate_animation.dart';
 export './widgets/reusable/animation/slide_transition.dart';
 
 export './widgets/reusable/button_custom.dart';

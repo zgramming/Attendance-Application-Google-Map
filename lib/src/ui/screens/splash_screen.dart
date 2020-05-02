@@ -8,7 +8,9 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SplashScreenTemplate(
-        image: BounceAnimation(
+        duration: 5,
+        image: GRotateAnimation(
+          duration: Duration(seconds: 2),
           widget: FlutterLogo(
             size: sizes.height(context) / 4,
           ),

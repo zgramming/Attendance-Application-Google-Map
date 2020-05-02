@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
-class BounceAnimation extends StatefulWidget {
+class GRotateAnimation extends StatefulWidget {
   final Widget widget;
   final Duration duration;
-  BounceAnimation({@required this.widget, this.duration = const Duration(milliseconds: 700)});
+  final Curve curve;
+  GRotateAnimation({
+    @required this.widget,
+    this.duration = const Duration(milliseconds: 700),
+    this.curve = Curves.elasticIn,
+  });
   @override
-  _BounceAnimationState createState() => _BounceAnimationState();
+  _GRotateAnimationState createState() => _GRotateAnimationState();
 }
 
-class _BounceAnimationState extends State<BounceAnimation> with TickerProviderStateMixin {
+class _GRotateAnimationState extends State<GRotateAnimation> with TickerProviderStateMixin {
   Animation<double> _bounce;
   AnimationController _bounceController;
+  Animation<double> _rotate;
   @override
   void initState() {
     super.initState();
     _bounceController = AnimationController(vsync: this, duration: widget.duration);
     _bounceController.repeat(reverse: true);
     _bounce = Tween<double>(begin: 50.0, end: 0.0).animate(
-      CurvedAnimation(parent: _bounceController, curve: Curves.bounceIn),
+      CurvedAnimation(parent: _bounceController, curve: widget.curve),
     );
+    _rotate = Tween<double>(begin: 0.0, end: 2 * pi)
+        .animate(CurvedAnimation(curve: Interval(0.0, .5), parent: _bounceController));
   }
 
   @override
@@ -34,7 +43,10 @@ class _BounceAnimationState extends State<BounceAnimation> with TickerProviderSt
       child: widget.widget,
       builder: (ctx, child) => Transform.translate(
         offset: Offset(0.0, _bounce.value),
-        child: child,
+        child: Transform.rotate(
+          angle: _rotate.value,
+          child: child,
+        ),
       ),
     );
   }
