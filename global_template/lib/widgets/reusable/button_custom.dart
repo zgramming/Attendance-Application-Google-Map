@@ -18,10 +18,12 @@ class ButtonCustom extends StatelessWidget {
   final Widget icon;
   final EdgeInsetsGeometry padding;
   final AlignmentGeometry alignment;
+  final Widget child;
   ButtonCustom({
     @required this.onPressed,
     this.alignment = Alignment.bottomRight,
     this.icon,
+    this.child,
     this.disabledColor,
     this.disabledElevation,
     this.disabledTextColor,
@@ -45,14 +47,15 @@ class ButtonCustom extends StatelessWidget {
       shape: shape,
       textTheme: ButtonTextTheme.primary,
       color: buttonColor == null ? Theme.of(context).primaryColor : buttonColor,
-      child: Text(
-        buttonTitle,
-        style: textStyle ??
-            appTheme.subtitle1(context).copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-      ),
+      child: child ??
+          Text(
+            buttonTitle,
+            style: textStyle ??
+                appTheme.subtitle1(context).copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+          ),
     );
     var buttonIcon = RaisedButton.icon(
       onPressed: onPressed,
@@ -63,14 +66,15 @@ class ButtonCustom extends StatelessWidget {
       textTheme: ButtonTextTheme.primary,
       color: buttonColor == null ? Theme.of(context).primaryColor : buttonColor,
       icon: icon ?? SizedBox(),
-      label: Text(
-        buttonTitle,
-        style: textStyle ??
-            appTheme.subtitle1(context).copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-      ),
+      label: child ??
+          Text(
+            buttonTitle,
+            style: textStyle ??
+                appTheme.subtitle1(context).copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+          ),
     );
     return Container(
       padding: padding,
