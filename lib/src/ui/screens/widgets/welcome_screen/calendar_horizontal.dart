@@ -1,93 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CalendarHorizontal extends StatelessWidget {
+  final DateTime networkDateTime;
+  CalendarHorizontal({@required this.networkDateTime});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Row(
-            children: [
-              Flexible(
-                fit: FlexFit.tight,
-                flex: 2,
-                child: Text(
-                  globalF.formatYearMonth(DateTime.now(), type: 3),
-                  style: appTheme.headline6(context),
-                  textAlign: TextAlign.right,
-                ),
-              ),
-              Flexible(
-                fit: FlexFit.tight,
-                child: GestureDetector(
-                  onTap: () => print('ss'),
-                  child: Tooltip(
-                    message: 'List Mode',
-                    child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Icon(FontAwesomeIcons.list, size: 12)),
-                  ),
-                ),
-              ),
-            ],
+    return Card(
+      child: Column(
+        children: [
+          SizedBox(height: 10),
+          Text(
+            globalF.formatYearMonth(networkDateTime, type: 3),
+            style: appTheme.headline6(context),
+            textAlign: TextAlign.center,
           ),
-        ),
-        SizedBox(height: 20),
-        Container(
-          height: sizes.height(context) / 8,
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          // color: Colors.green,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemExtent: 90,
-            itemCount: globalF.totalDaysOfMonth(DateTime.now().month, DateTime.now().year),
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  side: DateTime.now().day == index + 1
-                      ? BorderSide(color: Colors.green, width: 2)
-                      : BorderSide(color: Colors.transparent),
-                ),
-                child: InkWell(
-                  onTap: () => '',
-                  borderRadius: BorderRadius.circular(15),
-                  child: Column(
-                    children: [
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "${index + 1}",
-                            style: appTheme.headline4(context).copyWith(
-                                fontWeight: FontWeight.bold, color: colorPallete.accentColor),
+          SizedBox(height: 10),
+          Container(
+            height: sizes.height(context) / 8,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            // color: Colors.green,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemExtent: 90,
+              itemCount: globalF.totalDaysOfMonth(networkDateTime.month, networkDateTime.year),
+              itemBuilder: (BuildContext context, int index) {
+                String getDaysName = globalF
+                    .formatDay(DateTime(networkDateTime.year, networkDateTime.month, index + 1));
+                return Card(
+                  color: isWeekend(getDaysName),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    side: networkDateTime.day == index + 1
+                        ? BorderSide(color: Colors.green, width: 2)
+                        : BorderSide(color: Colors.transparent),
+                  ),
+                  child: InkWell(
+                    onTap: () => '',
+                    borderRadius: BorderRadius.circular(15),
+                    child: Column(
+                      children: [
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "${index + 1}",
+                              style: appTheme.headline4(context).copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: isWeekend(getDaysName,
+                                        colorWeekend: colorPallete.white,
+                                        colorWeekDay: colorPallete.black.withOpacity(.7)),
+                                  ),
+                            ),
                           ),
+                          fit: FlexFit.tight,
+                          flex: 3,
                         ),
-                        fit: FlexFit.tight,
-                        flex: 3,
-                      ),
-                      Flexible(
-                        child: Text(
-                          globalF.formatDay(
-                              DateTime(DateTime.now().year, DateTime.now().month, index + 1)),
-                          textAlign: TextAlign.center,
-                          style: appTheme.caption(context),
+                        Flexible(
+                          child: Text(
+                            globalF.formatDay(
+                                DateTime(networkDateTime.year, networkDateTime.month, index + 1)),
+                            textAlign: TextAlign.center,
+                            style: appTheme.caption(context).copyWith(
+                                color: isWeekend(getDaysName, colorWeekend: colorPallete.white)),
+                          ),
+                          fit: FlexFit.tight,
                         ),
-                        fit: FlexFit.tight,
-                      ),
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                      ],
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      ],
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+          SizedBox(height: 10),
+        ],
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+      ),
     );
+  }
+
+  Color isWeekend(String getDaysName, {Color colorWeekend, Color colorWeekDay}) {
+    if (getDaysName.toLowerCase() == "sabtu" || getDaysName.toLowerCase() == "minggu") {
+      return colorWeekend ?? colorPallete.primaryColor;
+    } else {
+      return colorWeekDay ?? null;
+    }
   }
 }

@@ -4,10 +4,6 @@ import 'package:global_template/global_template.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class CardOverallMonthly extends StatelessWidget {
-  const CardOverallMonthly({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
