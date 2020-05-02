@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/maps_screen.dart';
@@ -11,7 +12,6 @@ import './widgets/welcome_screen/button_attendance.dart';
 import './widgets/welcome_screen/calendar_horizontal.dart';
 import './widgets/welcome_screen/table_attendance.dart';
 import './widgets/welcome_screen/card_overall_monthly.dart';
-import 'package:global_template/global_template.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const routeNamed = "/welcome-screen";
@@ -22,14 +22,15 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
-  bool _changeMode = false;
-  AnimationController _hideFabAnimation;
+  bool changeMode;
+  AnimationController _hideFloatingButton;
   @override
   void initState() {
     super.initState();
     commonF.initPermission(context);
+    changeMode = false;
     WidgetsBinding.instance.addObserver(this);
-    _hideFabAnimation = AnimationController(vsync: this, duration: kThemeAnimationDuration);
+    _hideFloatingButton = AnimationController(vsync: this, duration: kThemeAnimationDuration);
   }
 
   @override
@@ -43,7 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _hideFabAnimation.dispose();
+    _hideFloatingButton.dispose();
     super.dispose();
   }
 
@@ -51,7 +52,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) =>
-          commonF.handleScrollNotification(notification, controller: _hideFabAnimation),
+          commonF.handleScrollNotification(notification, controller: _hideFloatingButton),
       child: Scaffold(
         body: Stack(
           fit: StackFit.expand,
@@ -61,18 +62,21 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   CardOverallMonthly(),
-                  if (!_changeMode) ...[
-                    CalendarHorizontal(),
-                  ] else ...[
-                    TableAttendance(),
-                  ],
+                  AnimatedCrossFade(
+                      firstChild: CalendarHorizontal(),
+                      secondChild: TableAttendance(),
+                      duration: Duration(seconds: 1),
+                      crossFadeState:
+                          changeMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                      firstCurve: Curves.fastLinearToSlowEaseIn,
+                      secondCurve: Curves.linearToEaseOut),
                   SizedBox(height: 1000),
                 ],
               ),
             ),
             Consumer<ZAbsenProvider>(
               builder: (_, absenProvider, __) => ButtonAttendance(
-                hideFabAnimation: _hideFabAnimation,
+                hideFabAnimation: _hideFloatingButton,
                 onTapAttendence: () {
                   absenProvider.getCurrentPosition().then((_) => Future.delayed(
                       Duration(milliseconds: 500),
@@ -82,6 +86,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ),
             ),
           ],
+        ),
+        floatingActionButton: Semantics(
+          container: true,
+          child: FloatingActionButton(
+            onPressed: () {
+              setState(() => changeMode = !changeMode);
+            },
+            mini: true,
+            child: Icon(changeMode ? FontAwesomeIcons.calendarTimes : FontAwesomeIcons.tabletAlt),
+          ),
         ),
       ),
     );
