@@ -9,9 +9,9 @@ import 'package:location/location.dart';
 class CommonFunction {
   Location location = new Location();
   void initPermission(BuildContext context) async {
-    final permissionStatus = await _checkLocationPermission();
+    final permissionStatus = await checkLocationPermission();
+    final serviceEnable = await serviceEnabled();
     // final requestPermisionStatus = await _requestPermissionStatus();
-    final serviceEnable = await _serviceEnabled();
     // final requestService = await _requestService();
 
     if (permissionStatus != PermissionStatus.granted) {
@@ -22,7 +22,6 @@ class CommonFunction {
           iconPermission: FontAwesomeIcons.locationArrow,
           showCloseButton: false,
           onAccept: () async {
-            Navigator.of(ctx).pop();
             final bool result = await lc.LocationPermissions().openAppSettings();
             print("result open appseting $result");
           },
@@ -36,7 +35,6 @@ class CommonFunction {
           iconPermission: FontAwesomeIcons.mapMarkedAlt,
           showCloseButton: false,
           onAccept: () {
-            Navigator.of(ctx).pop();
             final AndroidIntent intent =
                 const AndroidIntent(action: 'action_location_source_settings');
             intent.launch();
@@ -44,14 +42,15 @@ class CommonFunction {
         ),
       );
     }
+    print("ServiceEnable $serviceEnable || PermissionStatus $permissionStatus");
   }
 
-  Future<PermissionStatus> _checkLocationPermission() async {
+  Future<PermissionStatus> checkLocationPermission() async {
     final result = await location.hasPermission();
     return result;
   }
 
-  Future<bool> _serviceEnabled() async {
+  Future<bool> serviceEnabled() async {
     final result = await location.serviceEnabled();
     return result;
   }
