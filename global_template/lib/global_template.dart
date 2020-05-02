@@ -16,6 +16,8 @@ export './variable/sizes/sizes.dart';
 export './variable/theme/app_theme.dart';
 
 export './widgets/reusable/animation/bounce.dart';
+export './widgets/reusable/animation/slide_transition.dart';
+
 export './widgets/reusable/button_custom.dart';
 export './widgets/reusable/double_tap_to_exit.dart';
 export './widgets/reusable/futurebuilder_loading.dart';

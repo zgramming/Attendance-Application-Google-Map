@@ -23,56 +23,58 @@ class PopupPermission extends StatelessWidget {
   final bool showCloseButton;
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => closeOnBackButton,
-      child: AlertDialog(
-        title: Container(
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-          padding: const EdgeInsets.only(bottom: 10),
-          child: Row(
-            children: [
-              Consumer<GlobalProvider>(
-                builder: (_, value, __) => Text(
-                  value.appNamePackageInfo.toUpperCase(),
-                  style: appTheme.headline6(context).copyWith(fontWeight: FontWeight.bold),
+    return GSlideTransition(
+      child: WillPopScope(
+        onWillPop: () async => closeOnBackButton,
+        child: AlertDialog(
+          title: Container(
+            decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              children: [
+                Consumer<GlobalProvider>(
+                  builder: (_, value, __) => Text(
+                    value.appNamePackageInfo.toUpperCase(),
+                    style: appTheme.headline6(context).copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              InkWell(
-                onTap: onClose,
-                child: showCloseButton
-                    ? CircleAvatar(
-                        backgroundColor: appTheme.theme(context).errorColor,
-                        child: Icon(iconClose, color: colorPallete.white),
-                        radius: 17,
-                      )
-                    : SizedBox(),
-              )
-            ],
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          ),
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(iconPermission, size: sizes.width(context) / 6),
-            SizedBox(height: 10),
-            RichText(
-              text: TextSpan(children: [
-                TextSpan(text: 'Aplikasi Membutuhkan Akses '),
-                TextSpan(
-                    text: "$typePermission ",
-                    style: appTheme
-                        .headline6(context)
-                        .copyWith(fontWeight: FontWeight.bold, color: colorPallete.accentColor)),
-                TextSpan(text: 'Untuk Dapat Berjalan Dengan Lancar')
-              ], style: appTheme.caption(context)),
+                InkWell(
+                  onTap: onClose,
+                  child: showCloseButton
+                      ? CircleAvatar(
+                          backgroundColor: appTheme.theme(context).errorColor,
+                          child: Icon(iconClose, color: colorPallete.white),
+                          radius: 17,
+                        )
+                      : SizedBox(),
+                )
+              ],
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
-            SizedBox(height: 10),
-          ],
+          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(iconPermission, size: sizes.width(context) / 6),
+              SizedBox(height: 10),
+              RichText(
+                text: TextSpan(children: [
+                  TextSpan(text: 'Aplikasi Membutuhkan Akses '),
+                  TextSpan(
+                      text: "$typePermission ",
+                      style: appTheme
+                          .headline6(context)
+                          .copyWith(fontWeight: FontWeight.bold, color: colorPallete.accentColor)),
+                  TextSpan(text: 'Untuk Dapat Berjalan Dengan Lancar')
+                ], style: appTheme.caption(context)),
+              ),
+              SizedBox(height: 10),
+            ],
+          ),
+          actions: [ButtonCustom(onPressed: onAccept, buttonTitle: buttonTitleAccept)],
         ),
-        actions: [ButtonCustom(onPressed: onAccept, buttonTitle: buttonTitleAccept)],
       ),
     );
   }

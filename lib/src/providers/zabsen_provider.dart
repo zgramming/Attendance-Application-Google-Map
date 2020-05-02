@@ -31,25 +31,19 @@ class ZAbsenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // StreamSubscription<Position> trackingPosition(Geolocator geolocator) {
-  //   final result = geolocator
-  //       .getPositionStream(LocationOptions(accuracy: LocationAccuracy.best, timeInterval: 2000))
-  //       .listen((position) {
-  //     _currentPosition = position;
-  //     notifyListeners();
-
-  //     print(
-  //         "Lokasi RealTime UserLocation $_currentPosition \n Accurary ${position.accuracy} \n Mocked ${position.mocked} \n");
-  //   });
-  //   return result;
-  // }
-
   DateTime _networkDateTime = DateTime.now();
   DateTime get networkDateTime => _networkDateTime;
 
   Future<void> _getNetworkDateTime() async {
-    final result = await NTP.now();
+    DateTime result;
+    try {
+      result = await reusableRequestServer.requestServer(() async => await NTP.now());
+    } catch (e) {
+      result = null;
+      // throw e.toString();
+    }
     _networkDateTime = result;
     notifyListeners();
+    return result;
   }
 }
