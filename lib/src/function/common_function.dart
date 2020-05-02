@@ -65,26 +65,6 @@ class CommonFunction {
   //   return result;
   // }
 
-  Future<LocationData> _getCurrentLocation() async {
-    try {
-      var result;
-      result = await reusableRequestServer.requestServer(() async {
-        LocationData locationData = await location.getLocation();
-        return locationData;
-      });
-      return result;
-    } catch (e) {
-      throw e.toString();
-    }
-  }
-
-  // Future<bool> _checkGPSPermission() async {
-  //   Geolocator geolocator = Geolocator();
-  //   var result = await geolocator.isLocationServiceEnabled();
-  //   print("Location Service Permission $result");
-  //   return result;
-  // }
-
   bool handleScrollNotification(ScrollNotification notification, {AnimationController controller}) {
     // print(notification.runtimeType);
     if (notification.depth == 0) {
@@ -108,17 +88,6 @@ class CommonFunction {
     }
     return false;
   }
-
-  // ///! Map Screen
-  // Future<Position> getLocation(Geolocator geolocator) async {
-  //   Position currentLocation;
-  //   try {
-  //     currentLocation = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
-  //   } catch (e) {
-  //     currentLocation = null;
-  //   }
-  //   return currentLocation;
-  // }
 }
 
 final commonF = CommonFunction();
