@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
+import '../live_clock.dart';
 
 class ButtonAttendance extends StatelessWidget {
   ButtonAttendance({
@@ -39,13 +40,13 @@ class ButtonAttendance extends StatelessWidget {
                     child: ButtonCustom(
                       onPressed: onTapAttendence,
                       padding: EdgeInsets.symmetric(horizontal: 6.0),
-                      buttonTitle: globalF.formatHoursMinutesSeconds(DateTime.now()),
+                      child: LiveClock(),
                     ),
                   ),
                   Flexible(
                     child: ButtonCustom(
                       padding: EdgeInsets.symmetric(horizontal: 6.0),
-                      buttonTitle: globalF.formatHoursMinutesSeconds(DateTime.now()),
+                      child: LiveClock(),
                       onPressed: onTapGoHome,
                     ),
                   ),
