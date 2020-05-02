@@ -7,17 +7,23 @@ class ButtonAttendance extends StatelessWidget {
     @required this.hideFabAnimation,
     @required this.onTapAttendence,
     @required this.onTapGoHome,
+    this.bottom = 10,
+    this.left = 10,
+    this.right = 10,
   });
 
   final AnimationController hideFabAnimation;
   final Function onTapAttendence;
   final Function onTapGoHome;
+  final double bottom;
+  final double left;
+  final double right;
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 10,
-      left: 10,
-      right: 10,
+      bottom: bottom,
+      left: left,
+      right: right,
       child: ScaleTransition(
         scale: hideFabAnimation,
         child: Card(
