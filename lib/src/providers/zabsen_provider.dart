@@ -27,7 +27,7 @@ class ZAbsenProvider extends ChangeNotifier {
 
   void setTrackingLocation(LocationData result) {
     _currentPosition = result;
-    print("Ini dari provider position $_currentPosition");
+    // print("Ini dari provider position $_currentPosition");
     notifyListeners();
   }
 
