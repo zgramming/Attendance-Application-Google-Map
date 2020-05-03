@@ -31,6 +31,7 @@ dependencies:
   android_intent: ^0.3.7+1
   location_permissions: ^2.0.5
   ntp: ^1.0.6
+  great_circle_distance2: ^1.0.1+1
 
   global_template:
     path: global_template
