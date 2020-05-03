@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:location/location.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../screens/maps_screen.dart';
 
@@ -66,6 +66,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    print("Ini Kena Refresh ga ya ? WelcomeScreen");
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) =>
           commonF.handleScrollNotification(notification, controller: _hideFloatingButton),
@@ -79,16 +80,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 children: [
                   CardOverallMonthly(),
                   AnimatedCrossFade(
-                      firstChild: Consumer<ZAbsenProvider>(
-                        builder: (_, value, __) => CalendarHorizontal(
-                            networkDateTime: value.networkDateTime ?? DateTime.now()),
+                    firstChild: Consumer<ZAbsenProvider>(
+                      builder: (_, value, __) => CalendarHorizontal(
+                        networkDateTime: value.networkDateTime ?? DateTime.now(),
                       ),
-                      secondChild: TableAttendance(),
-                      duration: Duration(seconds: 1),
-                      crossFadeState:
-                          changeMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                      firstCurve: Curves.fastLinearToSlowEaseIn,
-                      secondCurve: Curves.linearToEaseOut),
+                    ),
+                    secondChild: TableAttendance(),
+                    duration: Duration(seconds: 1),
+                    crossFadeState:
+                        changeMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                    firstCurve: Curves.fastLinearToSlowEaseIn,
+                    secondCurve: Curves.linearToEaseOut,
+                  ),
                   SizedBox(height: 1000),
                 ],
               ),
