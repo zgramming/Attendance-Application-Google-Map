@@ -7,7 +7,9 @@ import 'package:global_template/global_template.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
+import '../../function/common_function.dart';
 import '../../providers/zabsen_provider.dart';
+
 import './widgets/live_clock.dart';
 
 class MapScreen extends StatefulWidget {
@@ -20,15 +22,17 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
 
+  double tujuanLatitude = -6.205891;
+  double tujuanLongitude = 107.015451;
+  double radiusCircle = 3.5;
   void getLocation(ZAbsenProvider provider) async {
     Location location = Location();
-    location.changeSettings(accuracy: LocationAccuracy.high, interval: 1000, distanceFilter: 0);
+    location.changeSettings(interval: 1000);
     location.onLocationChanged.listen((currentLocation) {
       if (currentLocation == null) {
         return null;
       }
       provider.setTrackingLocation(currentLocation);
-      print('Halooooooo $currentLocation');
     });
   }
 
@@ -55,37 +59,41 @@ class _MapScreenState extends State<MapScreen> {
           child: Stack(
             children: [
               Consumer<ZAbsenProvider>(
-                builder: (_, absenProvider, __) => GoogleMap(
-                  circles: Set.of({
-                    Circle(
-                      circleId: CircleId('1'),
-                      strokeColor: Colors.red,
-                      fillColor: Colors.blue.withOpacity(.5),
-                      center: LatLng(absenProvider.currentPosition.latitude,
+                builder: (_, absenProvider, __) {
+                  final distanceTwoLocation = commonF.getDistanceLocation(
+                    absenProvider.currentPosition.latitude,
+                    absenProvider.currentPosition.longitude,
+                    tujuanLatitude,
+                    tujuanLongitude,
+                  );
+                  print(
+                      "Jarak $distanceTwoLocation || Lokasi Saya ${absenProvider.currentPosition}");
+                  return GoogleMap(
+                    circles: Set.of({
+                      Circle(
+                        circleId: CircleId('1'),
+                        strokeColor: Colors.transparent,
+                        fillColor: commonF
+                            .changeColorRadius(distanceTwoLocation, radiusCircle)
+                            .withOpacity(.8),
+                        center: LatLng(tujuanLatitude, tujuanLongitude),
+                        radius: radiusCircle,
+                      ),
+                    }),
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(absenProvider.currentPosition.latitude,
                           absenProvider.currentPosition.longitude),
-                      radius: 20,
+                      zoom: 14.4746,
                     ),
-                    Circle(
-                      circleId: CircleId('2'),
-                      strokeColor: Colors.transparent,
-                      fillColor: Colors.green.withOpacity(.5),
-                      center: LatLng(-6.245117, 106.933738),
-                      radius: 1000,
-                    ),
-                  }),
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(absenProvider.currentPosition.latitude,
-                        absenProvider.currentPosition.longitude),
-                    zoom: 14.4746,
-                  ),
-                  onMapCreated: (controller) {
-                    getLocation(absenProvider);
-                    _gotToCenterUser(absenProvider);
-                    _controller.complete(controller);
-                  },
-                  myLocationEnabled: true,
-                  // myLocationButtonEnabled: true,
-                ),
+                    onMapCreated: (controller) {
+                      getLocation(absenProvider);
+                      _gotToCenterUser(absenProvider);
+                      _controller.complete(controller);
+                    },
+                    myLocationEnabled: true,
+                    // myLocationButtonEnabled: true,
+                  );
+                },
               ),
               Positioned(
                 child: Card(
@@ -102,24 +110,33 @@ class _MapScreenState extends State<MapScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                       ),
                       SizedBox(height: 5),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: ButtonCustom(
-                              onPressed: () => '',
-                              // Navigator.of(context).pushNamed(MapScreen.routeNamed),
-                              padding: EdgeInsets.symmetric(horizontal: 6.0),
-                              child: LiveClock(),
-                            ),
-                          ),
-                          Flexible(
-                            child: ButtonCustom(
-                              padding: EdgeInsets.symmetric(horizontal: 6.0),
-                              child: LiveClock(),
-                              onPressed: () => '',
-                            ),
-                          ),
-                        ],
+                      Consumer<ZAbsenProvider>(
+                        builder: (_, absenProvider, __) {
+                          final distanceTwoLocation = commonF.getDistanceLocation(
+                            absenProvider.currentPosition.latitude,
+                            absenProvider.currentPosition.longitude,
+                            tujuanLatitude,
+                            tujuanLongitude,
+                          );
+                          return Row(
+                            children: [
+                              Flexible(
+                                child: ButtonCustom(
+                                  onPressed: distanceTwoLocation < radiusCircle ? () => '' : null,
+                                  padding: EdgeInsets.symmetric(horizontal: 6.0),
+                                  child: LiveClock(),
+                                ),
+                              ),
+                              Flexible(
+                                child: ButtonCustom(
+                                  padding: EdgeInsets.symmetric(horizontal: 6.0),
+                                  child: LiveClock(),
+                                  onPressed: distanceTwoLocation < radiusCircle ? () => '' : null,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       SizedBox(height: 5),
                     ],
