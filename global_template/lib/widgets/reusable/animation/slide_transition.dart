@@ -22,7 +22,6 @@ class GSlideTransitionState extends State<GSlideTransition> with TickerProviderS
   AnimationController slideController;
   @override
   void initState() {
-    super.initState();
     Offset offset;
     if (widget.position == AnimateFrom.FromBottom) {
       offset = Offset(0.0, -100);
@@ -40,6 +39,7 @@ class GSlideTransitionState extends State<GSlideTransition> with TickerProviderS
     slide = Tween<Offset>(begin: offset, end: Offset.zero)
         .animate(CurvedAnimation(parent: slideController, curve: widget.curve));
     slideController.forward();
+    super.initState();
   }
 
   @override
