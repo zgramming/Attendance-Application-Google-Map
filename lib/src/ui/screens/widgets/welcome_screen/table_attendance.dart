@@ -49,9 +49,10 @@ class TableAttendance extends StatelessWidget {
                 ),
               ),
               Container(
-                height: sizes.height(context) / 2,
                 child: ListView.builder(
-                  itemCount: 30,
+                  itemCount: 15,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.zero,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(

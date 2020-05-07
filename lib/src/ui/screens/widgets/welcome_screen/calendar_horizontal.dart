@@ -32,7 +32,7 @@ class CalendarHorizontal extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                     side: networkDateTime.day == index + 1
-                        ? BorderSide(color: Colors.green, width: 2)
+                        ? BorderSide(color: Colors.green, width: 3)
                         : BorderSide(color: Colors.transparent),
                   ),
                   child: InkWell(
@@ -47,9 +47,11 @@ class CalendarHorizontal extends StatelessWidget {
                               "${index + 1}",
                               style: appTheme.headline4(context).copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: isWeekend(getDaysName,
-                                        colorWeekend: colorPallete.white,
-                                        colorWeekDay: colorPallete.black.withOpacity(.7)),
+                                    color: isWeekend(
+                                      getDaysName,
+                                      colorWeekend: colorPallete.white,
+                                      colorWeekDay: colorPallete.black.withOpacity(.7),
+                                    ),
                                   ),
                             ),
                           ),
@@ -82,7 +84,10 @@ class CalendarHorizontal extends StatelessWidget {
   }
 
   Color isWeekend(String getDaysName, {Color colorWeekend, Color colorWeekDay}) {
-    if (getDaysName.toLowerCase() == "sabtu" || getDaysName.toLowerCase() == "minggu") {
+    if (getDaysName.toLowerCase() == "sabtu" ||
+        getDaysName.toLowerCase() == "minggu" ||
+        getDaysName.toLowerCase() == "sab" ||
+        getDaysName.toLowerCase() == "min") {
       return colorWeekend ?? colorPallete.primaryColor;
     } else {
       return colorWeekDay ?? null;

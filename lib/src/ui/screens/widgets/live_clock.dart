@@ -9,13 +9,11 @@ class LiveClock extends StatefulWidget {
 }
 
 class _LiveClockState extends State<LiveClock> {
-  // String _timeString;
   String _timeClock;
   Timer _timerClock;
 
   @override
   void initState() {
-    // _timeString = globalF.formatYearMonthDaySpecific(DateTime.now(), type: 3);
     _timerClock = Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
   }
@@ -40,10 +38,8 @@ class _LiveClockState extends State<LiveClock> {
 
   void _getTime() async {
     final DateTime timeNetwork = await NTP.now();
-    // final String formattedDateTime = globalF.formatYearMonthDaySpecific(now, type: 3);
     final String formattedTime = globalF.formatHoursMinutesSeconds(timeNetwork);
     setState(() {
-      // _timeString = formattedDateTime;
       _timeClock = formattedTime;
     });
   }
