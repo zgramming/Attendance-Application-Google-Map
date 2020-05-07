@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:location/location.dart';
+import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../screens/maps_screen.dart';
@@ -23,15 +24,13 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
-  bool changeMode;
   AnimationController _hideFloatingButton;
   @override
   void initState() {
-    super.initState();
     commonF.initPermission(context);
-    changeMode = false;
     WidgetsBinding.instance.addObserver(this);
     _hideFloatingButton = AnimationController(vsync: this, duration: kThemeAnimationDuration);
+    super.initState();
   }
 
   @override
@@ -66,10 +65,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    print("Ini Kena Refresh ga ya ? WelcomeScreen");
     return NotificationListener<ScrollNotification>(
-      onNotification: (notification) =>
-          commonF.handleScrollNotification(notification, controller: _hideFloatingButton),
+      onNotification: (notification) => commonF.handleScrollNotification(
+        notification,
+        controllerButton: _hideFloatingButton,
+      ),
       child: Scaffold(
         body: Stack(
           fit: StackFit.expand,
@@ -79,18 +79,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   CardOverallMonthly(),
-                  AnimatedCrossFade(
-                    firstChild: Consumer<ZAbsenProvider>(
-                      builder: (_, value, __) => CalendarHorizontal(
-                        networkDateTime: value.networkDateTime ?? DateTime.now(),
-                      ),
-                    ),
-                    secondChild: TableAttendance(),
-                    duration: Duration(seconds: 1),
-                    crossFadeState:
-                        changeMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                    firstCurve: Curves.fastLinearToSlowEaseIn,
-                    secondCurve: Curves.linearToEaseOut,
+                  Consumer2<ZAbsenProvider, GlobalProvider>(
+                    builder: (_, value, value2, __) {
+                      print(value2.isChangeMode);
+                      return AnimatedCrossFade(
+                        firstChild: CalendarHorizontal(
+                          networkDateTime: value.networkDateTime ?? DateTime.now(),
+                        ),
+                        secondChild: TableAttendance(),
+                        duration: Duration(seconds: 1),
+                        crossFadeState: value2.isChangeMode
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        firstCurve: Curves.fastLinearToSlowEaseIn,
+                        secondCurve: Curves.linearToEaseOut,
+                      );
+                    },
                   ),
                   SizedBox(height: 1000),
                 ],
@@ -103,10 +107,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 hideFabAnimation: _hideFloatingButton,
                 onTapAttendence: () {
                   absenProvider.getCurrentPosition().then(
-                        (_) => Future.delayed(
-                          Duration(milliseconds: 300),
-                          () => Navigator.of(context).pushNamed(MapScreen.routeNamed),
-                        ),
+                        (_) => Navigator.of(context).pushNamed(MapScreen.routeNamed),
                       );
                 },
                 onTapGoHome: () => print('go home'),
@@ -114,14 +115,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
           ],
         ),
-        floatingActionButton: Semantics(
-          container: true,
-          child: FloatingActionButton(
+        floatingActionButton: Consumer<GlobalProvider>(
+          builder: (_, value, __) => FloatingActionButton(
             onPressed: () {
-              setState(() => changeMode = !changeMode);
+              value.setChangeMode(value.isChangeMode);
+              print(value.isChangeMode);
             },
             mini: true,
-            child: Icon(changeMode ? FontAwesomeIcons.calendarTimes : FontAwesomeIcons.tabletAlt),
+            child: Icon(
+                value.isChangeMode ? FontAwesomeIcons.calendarTimes : FontAwesomeIcons.tabletAlt),
           ),
         ),
       ),
