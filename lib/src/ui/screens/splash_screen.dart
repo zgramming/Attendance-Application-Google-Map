@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
+import 'package:provider/provider.dart';
 
+import './welcome_screen.dart';
 import './login_screen.dart';
+
+import '../../providers/user_provider.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -15,7 +19,8 @@ class SplashScreen extends StatelessWidget {
             size: sizes.height(context) / 4,
           ),
         ),
-        navigateAfterSplashScreen: LoginScreen(),
+        navigateAfterSplashScreen: Consumer<UserProvider>(
+            builder: (_, value, __) => value.user.idUser == null ? LoginScreen() : WelcomeScreen()),
       ),
     );
   }
