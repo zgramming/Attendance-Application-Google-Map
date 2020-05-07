@@ -8,8 +8,12 @@ import 'package:global_template/global_template.dart';
 class GlobalFunction {
   DateUtil _dateUtil = DateUtil();
 
-  String formatDay(DateTime date) {
-    return DateFormat.EEEE(appConfig.indonesiaLocale).format(date);
+  String formatDay(DateTime date, {int type = 2}) {
+    if (type == 1) {
+      return DateFormat.E(appConfig.indonesiaLocale).format(date);
+    } else {
+      return DateFormat.EEEE(appConfig.indonesiaLocale).format(date);
+    }
   }
 
   /// Format : Jam
