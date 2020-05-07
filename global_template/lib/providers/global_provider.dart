@@ -64,6 +64,26 @@ class GlobalProvider extends ChangeNotifier {
     return result;
   }
 
+  bool _isChangeMode = false, _isLoading = false, _isRegister = false;
+
+  bool get isChangeMode => _isChangeMode;
+  void setChangeMode(bool value) {
+    _isChangeMode = !value;
+    notifyListeners();
+  }
+
+  bool get isLoading => _isLoading;
+  void setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  bool get isRegister => _isRegister;
+  void setRegister(bool value) {
+    _isRegister = value;
+    notifyListeners();
+  }
+
   bool _obsecurePassword = true;
   bool get obsecurePassword => _obsecurePassword;
   setObsecurePassword(bool value) {
