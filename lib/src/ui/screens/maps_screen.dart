@@ -22,8 +22,8 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
 
-  double tujuanLatitude = -6.205891;
-  double tujuanLongitude = 107.015451;
+  double tujuanLatitude = -6.1767733;
+  double tujuanLongitude = 106.9955114;
   double radiusCircle = 3.5;
   void getLocation(ZAbsenProvider provider) async {
     Location location = Location();
