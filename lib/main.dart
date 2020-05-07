@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 
 import 'src/providers/zabsen_provider.dart';
+import 'src/providers/user_provider.dart';
 import 'src/app.dart';
 
 Future<void> main() async {
@@ -14,6 +15,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider<ZAbsenProvider>(
           create: (_) => ZAbsenProvider(),
+        ),
+        ChangeNotifierProvider<UserProvider>(
+          create: (_) => UserProvider(),
         ),
       ],
       child: MyApp(),
