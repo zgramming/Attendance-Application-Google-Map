@@ -35,6 +35,8 @@ dependencies:
 
   global_template:
     path: global_template
+  network:
+    path: network
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
@@ -69,9 +71,9 @@ flutter:
     - family: VarelaRound
       fonts:
         - asset: assets/fonts/body/VarelaRound-Regular.ttf
-    # - family: Wellfleet
-    #   fonts:
-    #     - asset: assets/fonts/header/Wellfleet-Regular.ttf
+    - family: LilitaOne
+      fonts:
+        - asset: assets/fonts/header/LilitaOne-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
