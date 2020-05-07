@@ -65,20 +65,25 @@ class CommonFunction {
   //   return result;
   // }
 
-  bool handleScrollNotification(ScrollNotification notification, {AnimationController controller}) {
-    // print(notification.runtimeType);
+  bool handleScrollNotification(
+    ScrollNotification notification, {
+    AnimationController controllerButton,
+  }) {
     if (notification.depth == 0) {
       if (notification is UserScrollNotification) {
         final UserScrollNotification userScroll = notification;
+
         switch (userScroll.direction) {
           case ScrollDirection.forward:
             if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
-              Future.delayed(Duration(milliseconds: 500), () => controller.forward());
+              Future.delayed(Duration(seconds: 0), () => controllerButton.forward());
             }
+
             break;
           case ScrollDirection.reverse:
+            print(userScroll.metrics.pixels);
             if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
-              Future.delayed(Duration(milliseconds: 500), () => controller.reverse());
+              Future.delayed(Duration(seconds: 0), () => controllerButton.reverse());
             }
             break;
           case ScrollDirection.idle:
