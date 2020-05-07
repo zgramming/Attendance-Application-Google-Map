@@ -7,13 +7,13 @@ import '../../variable/colors/color_pallete.dart';
 class LoginScreenTemplate extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final Widget imageBuilder;
-  final List<Widget> formLogin;
+  final Widget form;
   final Widget background;
   final double formOpacity;
   LoginScreenTemplate({
     @required this.formKey,
     @required this.imageBuilder,
-    @required this.formLogin,
+    @required this.form,
     @required this.background,
     this.formOpacity = .75,
   });
@@ -51,14 +51,7 @@ class LoginScreenTemplate extends StatelessWidget {
                           horizontal: sizes.width(context) * .05,
                           vertical: sizes.height(context) * .025,
                         ),
-                        child: Form(
-                          key: formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: formLogin,
-                          ),
-                        ),
+                        child: Form(key: formKey, child: form),
                       ),
                     ),
                   ),
