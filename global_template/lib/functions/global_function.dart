@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import 'package:global_template/global_template.dart';
+import 'package:ntp/ntp.dart';
 
 class GlobalFunction {
   /// Format Hari
@@ -139,6 +140,18 @@ class GlobalFunction {
     } else {
       return Future.value(true);
     }
+  }
+
+  Future<DateTime> getNetworkDateTime() async {
+    DateTime result;
+    try {
+      result = await reusableRequestServer.requestServer(() async => await NTP.now());
+    } catch (e) {
+      result = null;
+    }
+    // _networkDateTime = result;
+    // notifyListeners();
+    return result;
   }
 }
 
