@@ -1,7 +1,7 @@
 library global_template;
 
-export './functions/global_function.dart';
 export './functions/reusable_request_server.dart';
+export './functions/global_function.dart';
 
 export './providers/global_provider.dart';
 
@@ -19,7 +19,6 @@ export './widgets/reusable/animation/rotate_animation.dart';
 export './widgets/reusable/animation/slide_transition.dart';
 
 export './widgets/reusable/button_custom.dart';
-export './widgets/reusable/double_tap_to_exit.dart';
 export './widgets/reusable/futurebuilder_loading.dart';
 export './widgets/reusable/show_image_asset.dart';
 export './widgets/reusable/show_image_file.dart';

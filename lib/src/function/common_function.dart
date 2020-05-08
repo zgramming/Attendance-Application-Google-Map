@@ -1,11 +1,11 @@
-import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:global_template/global_template.dart';
-import 'package:location_permissions/location_permissions.dart' as lc;
 import 'package:location/location.dart';
+import 'package:android_intent/android_intent.dart';
+import 'package:global_template/global_template.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
+import 'package:location_permissions/location_permissions.dart' as lc;
 
 class CommonFunction {
   Location location = new Location();

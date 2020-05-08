@@ -86,12 +86,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         secondChild: CalendarHorizontal(
                           networkDateTime: value.networkDateTime ?? DateTime.now(),
                         ),
-                        duration: Duration(seconds: 1),
+                        duration: Duration(seconds: 3),
                         crossFadeState: value2.isChangeMode
                             ? CrossFadeState.showFirst
                             : CrossFadeState.showSecond,
-                        firstCurve: Curves.fastLinearToSlowEaseIn,
-                        secondCurve: Curves.linearToEaseOut,
+                        firstCurve: Curves.decelerate,
+                        secondCurve: Curves.decelerate,
                       );
                     },
                   ),

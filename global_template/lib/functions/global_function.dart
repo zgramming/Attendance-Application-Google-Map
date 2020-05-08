@@ -124,6 +124,22 @@ class GlobalFunction {
       toastLength: isLongDuration ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT,
     );
   }
+
+  Future<bool> doubleTapToExit({
+    @required GlobalKey<ScaffoldState> scaffoldKey,
+  }) async {
+    DateTime _currentBackPressTime;
+    DateTime now = DateTime.now();
+    if (_currentBackPressTime == null ||
+        now.difference(_currentBackPressTime) > Duration(seconds: 2)) {
+      _currentBackPressTime = now;
+      globalF.showToast(message: 'Tekan Sekali Lagi Untuk Keluar Aplikasi');
+      print("Press Again To Close Application");
+      return Future.value(false);
+    } else {
+      return Future.value(true);
+    }
+  }
 }
 
 final globalF = GlobalFunction();
