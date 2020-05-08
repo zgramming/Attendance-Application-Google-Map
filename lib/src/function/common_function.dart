@@ -81,7 +81,6 @@ class CommonFunction {
 
             break;
           case ScrollDirection.reverse:
-            print(userScroll.metrics.pixels);
             if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
               Future.delayed(Duration(seconds: 0), () => controllerButton.reverse());
             }
@@ -147,6 +146,17 @@ class CommonFunction {
       return insideRadius;
     } else {
       return outsideRadius;
+    }
+  }
+
+  Color isWeekend(String getDaysName, {Color colorWeekend, Color colorWeekDay}) {
+    if (getDaysName.toLowerCase() == "sabtu" ||
+        getDaysName.toLowerCase() == "minggu" ||
+        getDaysName.toLowerCase() == "sab" ||
+        getDaysName.toLowerCase() == "min") {
+      return colorWeekend ?? colorPallete.primaryColor;
+    } else {
+      return colorWeekDay ?? null;
     }
   }
 }
