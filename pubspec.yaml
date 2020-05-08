@@ -30,7 +30,6 @@ dependencies:
   percent_indicator: ^2.1.3
   android_intent: ^0.3.7+1
   location_permissions: ^2.0.5
-  ntp: ^1.0.6
   great_circle_distance2: ^1.0.1+1
   scrollable_positioned_list: ^0.1.5
 
