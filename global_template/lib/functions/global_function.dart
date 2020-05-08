@@ -1,4 +1,3 @@
-import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -6,8 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:global_template/global_template.dart';
 
 class GlobalFunction {
-  DateUtil _dateUtil = DateUtil();
-
+  /// Format Hari
   String formatDay(DateTime date, {int type = 2}) {
     if (type == 1) {
       return DateFormat.E(appConfig.indonesiaLocale).format(date);
@@ -76,9 +74,37 @@ class GlobalFunction {
     }
   }
 
-  int totalDaysOfMonth(int month, int year) {
-    final int result = _dateUtil.daysInMonth(month, year);
+  ///! Mendapatkan Total Hari Pada bulan X
+  int totalDaysOfMonth(int year, int month) {
+    final result = (month < 12) ? DateTime(year, month + 1, 0) : DateTime(year + 1, 1, 0);
+    return result.day;
+  }
+
+  ///! Mendapatkan Total Jumlah Kerja yang sudah dikurangi weekend (Sabtu,Minggu).
+  int totalWeekDayOfMonth(int year, int month, {int day = 1}) {
+    int totalDayOfMonth = totalDaysOfMonth(year, month);
+    int result = 0;
+    DateTime tempDateTime = DateTime(year, month, day);
+    for (int i = day; i <= totalDayOfMonth; i++) {
+      tempDateTime = DateTime(tempDateTime.year, tempDateTime.month, i);
+      if (tempDateTime.weekday == DateTime.saturday || tempDateTime.weekday == DateTime.sunday) {
+        // print('is weekend');
+      } else {
+        result++;
+      }
+    }
     return result;
+  }
+
+  Color isWeekend(String getDaysName, {Color colorWeekend, Color colorWeekDay}) {
+    if (getDaysName.toLowerCase() == "sabtu" ||
+        getDaysName.toLowerCase() == "minggu" ||
+        getDaysName.toLowerCase() == "sab" ||
+        getDaysName.toLowerCase() == "min") {
+      return colorWeekend ?? colorPallete.primaryColor;
+    } else {
+      return colorWeekDay ?? null;
+    }
   }
 
   Future<void> showToast({
