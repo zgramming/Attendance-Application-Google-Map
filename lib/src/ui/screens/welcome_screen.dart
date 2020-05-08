@@ -81,12 +81,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   CardOverallMonthly(),
                   Consumer2<ZAbsenProvider, GlobalProvider>(
                     builder: (_, value, value2, __) {
-                      print(value2.isChangeMode);
                       return AnimatedCrossFade(
-                        firstChild: CalendarHorizontal(
+                        firstChild: TableAttendance(),
+                        secondChild: CalendarHorizontal(
                           networkDateTime: value.networkDateTime ?? DateTime.now(),
                         ),
-                        secondChild: TableAttendance(),
                         duration: Duration(seconds: 1),
                         crossFadeState: value2.isChangeMode
                             ? CrossFadeState.showFirst
