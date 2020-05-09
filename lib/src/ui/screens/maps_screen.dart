@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,7 +8,7 @@ import 'package:global_template/global_template.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
-import '../../function/common_function.dart';
+import '../../function/zabsen_function.dart';
 import '../../providers/zabsen_provider.dart';
 
 import './widgets/live_clock.dart';
@@ -53,114 +54,121 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        body: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: sizes.height(context)),
-          child: Stack(
-            children: [
-              Consumer<ZAbsenProvider>(
-                builder: (_, absenProvider, __) {
-                  final distanceTwoLocation = commonF.getDistanceLocation(
-                    absenProvider.currentPosition.latitude,
-                    absenProvider.currentPosition.longitude,
-                    tujuanLatitude,
-                    tujuanLongitude,
-                  );
-                  print(
-                      "Jarak $distanceTwoLocation || Lokasi Saya ${absenProvider.currentPosition}");
-                  return GoogleMap(
-                    circles: Set.of({
-                      Circle(
-                        circleId: CircleId('1'),
-                        strokeColor: Colors.transparent,
-                        fillColor: commonF
-                            .changeColorRadius(distanceTwoLocation, radiusCircle)
-                            .withOpacity(.8),
-                        center: LatLng(tujuanLatitude, tujuanLongitude),
-                        radius: radiusCircle,
-                      ),
-                    }),
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(absenProvider.currentPosition.latitude,
-                          absenProvider.currentPosition.longitude),
-                      zoom: 14.4746,
-                    ),
-                    onMapCreated: (controller) {
-                      getLocation(absenProvider);
-                      _gotToCenterUser(absenProvider);
-                      _controller.complete(controller);
-                    },
-                    myLocationEnabled: true,
-                    // myLocationButtonEnabled: true,
-                  );
-                },
-              ),
-              Positioned(
-                child: Card(
-                  // color: Colors.transparent,
-                  elevation: 0,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 5),
-                      Row(
-                        children: [
-                          Text("Absen Datang"),
-                          Text('Absen Pulang'),
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      ),
-                      SizedBox(height: 5),
-                      Consumer<ZAbsenProvider>(
-                        builder: (_, absenProvider, __) {
-                          final distanceTwoLocation = commonF.getDistanceLocation(
-                            absenProvider.currentPosition.latitude,
-                            absenProvider.currentPosition.longitude,
-                            tujuanLatitude,
-                            tujuanLongitude,
-                          );
-                          return Row(
-                            children: [
-                              Flexible(
-                                child: ButtonCustom(
-                                  onPressed: distanceTwoLocation < radiusCircle ? () => '' : null,
-                                  padding: EdgeInsets.symmetric(horizontal: 6.0),
-                                  child: LiveClock(),
-                                ),
-                              ),
-                              Flexible(
-                                child: ButtonCustom(
-                                  padding: EdgeInsets.symmetric(horizontal: 6.0),
-                                  child: LiveClock(),
-                                  onPressed: distanceTwoLocation < radiusCircle ? () => '' : null,
-                                ),
-                              ),
-                            ],
-                          );
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(statusBarColor: colorPallete.primaryColor),
+        child: SafeArea(
+          child: Scaffold(
+            body: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: sizes.height(context)),
+              child: Stack(
+                children: [
+                  Consumer<ZAbsenProvider>(
+                    builder: (_, absenProvider, __) {
+                      final distanceTwoLocation = commonF.getDistanceLocation(
+                        absenProvider.currentPosition.latitude,
+                        absenProvider.currentPosition.longitude,
+                        tujuanLatitude,
+                        tujuanLongitude,
+                      );
+                      print(
+                          "Jarak $distanceTwoLocation || Lokasi Saya ${absenProvider.currentPosition}");
+                      return GoogleMap(
+                        circles: Set.of({
+                          Circle(
+                            circleId: CircleId('1'),
+                            strokeColor: Colors.transparent,
+                            fillColor: commonF
+                                .changeColorRadius(distanceTwoLocation, radiusCircle)
+                                .withOpacity(.8),
+                            center: LatLng(tujuanLatitude, tujuanLongitude),
+                            radius: radiusCircle,
+                          ),
+                        }),
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(absenProvider.currentPosition.latitude,
+                              absenProvider.currentPosition.longitude),
+                          zoom: 14.4746,
+                        ),
+                        onMapCreated: (controller) {
+                          getLocation(absenProvider);
+                          _gotToCenterUser(absenProvider);
+                          _controller.complete(controller);
                         },
+                        myLocationEnabled: true,
+                        // myLocationButtonEnabled: true,
+                      );
+                    },
+                  ),
+                  Positioned(
+                    child: Card(
+                      // color: Colors.transparent,
+                      elevation: 0,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Text("Absen Datang"),
+                              Text('Absen Pulang'),
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          ),
+                          SizedBox(height: 5),
+                          Consumer<ZAbsenProvider>(
+                            builder: (_, absenProvider, __) {
+                              final distanceTwoLocation = commonF.getDistanceLocation(
+                                absenProvider.currentPosition.latitude,
+                                absenProvider.currentPosition.longitude,
+                                tujuanLatitude,
+                                tujuanLongitude,
+                              );
+                              return Row(
+                                children: [
+                                  Flexible(
+                                    child: ButtonCustom(
+                                      onPressed:
+                                          distanceTwoLocation < radiusCircle ? () => '' : null,
+                                      padding: EdgeInsets.symmetric(horizontal: 6.0),
+                                      child: LiveClock(),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: ButtonCustom(
+                                      padding: EdgeInsets.symmetric(horizontal: 6.0),
+                                      child: LiveClock(),
+                                      onPressed:
+                                          distanceTwoLocation < radiusCircle ? () => '' : null,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          SizedBox(height: 5),
+                        ],
                       ),
-                      SizedBox(height: 5),
-                    ],
+                    ),
+                    bottom: 30,
+                    left: 10,
+                    right: 50,
                   ),
-                ),
-                bottom: 30,
-                left: 10,
-                right: 50,
-              ),
-              Positioned(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    // realTimePosition.cancel();
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: colorPallete.white,
-                    child: Icon(FontAwesomeIcons.times),
+                  Positioned(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        // realTimePosition.cancel();
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: colorPallete.white,
+                        child: Icon(FontAwesomeIcons.times),
+                      ),
+                    ),
+                    top: 10,
+                    left: 10,
                   ),
-                ),
-                top: 50,
-                left: 10,
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
