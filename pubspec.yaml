@@ -71,9 +71,9 @@ flutter:
     - family: VarelaRound
       fonts:
         - asset: assets/fonts/body/VarelaRound-Regular.ttf
-    - family: LilitaOne
+    - family: Righteous
       fonts:
-        - asset: assets/fonts/header/LilitaOne-Regular.ttf
+        - asset: assets/fonts/header/Righteous-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
