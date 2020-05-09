@@ -32,9 +32,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void initState() {
     commonF.initPermission(context);
-    WidgetsBinding.instance.addObserver(this);
     _hideFloatingButton = AnimationController(vsync: this, duration: kThemeAnimationDuration);
     _appbarController = AnimationController(vsync: this, duration: Duration(milliseconds: 100));
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -63,9 +63,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     _hideFloatingButton.dispose();
     _appbarController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
