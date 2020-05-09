@@ -10,6 +10,7 @@ import '../../providers/user_provider.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       body: SplashScreenTemplate(
         duration: 5,
@@ -19,8 +20,8 @@ class SplashScreen extends StatelessWidget {
             size: sizes.height(context) / 4,
           ),
         ),
-        navigateAfterSplashScreen: Consumer<UserProvider>(
-            builder: (_, value, __) => value.user.idUser == null ? LoginScreen() : WelcomeScreen()),
+        navigateAfterSplashScreen:
+            userProvider.user.idUser == null ? LoginScreen() : WelcomeScreen(),
       ),
     );
   }
