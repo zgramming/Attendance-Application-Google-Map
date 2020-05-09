@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ColorPallete {
   Brightness getAppTheme(BuildContext context) => Theme.of(context).brightness;
   Color white = Color(0xFFFFFFFF);
-  Color black = Color(0xFF000000);
+  Color black = Color(0xFF222831);
   Color transparent = Color(0x00000000);
 
   /// Grey
@@ -13,11 +13,11 @@ class ColorPallete {
   Color greyTransparent = Color(0xFFBDBDBD);
 
   ///Primary Color
-  Color primaryColor = Color(0xffe23e57);
+  Color primaryColor = Color(0xff7c73e6);
   Color primaryColor2 = Color(0xfff8b195);
 
   ///Accent Color
-  Color accentColor = Color(0xffE2773E);
+  Color accentColor = Color(0xffE67C73);
   Color accentColor2 = Color(0xfff67280);
 
   /// Scaffold Color
