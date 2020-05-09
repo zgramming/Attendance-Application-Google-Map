@@ -8,7 +8,7 @@ class CardOverallMonthly extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: sizes.height(context) / 3,
-      margin: EdgeInsets.only(top: sizes.height(context) / 10),
+      // margin: EdgeInsets.only(top: sizes.height(context) / 10),
       // color: Colors.purple,
       child: Container(
         alignment: Alignment.center,
@@ -61,8 +61,8 @@ class CardOverallMonthly extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              progressColor: Colors.green,
-              backgroundColor: colorPallete.greyTransparent,
+              progressColor: colorPallete.accentColor,
+              backgroundColor: colorPallete.white,
               percent: .5,
             ),
           ),

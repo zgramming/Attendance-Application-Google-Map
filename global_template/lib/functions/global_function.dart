@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import 'package:global_template/global_template.dart';
-import 'package:ntp/ntp.dart';
 
 class GlobalFunction {
   /// Format Hari
@@ -37,7 +37,7 @@ class GlobalFunction {
   }
 
   /// Format : Tahun:Bulan[type=?]
-  String formatYearMonth(DateTime date, {int type = 1}) {
+  String formatYearMonth(DateTime date, {int type = 3}) {
     if (type == 1) {
       return DateFormat.yM(appConfig.indonesiaLocale).format(date);
     } else if (type == 2) {
@@ -97,17 +97,7 @@ class GlobalFunction {
     return result;
   }
 
-  Color isWeekend(String getDaysName, {Color colorWeekend, Color colorWeekDay}) {
-    if (getDaysName.toLowerCase() == "sabtu" ||
-        getDaysName.toLowerCase() == "minggu" ||
-        getDaysName.toLowerCase() == "sab" ||
-        getDaysName.toLowerCase() == "min") {
-      return colorWeekend ?? colorPallete.primaryColor;
-    } else {
-      return colorWeekDay ?? null;
-    }
-  }
-
+  ///! Memunculkan Toast
   Future<void> showToast({
     @required String message,
     bool isError = false,
@@ -126,6 +116,7 @@ class GlobalFunction {
     );
   }
 
+  ///! Ketuk 2 Kali Untuk Keluar
   Future<bool> doubleTapToExit({
     @required GlobalKey<ScaffoldState> scaffoldKey,
   }) async {
@@ -140,18 +131,6 @@ class GlobalFunction {
     } else {
       return Future.value(true);
     }
-  }
-
-  Future<DateTime> getNetworkDateTime() async {
-    DateTime result;
-    try {
-      result = await reusableRequestServer.requestServer(() async => await NTP.now());
-    } catch (e) {
-      result = null;
-    }
-    // _networkDateTime = result;
-    // notifyListeners();
-    return result;
   }
 }
 
