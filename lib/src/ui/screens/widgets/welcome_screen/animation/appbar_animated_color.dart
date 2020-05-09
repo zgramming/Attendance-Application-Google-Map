@@ -26,30 +26,35 @@ class _AppBarAnimatedColorState extends State<AppBarAnimatedColor> {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: widget.controller,
-      builder: (_, __) => AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FlutterLogo(),
-        ),
-        elevation: 0,
-        title: widget.title ??
-            Text(
-              '',
-              style: appTheme.subtitle1(context).copyWith(color: iconColor.value),
-            ),
-        backgroundColor: appBarColor.value,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: InkWell(
-              onTap: () => '',
-              child: Icon(
-                FontAwesomeIcons.bars,
-                color: iconColor.value,
+      builder: (_, __) => Positioned(
+        top: 0,
+        left: 0,
+        right: 0,
+        child: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FlutterLogo(),
+          ),
+          elevation: 0,
+          title: widget.title ??
+              Text(
+                '',
+                style: appTheme.subtitle1(context).copyWith(color: iconColor.value),
               ),
-            ),
-          )
-        ],
+          backgroundColor: appBarColor.value,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: InkWell(
+                onTap: () => '',
+                child: Icon(
+                  FontAwesomeIcons.bars,
+                  color: iconColor.value,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
