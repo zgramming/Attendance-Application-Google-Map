@@ -1,13 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:ntp/ntp.dart';
 import 'package:location/location.dart';
 import 'package:global_template/global_template.dart';
 
 class ZAbsenProvider extends ChangeNotifier {
-  ZAbsenProvider() {
-    _getNetworkDateTime();
-  }
-
   LocationData _currentPosition;
   LocationData get currentPosition => _currentPosition;
 
@@ -31,19 +26,11 @@ class ZAbsenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  DateTime _networkDateTime = DateTime.now();
-  DateTime get networkDateTime => _networkDateTime;
+  DateTime _trueTime;
+  DateTime get trueTime => _trueTime;
 
-  Future<void> _getNetworkDateTime() async {
-    DateTime result;
-    try {
-      result = await reusableRequestServer.requestServer(() async => await NTP.now());
-    } catch (e) {
-      result = null;
-      // throw e.toString();
-    }
-    _networkDateTime = result;
+  void setTrueTime(DateTime value) {
+    _trueTime = value;
     notifyListeners();
-    return result;
   }
 }
