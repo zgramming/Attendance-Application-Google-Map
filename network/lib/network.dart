@@ -8,3 +8,5 @@ export './api/absensi_api.dart';
 
 export './model/destinasi_model.dart';
 export './api/destinasi_api.dart';
+
+export './model/performance_model.dart';
