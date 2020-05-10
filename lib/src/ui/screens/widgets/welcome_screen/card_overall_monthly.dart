@@ -6,6 +6,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 class CardOverallMonthly extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("Rebuild CardOverallMonthly");
     return Container(
       height: sizes.height(context) / 3,
       // margin: EdgeInsets.only(top: sizes.height(context) / 10),

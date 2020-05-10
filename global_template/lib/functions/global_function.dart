@@ -101,8 +101,8 @@ class GlobalFunction {
   Future<void> showToast({
     @required String message,
     bool isError = false,
-    bool isLongDuration = false,
     bool isSuccess = false,
+    bool isLongDuration = false,
     Color backgroungColor,
     Color textColor,
     double fontSize = 16.0,
