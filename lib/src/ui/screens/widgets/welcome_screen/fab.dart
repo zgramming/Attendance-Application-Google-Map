@@ -6,14 +6,22 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class FabChangeMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<GlobalProvider>(
-      builder: (_, value, __) => FloatingActionButton(
-        onPressed: () {
-          value.setChangeMode(value.isChangeMode);
-        },
-        mini: true,
-        child:
-            Icon(value.isChangeMode ? FontAwesomeIcons.calendarTimes : FontAwesomeIcons.tabletAlt),
+    print("Rebuild FAB Change Mode");
+    return FloatingActionButton(
+      onPressed: () =>
+          context.read<GlobalProvider>().setChangeMode(context.read<GlobalProvider>().isChangeMode),
+      mini: true,
+      child: Consumer<GlobalProvider>(
+        builder: (_, value, __) => AnimatedSwitcher(
+          duration: Duration(seconds: 1),
+          switchInCurve: Curves.decelerate,
+          switchOutCurve: Curves.decelerate,
+          child: Icon(
+            value.isChangeMode ? FontAwesomeIcons.calendarDay : FontAwesomeIcons.table,
+            key: UniqueKey(),
+            color: colorPallete.white,
+          ),
+        ),
       ),
     );
   }
