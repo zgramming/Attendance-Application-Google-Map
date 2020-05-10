@@ -16,14 +16,15 @@ class _AppBarAnimatedColorState extends State<AppBarAnimatedColor> {
   @override
   void initState() {
     appBarColor = ColorTween(begin: Colors.transparent, end: colorPallete.primaryColor)
-        .animate(widget.controller);
+        .animate(CurvedAnimation(parent: widget.controller, curve: Curves.decelerate));
     iconColor = ColorTween(begin: colorPallete.accentColor, end: colorPallete.white)
-        .animate(widget.controller);
+        .animate(CurvedAnimation(parent: widget.controller, curve: Curves.decelerate));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("Rebuild AppBarAnimatedColor ");
     return AnimatedBuilder(
       animation: widget.controller,
       builder: (_, __) => Positioned(
