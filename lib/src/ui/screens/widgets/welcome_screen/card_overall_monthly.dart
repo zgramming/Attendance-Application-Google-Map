@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:global_template/global_template.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'content_performance.dart';
 
 class CardOverallMonthly extends StatelessWidget {
   @override
@@ -34,109 +34,23 @@ class CardOverallMonthly extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8.0, left: 12.0),
           child: Column(
             children: [
-              buildHeader(context),
-              buildBody(context),
+              TitlePerformance(),
+              ContentPerformance(),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Flexible buildBody(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            fit: FlexFit.tight,
-            child: CircularPercentIndicator(
-              radius: sizes.width(context) / 4,
-              circularStrokeCap: CircularStrokeCap.round,
-              lineWidth: 8,
-              center: Text(
-                '50%',
-                style: appTheme.headline5(context).copyWith(
-                      color: colorPallete.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              progressColor: colorPallete.accentColor,
-              backgroundColor: colorPallete.white,
-              percent: .5,
-            ),
-          ),
-          Flexible(
-            fit: FlexFit.tight,
-            flex: 2,
-            child: DefaultTextStyle(
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'VarelaRound',
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            'Hari Kerja',
-                            textAlign: TextAlign.center,
-                          ),
-                          fit: FlexFit.tight,
-                        ),
-                        Flexible(
-                          child: Text(
-                            'Tepat Waktu',
-                            textAlign: TextAlign.center,
-                          ),
-                          fit: FlexFit.tight,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            '25',
-                            textAlign: TextAlign.center,
-                            style: appTheme.headline3(context).copyWith(
-                                  color: colorPallete.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          fit: FlexFit.tight,
-                        ),
-                        Flexible(
-                          child: Text(
-                            '10',
-                            textAlign: TextAlign.center,
-                            style: appTheme.headline4(context).copyWith(
-                                  color: colorPallete.white,
-                                ),
-                          ),
-                          fit: FlexFit.tight,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+class TitlePerformance extends StatelessWidget {
+  const TitlePerformance({
+    Key key,
+  }) : super(key: key);
 
-  Flexible buildHeader(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Flexible(
       fit: FlexFit.tight,
       child: SizedBox(
