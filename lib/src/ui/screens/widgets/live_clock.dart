@@ -8,38 +8,32 @@ class LiveClock extends StatefulWidget {
 }
 
 class _LiveClockState extends State<LiveClock> {
-  String _timeClock;
-  Timer _timerClock;
-
+  Stream<DateTime> clock;
   @override
   void initState() {
-    _timerClock = Timer.periodic(Duration(seconds: 1), (_) => _getTime());
+    clock = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
+      return DateTime.now();
+    });
     super.initState();
   }
 
   @override
-  void dispose() {
-    _timerClock.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Text(
-      _timeClock ?? '??:??:??',
-      textAlign: TextAlign.center,
-      style: appTheme.subtitle1(context).copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+    return StreamBuilder<DateTime>(
+      stream: clock,
+      initialData: DateTime.now(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return Text(
+            "${globalF.formatHoursMinutesSeconds(snapshot.data)}",
+            style: appTheme
+                .subtitle2(context)
+                .copyWith(color: colorPallete.white, fontWeight: FontWeight.bold),
+          );
+        }
+        return Text(
+            "${globalF.formatYearMonthDaySpecific(DateTime.now())} ${globalF.formatHoursMinutes(DateTime.now())}");
+      },
     );
-  }
-
-  void _getTime() async {
-    final date = DateTime.now();
-    final String formattedTime = (date == null) ? null : globalF.formatHoursMinutesSeconds(date);
-    setState(() {
-      _timeClock = formattedTime;
-    });
   }
 }
