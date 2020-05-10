@@ -122,6 +122,14 @@ class CommonFunction {
     }
   }
 
+  bool isInsideRadiusCircle(double distanceTwoLocation, double radius) {
+    if (distanceTwoLocation < radius) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   //! Fungsi Selain Maps
 
   Future<DateTime> getTrueTime() async {
@@ -140,15 +148,17 @@ class CommonFunction {
     @required AnimationController appBarController,
   }) {
     if (notification.depth == 0) {
-      if (notification.metrics.pixels == notification.metrics.minScrollExtent) {
-        Future.delayed(Duration(seconds: 0), () => appBarController.reverse());
-      } else {
-        Future.delayed(Duration(seconds: 0), () => appBarController.forward());
-      }
-      print(notification.metrics.pixels);
       if (notification is UserScrollNotification) {
         final UserScrollNotification userScroll = notification;
-
+        if (userScroll.metrics.pixels == userScroll.metrics.minScrollExtent) {
+          if (appBarController.status == AnimationStatus.completed) {
+            Future.delayed(Duration(seconds: 0), () => appBarController.reverse());
+          }
+        } else {
+          if (appBarController.status != AnimationStatus.completed) {
+            Future.delayed(Duration(seconds: 0), () => appBarController.forward());
+          }
+        }
         switch (userScroll.direction) {
           case ScrollDirection.forward:
             if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
