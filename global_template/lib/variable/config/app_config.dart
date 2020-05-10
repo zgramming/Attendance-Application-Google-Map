@@ -10,6 +10,8 @@ class AppConfig {
   String indonesiaLocale = 'id_ID';
 
   final String userController = "user_controller";
+  final String absensiController = "absensi_controller";
+  final String destinasiController = "absensi_controller";
 }
 
 final appConfig = AppConfig();
