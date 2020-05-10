@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:global_template/global_template.dart';
 import 'package:http/http.dart' as http;
+import 'package:network/network.dart';
 
 class AbsensiApi {
   Future checkAbsenMasukDanPulang({
@@ -92,6 +93,30 @@ class AbsensiApi {
       }
     });
 
+    return result;
+  }
+
+  Future<List<PerformanceModel>> getPerformanceBulanan({
+    @required String idUser,
+    @required DateTime dateTime,
+    @required int totalDayOfMonth,
+    @required int totalWeekDayOfMonth,
+  }) async {
+    final result = await reusableRequestServer.requestServer(() async {
+      final response = await http.get(
+        "${appConfig.baseApiUrl}/${appConfig.absensiController}/getTotalOnTime?id_user=$idUser&tanggal_absen=$dateTime&total_day_of_month=$totalDayOfMonth&total_week_day_of_month=$totalWeekDayOfMonth",
+      );
+      final Map<String, dynamic> responseJson = json.decode(response.body);
+      final String message = responseJson['message'];
+      final List data = responseJson['data'];
+      print(data);
+      if (response.statusCode == 200) {
+        List<PerformanceModel> result = data.map((e) => PerformanceModel.fromJson(e)).toList();
+        return result;
+      } else {
+        throw message;
+      }
+    });
     return result;
   }
 }
