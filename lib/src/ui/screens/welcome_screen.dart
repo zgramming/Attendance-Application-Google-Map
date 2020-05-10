@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:network/network.dart';
 import 'package:provider/provider.dart';
 import 'package:location/location.dart';
 import 'package:global_template/global_template.dart';
-
-import '../screens/maps_screen.dart';
-
-import '../../providers/zabsen_provider.dart';
-import '../../function/zabsen_function.dart';
 
 import './widgets/welcome_screen/fab.dart';
 import './widgets/welcome_screen/user_profile.dart';
@@ -17,6 +13,8 @@ import './widgets/welcome_screen/button_attendance.dart';
 import './widgets/welcome_screen/calendar_horizontal.dart';
 import './widgets/welcome_screen/card_overall_monthly.dart';
 import './widgets/welcome_screen/animation/appbar_animated_color.dart';
+
+import '../../function/zabsen_function.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const routeNamed = "/welcome-screen";
@@ -29,11 +27,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   AnimationController _hideFloatingButton;
   AnimationController _appbarController;
+  bool isChange = false;
   @override
   void initState() {
     commonF.initPermission(context);
     _hideFloatingButton = AnimationController(vsync: this, duration: kThemeAnimationDuration);
-    _appbarController = AnimationController(vsync: this, duration: Duration(milliseconds: 100));
+    _appbarController = AnimationController(vsync: this, duration: kThemeChangeDuration);
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -71,6 +70,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    print("RebuildWelcome Screen");
+
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) => commonF.handleScrollNotification(
         notification,
@@ -87,53 +88,48 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               children: [
                 SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       UserProfile(),
                       CardOverallMonthly(),
-                      Consumer<GlobalProvider>(
-                        builder: (_, value2, __) {
-                          return AnimatedCrossFade(
-                            firstChild: TableAttendance(),
-                            secondChild: Container(
-                              child: CalendarHorizontal(),
-                            ),
-                            duration: Duration(seconds: 1),
-                            crossFadeState: value2.isChangeMode
-                                ? CrossFadeState.showFirst
-                                : CrossFadeState.showSecond,
-                            firstCurve: Curves.decelerate,
-                            secondCurve: Curves.fastOutSlowIn,
-                          );
-                        },
-                      ),
+                      AnimatedCalendarAndTable(),
                       SizedBox(height: 1000),
                     ],
                   ),
                 ),
-                Consumer<ZAbsenProvider>(
-                  builder: (_, absenProvider, __) => ButtonAttendance(
-                    right: 60,
-                    hideFabAnimation: _hideFloatingButton,
-                    onTapAttendence: () {
-                      absenProvider.getCurrentPosition().then(
-                            (_) => Navigator.of(context).pushNamed(MapScreen.routeNamed),
-                          );
-                    },
-                    onTapGoHome: () => print('go home'),
+                Positioned(
+                  left: 10,
+                  right: 60,
+                  bottom: 10,
+                  child: ScaleTransition(
+                    scale: _hideFloatingButton,
+                    child: ButtonAttendance(),
                   ),
                 ),
-                Positioned(
-                  child: AppBarAnimatedColor(controller: _appbarController),
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                ),
+                AppBarAnimatedColor(controller: _appbarController),
               ],
             ),
             floatingActionButton: FabChangeMode(),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class AnimatedCalendarAndTable extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    print("Rebuild AnimatedCalendarAndTable");
+    return Consumer<GlobalProvider>(
+      builder: (_, value, __) => AnimatedCrossFade(
+        firstChild: TableAttendance(),
+        secondChild: Container(
+          child: CalendarHorizontal(),
+        ),
+        duration: Duration(seconds: 1),
+        crossFadeState: value.isChangeMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        firstCurve: Curves.decelerate,
+        secondCurve: Curves.fastOutSlowIn,
       ),
     );
   }
