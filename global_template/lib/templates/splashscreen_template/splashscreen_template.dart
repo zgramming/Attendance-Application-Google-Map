@@ -43,7 +43,6 @@ class _SplashScreenTemplateState extends State<SplashScreenTemplate> {
           widget.backgroundColor == null ? Theme.of(context).primaryColor : widget.backgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Flexible(
             fit: FlexFit.tight,

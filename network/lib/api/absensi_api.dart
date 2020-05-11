@@ -104,7 +104,7 @@ class AbsensiApi {
   }) async {
     final result = await reusableRequestServer.requestServer(() async {
       final response = await http.get(
-        "${appConfig.baseApiUrl}/${appConfig.absensiController}/getTotalOnTime?id_user=$idUser&tanggal_absen=$dateTime&total_day_of_month=$totalDayOfMonth&total_week_day_of_month=$totalWeekDayOfMonth",
+        "${appConfig.baseApiUrl}/${appConfig.absensiController}/getPerformanceMonthly?id_user=$idUser&tanggal_absen=$dateTime&total_day_of_month=$totalDayOfMonth&total_week_day_of_month=$totalWeekDayOfMonth",
       );
       final Map<String, dynamic> responseJson = json.decode(response.body);
       final String message = responseJson['message'];

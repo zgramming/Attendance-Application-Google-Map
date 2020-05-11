@@ -1,13 +1,13 @@
 class AppConfig {
-  String urlApk = '';
+  final String urlApk = '';
 
-  Map<String, String> headersApi = {'Content-Type': 'application/x-www-form-urlencoded'};
+  final Map<String, String> headersApi = {'Content-Type': 'application/x-www-form-urlencoded'};
 
-  String baseImageApiUrl = 'https://flutter-absensi.000webhostapp.com/zabsenin/images';
-  String baseFilesApiUrl = 'https://flutter-absensi.000webhostapp.com/zabsenin/files/';
-  String baseApiUrl = 'https://flutter-absensi.000webhostapp.com/zabsenin/api/';
+  final String baseImageApiUrl = 'https://flutter-absensi.000webhostapp.com/zabsenin/images';
+  final String baseFilesApiUrl = 'https://flutter-absensi.000webhostapp.com/zabsenin/files/';
+  final String baseApiUrl = 'https://flutter-absensi.000webhostapp.com/zabsenin/api/';
 
-  String indonesiaLocale = 'id_ID';
+  final String indonesiaLocale = 'id_ID';
 
   final String userController = "user_controller";
   final String absensiController = "absensi_controller";
