@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:network/network.dart';
-import 'package:provider/provider.dart';
 import 'package:location/location.dart';
-import 'package:global_template/global_template.dart';
 
 import './widgets/welcome_screen/fab.dart';
 import './widgets/welcome_screen/user_profile.dart';
-import './widgets/welcome_screen/table_attendance.dart';
 import './widgets/welcome_screen/button_attendance.dart';
-import './widgets/welcome_screen/calendar_horizontal.dart';
 import './widgets/welcome_screen/card_overall_monthly.dart';
 import './widgets/welcome_screen/animation/appbar_animated_color.dart';
+import './widgets/welcome_screen/animated_table_calendar.dart';
 
 import '../../function/zabsen_function.dart';
 
@@ -24,7 +20,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   AnimationController _hideFloatingButton;
   AnimationController _appbarController;
   bool isChange = false;
@@ -92,7 +88,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       UserProfile(),
                       CardOverallMonthly(),
                       AnimatedCalendarAndTable(),
-                      SizedBox(height: 1000),
+                      const SizedBox(height: 1000),
                     ],
                   ),
                 ),
@@ -111,25 +107,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             floatingActionButton: FabChangeMode(),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class AnimatedCalendarAndTable extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    print("Rebuild AnimatedCalendarAndTable");
-    return Consumer<GlobalProvider>(
-      builder: (_, value, __) => AnimatedCrossFade(
-        firstChild: TableAttendance(),
-        secondChild: Container(
-          child: CalendarHorizontal(),
-        ),
-        duration: Duration(seconds: 1),
-        crossFadeState: value.isChangeMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-        firstCurve: Curves.decelerate,
-        secondCurve: Curves.fastOutSlowIn,
       ),
     );
   }

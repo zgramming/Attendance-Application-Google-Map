@@ -26,9 +26,10 @@ class _LiveClockState extends State<LiveClock> {
         if (snapshot.hasData) {
           return Text(
             "${globalF.formatHoursMinutesSeconds(snapshot.data)}",
-            style: appTheme
-                .subtitle2(context)
-                .copyWith(color: colorPallete.white, fontWeight: FontWeight.bold),
+            style: appTheme.subtitle2(context).copyWith(
+                  color: colorPallete.white,
+                  fontWeight: FontWeight.bold,
+                ),
           );
         }
         return Text(

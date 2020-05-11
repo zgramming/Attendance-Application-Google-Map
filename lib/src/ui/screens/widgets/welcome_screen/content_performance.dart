@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:global_template/global_template.dart';
 
 import '../../../../providers/user_provider.dart';
 

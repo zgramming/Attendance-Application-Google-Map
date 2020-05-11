@@ -12,7 +12,7 @@ class TableAttendance extends StatelessWidget {
           child: Row(
             children: [
               IconButton(
-                icon: Icon(FontAwesomeIcons.angleLeft),
+                icon: const Icon(FontAwesomeIcons.angleLeft),
                 onPressed: () {},
               ),
               Text(
@@ -20,14 +20,14 @@ class TableAttendance extends StatelessWidget {
                 style: appTheme.subtitle1(context),
               ),
               IconButton(
-                icon: Icon(FontAwesomeIcons.angleRight),
+                icon: const Icon(FontAwesomeIcons.angleRight),
                 onPressed: () {},
               ),
             ],
             mainAxisAlignment: MainAxisAlignment.spaceAround,
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Card(
           clipBehavior: Clip.antiAlias,
           margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -40,10 +40,10 @@ class TableAttendance extends StatelessWidget {
                   style: appTheme.button(context),
                   child: Row(
                     children: [
-                      Flexible(child: Text('Tanggal'), fit: FlexFit.tight, flex: 2),
-                      Flexible(child: Text('Datang'), fit: FlexFit.tight),
-                      Flexible(child: Text('Pulang'), fit: FlexFit.tight),
-                      Flexible(child: Text('Durasi'), fit: FlexFit.tight),
+                      const Flexible(child: Text('Tanggal'), fit: FlexFit.tight, flex: 2),
+                      const Flexible(child: Text('Datang'), fit: FlexFit.tight),
+                      const Flexible(child: Text('Pulang'), fit: FlexFit.tight),
+                      const Flexible(child: Text('Durasi'), fit: FlexFit.tight),
                     ],
                   ),
                 ),
@@ -53,6 +53,7 @@ class TableAttendance extends StatelessWidget {
                   itemCount: 15,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
+                  //TODO kasih const
                   padding: EdgeInsets.zero,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(

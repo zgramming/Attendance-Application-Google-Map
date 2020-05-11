@@ -38,7 +38,7 @@ class UserProfile extends StatelessWidget {
                   ShowImageNetwork(
                     imageUrl: "${appConfig.baseImageApiUrl}/user/${value.user.image}",
                     isCircle: true,
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     fit: BoxFit.cover,
                   )
                 ],

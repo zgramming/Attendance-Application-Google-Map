@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:global_template/global_template.dart';
 
 import '../live_clock.dart';
+
 import '../../maps_screen.dart';
+
 import '../../../../providers/user_provider.dart';
 import '../../../../providers/zabsen_provider.dart';
 
@@ -55,15 +57,15 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
             elevation: 0,
             child: Column(
               children: [
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Row(
                   children: [
-                    Text('Absen Masuk'),
-                    Text('Absen Pulang'),
+                    const Text('Absen Masuk'),
+                    const Text('Absen Pulang'),
                   ],
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Row(
                   children: [
                     Flexible(
@@ -79,13 +81,13 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                                           context.read<UserProvider>().user.idUser);
                                       Navigator.of(context).pushNamed(MapScreen.routeNamed);
                                     },
-                        padding: EdgeInsets.symmetric(horizontal: 6.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
                         child: LiveClock(),
                       ),
                     ),
                     Flexible(
                       child: ButtonCustom(
-                        padding: EdgeInsets.symmetric(horizontal: 6.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
                         child: LiveClock(),
                         onPressed: (snapshot.data == 2)
                             ? null

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:global_template/global_template.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:z_absen/src/ui/screens/widgets/welcome_screen/card_calendar.dart';
+
+import './card_calendar.dart';
 
 class CalendarHorizontal extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
           margin: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
@@ -37,7 +38,7 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                   textAlign: TextAlign.left,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 height: sizes.height(context) / 8,
                 margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -64,12 +65,13 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
         Positioned(
           child: Row(
             children: [
-              InkWell(child: Icon(FontAwesomeIcons.angleLeft, size: 18), onTap: () => print('')),
-              SizedBox(width: 20),
-              InkWell(child: Icon(FontAwesomeIcons.angleRight, size: 18)),
-              SizedBox(width: 20),
               InkWell(
-                child: Icon(FontAwesomeIcons.calendar, size: 18),
+                  child: const Icon(FontAwesomeIcons.angleLeft, size: 18), onTap: () => print('')),
+              const SizedBox(width: 20),
+              InkWell(child: const Icon(FontAwesomeIcons.angleRight, size: 18)),
+              const SizedBox(width: 20),
+              InkWell(
+                child: const Icon(FontAwesomeIcons.calendar, size: 18),
                 onTap: () => itemScrollController.scrollTo(
                   index: now.day,
                   alignment: .6,
