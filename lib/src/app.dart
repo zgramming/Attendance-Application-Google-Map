@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         primaryColor: colorPallete.primaryColor,
         accentColor: colorPallete.accentColor,
         scaffoldBackgroundColor: colorPallete.scaffoldColor,
-        cardTheme: CardTheme(elevation: 3),
+        cardTheme: const CardTheme(elevation: 3),
         fontFamily: 'VarelaRound',
       ),
       home: SplashScreen(),
