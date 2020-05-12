@@ -7,6 +7,7 @@ class ColorPallete {
   Color white = const Color(0xFFFFFFFF);
   Color black = const Color(0xFF222831);
   Color transparent = const Color(0x00000000);
+  Color weekEnd = const Color(0xFFf0134d);
 
   /// Grey
   Color grey = const Color(0xFFeaeaea);
