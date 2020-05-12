@@ -24,6 +24,7 @@ class ContentPerformance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Content Performance Rebuild");
     return Flexible(
       flex: 2,
       child: FutureBuilder(

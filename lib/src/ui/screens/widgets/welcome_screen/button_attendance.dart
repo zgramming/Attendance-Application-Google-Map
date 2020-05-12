@@ -60,8 +60,14 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                 const SizedBox(height: 5),
                 Row(
                   children: [
-                    const Text('Absen Masuk'),
-                    const Text('Absen Pulang'),
+                    const Text(
+                      'Absen Masuk',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const Text(
+                      'Absen Pulang',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ],
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                 ),

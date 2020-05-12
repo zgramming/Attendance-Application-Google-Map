@@ -6,16 +6,18 @@ import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:location_permissions/location_permissions.dart' as lc;
+import 'package:network/network.dart';
 import 'package:ntp/ntp.dart';
 
 class CommonFunction {
-  Location location = new Location();
+  Location location = Location();
+
   void initPermission(BuildContext context) async {
     final permissionStatus = await checkLocationPermission();
     final serviceEnable = await serviceEnabled();
     // final requestPermisionStatus = await _requestPermissionStatus();
     // final requestService = await _requestService();
-
+    //* Jika Lokasi Permission Tidak Didapatkan
     if (permissionStatus != PermissionStatus.granted) {
       showDialog(
         context: context,
@@ -29,6 +31,7 @@ class CommonFunction {
           },
         ),
       );
+      //* Jika GPS Permission Tidak Didapatkan
     } else if (!serviceEnable) {
       showDialog(
         context: context,
@@ -44,7 +47,6 @@ class CommonFunction {
         ),
       );
     }
-    print("ServiceEnable $serviceEnable || PermissionStatus $permissionStatus");
   }
 
   Future<PermissionStatus> checkLocationPermission() async {
@@ -65,50 +67,39 @@ class CommonFunction {
   //   final result = await location.requestService();
   //   return result;
   // }
+  //* Rumus Untuk Mendapatkan Jarak Antara Dua Lokasi
+  //* Rumus ini yang akan digunakan untuk memperkirakan user sudah didalam radius absen / belum
 
   double getDistanceLocation(
-      double latitude1, double longitude1, double latitude2, double longitude2,
-      {int typeCalculate = 0, GreatCircleDistance typeGCD}) {
-    GreatCircleDistance calculate;
-
-    if (calculate == null) {
-      calculate = GreatCircleDistance.fromDegrees(
-        latitude1: latitude1,
-        longitude1: longitude1,
-        latitude2: latitude2,
-        longitude2: longitude2,
-      );
-    } else {
-      if (calculate == GreatCircleDistance.fromDegrees()) {
-        calculate = GreatCircleDistance.fromDegrees(
-          latitude1: latitude1,
-          longitude1: longitude1,
-          latitude2: latitude2,
-          longitude2: longitude2,
-        );
-      } else {
-        calculate = GreatCircleDistance.fromRadians(
-          latitude1: latitude1,
-          longitude1: longitude1,
-          latitude2: latitude2,
-          longitude2: longitude2,
-        );
-      }
-    }
+    double latitude1,
+    double longitude1,
+    double latitude2,
+    double longitude2, {
+    int typeCalculate = 1,
+    bool isKm = false,
+  }) {
+    var calculate = GreatCircleDistance.fromDegrees(
+      latitude1: latitude1,
+      longitude1: longitude1,
+      latitude2: latitude2,
+      longitude2: longitude2,
+    );
 
     var result;
-    if (typeCalculate == 0) {
+    if (typeCalculate == 1) {
       result = calculate.haversineDistance();
-    } else if (typeCalculate == 1) {
-      result = calculate.sphericalLawOfCosinesDistance();
     } else if (typeCalculate == 2) {
+      result = calculate.sphericalLawOfCosinesDistance();
+    } else if (typeCalculate == 3) {
       result = calculate.vincentyDistance();
     } else {
       result = calculate.haversineDistance();
     }
-    return result;
+    return isKm ? result / 1000 : result;
   }
 
+  //* Fungsi Untuk Mengubah Warna Radius
+  //* Saat Didalam Radius Default = Hijau , Diluar = Ungu
   Color changeColorRadius(
     double distanceTwoLocation,
     double radius, {
@@ -122,6 +113,7 @@ class CommonFunction {
     }
   }
 
+  //* Pengecekan Jika Kita Saat Absen Didalam Radius Absensi
   bool isInsideRadiusCircle(double distanceTwoLocation, double radius) {
     if (distanceTwoLocation < radius) {
       return true;
@@ -130,8 +122,55 @@ class CommonFunction {
     }
   }
 
+  //* Fungsi Untuk Membuat Icon Berdasarkan Status Absensi User
+  Widget setStatusAbsenIcon(List<AbsensiStatusModel> data, int day) {
+    final result = data.firstWhere(
+      (element) => element.tanggalAbsen.day == day + 1,
+      orElse: () => AbsensiStatusModel(
+        tanggalAbsen: DateTime(DateTime.now().year, DateTime.now().month, day + 1),
+      ),
+    );
+    Widget icon;
+    if (result.status != null) {
+      //* Jika Status Absen Tepat Waktu
+      if (result.status.toLowerCase() == "o") {
+        icon = CircleAvatar(
+          child: Icon(FontAwesomeIcons.check, size: 8),
+          radius: 8,
+          backgroundColor: Colors.green,
+        );
+        //* Jika Status Absen Telat
+      } else if (result.status.toLowerCase() == "t") {
+        icon = CircleAvatar(
+          child: Icon(FontAwesomeIcons.minusSquare, size: 8),
+          radius: 8,
+          backgroundColor: Colors.orange,
+        );
+
+        //* Jika Status Absen Alpha
+      } else {
+        icon = CircleAvatar(
+          child: Icon(FontAwesomeIcons.times, size: 8),
+          radius: 8,
+          backgroundColor: Colors.red,
+        );
+      }
+    } else {
+      //* Jika Tanggal Absen Lebih Dari Hari Ini
+      if (result.tanggalAbsen.day >= DateTime.now().day) {
+        icon = SizedBox();
+      } else {
+        icon = CircleAvatar(child: Icon(FontAwesomeIcons.question, size: 8), radius: 8);
+      }
+    }
+    return icon;
+  }
+
   //! Fungsi Selain Maps
 
+  //* Fungsi Mendapatkan Waktu dari Internet.
+  //* Berguna Untuk Mendapatkan tingkat akurasi yang tinggi saat absensi
+  //* Mencegah user memanipulasi tanggal/jam di device mereka , dan membuat waktu absen tidak akurat.
   Future<DateTime> getTrueTime() async {
     var result;
     try {
@@ -190,7 +229,7 @@ class CommonFunction {
         daysName.toLowerCase() == "minggu" ||
         daysName.toLowerCase() == "sab" ||
         daysName.toLowerCase() == "min") {
-      return colorWeekend ?? colorPallete.primaryColor;
+      return colorWeekend ?? colorPallete.weekEnd;
     } else {
       return colorWeekDay ?? null;
     }

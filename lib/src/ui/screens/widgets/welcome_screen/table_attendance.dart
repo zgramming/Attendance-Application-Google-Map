@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class TableAttendance extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("Rebuild Table Attendance");
     return Column(
       children: [
         Card(
@@ -53,8 +54,7 @@ class TableAttendance extends StatelessWidget {
                   itemCount: 15,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  //TODO kasih const
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.all(0),
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 10.0, left: 4.0),

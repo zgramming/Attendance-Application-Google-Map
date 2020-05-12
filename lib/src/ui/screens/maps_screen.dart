@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:intl/intl.dart';
+import 'package:network/network.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:network/network.dart';
 import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,31 +26,7 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
 
-  double radiusCircle = 500;
-
-  void getLocation(ZAbsenProvider provider) async {
-    Location location = Location();
-    location.changeSettings(interval: 3000);
-    location.onLocationChanged.listen((currentLocation) {
-      if (currentLocation == null) {
-        return null;
-      }
-      provider.setTrackingLocation(currentLocation);
-    });
-  }
-
-  Future<void> _gotToCenterUser(ZAbsenProvider provider) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(
-              provider.currentPosition.latitude ?? 3, provider.currentPosition.longitude ?? 3),
-          zoom: 20.5,
-        ),
-      ),
-    );
-  }
+  double radiusCircle = 800;
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +50,8 @@ class _MapScreenState extends State<MapScreen> {
                         absenProvider.destinasiModel.latitude,
                         absenProvider.destinasiModel.longitude,
                       );
-                      print(
-                          "Jarak $distanceTwoLocation || Lokasi Saya ${absenProvider.currentPosition}");
+                      // print(
+                      //     "Jarak $distanceTwoLocation || Lokasi Saya ${absenProvider.currentPosition}");
                       return GoogleMap(
                         circles: Set.of(
                           {
@@ -84,7 +60,7 @@ class _MapScreenState extends State<MapScreen> {
                               strokeColor: Colors.transparent,
                               fillColor: commonF
                                   .changeColorRadius(distanceTwoLocation, radiusCircle)
-                                  .withOpacity(.8),
+                                  .withOpacity(.6),
                               center: LatLng(
                                 absenProvider.destinasiModel.latitude,
                                 absenProvider.destinasiModel.longitude,
@@ -132,6 +108,33 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  void getLocation(ZAbsenProvider provider) async {
+    Location location = Location();
+    location.changeSettings(interval: 2500);
+    location.onLocationChanged.listen((currentLocation) {
+      if (currentLocation == null) {
+        return null;
+      } else {
+        provider.setTrackingLocation(currentLocation);
+      }
+    });
+  }
+
+  Future<void> _gotToCenterUser(ZAbsenProvider provider) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(
+            provider.currentPosition.latitude ?? 1,
+            provider.currentPosition.longitude ?? 1,
+          ),
+          zoom: 20.5,
         ),
       ),
     );
