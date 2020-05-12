@@ -50,7 +50,7 @@ class ShowImageNetwork extends StatelessWidget {
         borderRadius: BorderRadius.circular(imageRadius),
         child: CachedNetworkImage(
           key: key,
-          imageUrl: imageUrl,
+          imageUrl: imageUrl ?? "https://flutter.dev/images/catalog-widget-placeholder.png",
           height: sizes.height(context) / imageHeight,
           width: sizes.width(context) / imageWidth,
           errorWidget: (context, url, error) {
