@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../../login_screen.dart';
+
+import '../../../../../providers/user_provider.dart';
 
 class AppBarAnimatedColor extends StatefulWidget {
   final Widget title;
@@ -47,7 +52,10 @@ class _AppBarAnimatedColorState extends State<AppBarAnimatedColor> {
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: InkWell(
-                onTap: () => '',
+                onTap: () {
+                  context.read<UserProvider>().removeSessionUser();
+                  Navigator.of(context).pushReplacementNamed(LoginScreen.routeNamed);
+                },
                 child: Icon(
                   FontAwesomeIcons.bars,
                   color: iconColor.value,
