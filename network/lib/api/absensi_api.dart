@@ -119,6 +119,26 @@ class AbsensiApi {
     });
     return result;
   }
+
+  Future<List<AbsensiStatusModel>> getStatusAbsenMonthly(
+      {@required String idUser, @required DateTime dateTime}) async {
+    final result = await reusableRequestServer.requestServer(() async {
+      final response = await http.get(
+        "${appConfig.baseApiUrl}/${appConfig.absensiController}/getStatusAbsenMonthly?id_user=$idUser&tanggal_absen=$dateTime",
+      );
+      final Map<String, dynamic> responseJson = json.decode(response.body);
+      final String message = responseJson['message'];
+      final List data = responseJson['data'];
+      print(data);
+      if (response.statusCode == 200) {
+        List<AbsensiStatusModel> result = data.map((e) => AbsensiStatusModel.fromJson(e)).toList();
+        return result;
+      } else {
+        throw message;
+      }
+    });
+    return result;
+  }
 }
 
 final absensiAPI = AbsensiApi();

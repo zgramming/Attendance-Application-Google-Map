@@ -10,3 +10,4 @@ export './model/destinasi_model.dart';
 export './api/destinasi_api.dart';
 
 export './model/performance_model.dart';
+export './model/absen_status_model.dart';
