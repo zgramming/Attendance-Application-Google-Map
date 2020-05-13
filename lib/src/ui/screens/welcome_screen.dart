@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:location/location.dart';
 import 'package:global_template/global_template.dart';
+import 'package:z_absen/src/providers/user_provider.dart';
 
 import './widgets/welcome_screen/fab.dart';
 import './widgets/welcome_screen/user_profile.dart';
@@ -12,6 +13,7 @@ import './widgets/welcome_screen/animated_table_calendar.dart';
 import './widgets/welcome_screen/animation/appbar_animated_color.dart';
 
 import '../../function/zabsen_function.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const routeNamed = "/welcome-screen";
@@ -31,6 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _hideFloatingButton = AnimationController(vsync: this, duration: kThemeAnimationDuration);
     _appbarController = AnimationController(vsync: this, duration: kThemeChangeDuration);
     WidgetsBinding.instance.addObserver(this);
+    print("WelcomeScreen User ${context.read<UserProvider>().user.idUser}");
     super.initState();
   }
 
