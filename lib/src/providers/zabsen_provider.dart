@@ -4,14 +4,17 @@ import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
 
 class ZAbsenProvider extends ChangeNotifier {
-  DestinasiModel _destinasiModel;
+  DestinasiModel _destinasiModel = DestinasiModel();
   DestinasiModel get destinasiModel => _destinasiModel;
 
   Future<void> saveDestinasiUser(String idUser) async {
-    final List<DestinasiModel> result = await reusableRequestServer
-        .requestServer(() async => await destinasiAPI.getDestinationById(idUser: idUser));
-    if (result != null) {
+    try {
+      final List<DestinasiModel> result = await reusableRequestServer.requestServer(() async {
+        await destinasiAPI.getDestinationById(idUser: idUser);
+      });
       result.forEach((element) => _destinasiModel = element);
+    } catch (e) {
+      throw e;
     }
     notifyListeners();
   }
