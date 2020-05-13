@@ -50,8 +50,8 @@ class _MapScreenState extends State<MapScreen> {
                         absenProvider.destinasiModel.latitude,
                         absenProvider.destinasiModel.longitude,
                       );
-                      // print(
-                      //     "Jarak $distanceTwoLocation || Lokasi Saya ${absenProvider.currentPosition}");
+                      print(
+                          "Jarak $distanceTwoLocation || Lokasi Saya ${absenProvider.currentPosition}");
                       return GoogleMap(
                         circles: Set.of(
                           {
