@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 
 import 'package:global_template/global_template.dart';
 
+enum TimeFormat { Jam, JamMenit, JamMenitDetik, Menit, MenitDetik, Detik }
+
 class GlobalFunction {
   /// Format Hari
   String formatDay(DateTime date, {int type = 2}) {
@@ -72,6 +74,55 @@ class GlobalFunction {
       return DateFormat.yMMMMEEEEd(appConfig.indonesiaLocale).format(date);
     } else {
       return DateFormat.yMMMMEEEEd(appConfig.indonesiaLocale).format(date);
+    }
+  }
+
+  /// Format : Time => Jam Menit
+  String formatTimeTo(
+    String time, {
+    TimeFormat timeFormat,
+  }) {
+    String hour = time.replaceAll(":", "").substring(0, 2);
+    String minute = time.replaceAll(":", "").substring(2, 4);
+    String second = time.replaceAll(":", "").substring(4, 6);
+    String resultHour, resultMinute, resultSecond;
+    if (hour.startsWith("0")) {
+      resultHour = hour.substring(1);
+    } else {
+      resultHour = hour;
+    }
+    if (minute.startsWith("0")) {
+      resultMinute = minute.substring(1);
+    } else {
+      resultMinute = minute;
+    }
+    if (second.startsWith("0")) {
+      resultSecond = second.substring(1);
+    } else {
+      resultSecond = second;
+    }
+
+    switch (timeFormat) {
+      case TimeFormat.Jam:
+        return "$resultHour Jam ";
+        break;
+      case TimeFormat.JamMenit:
+        return "$resultHour Jam $resultMinute Menit";
+        break;
+      case TimeFormat.JamMenitDetik:
+        return "$resultHour Jam $resultMinute Menit $resultSecond Detik";
+        break;
+      case TimeFormat.Menit:
+        return "$resultMinute Menit";
+        break;
+      case TimeFormat.MenitDetik:
+        return "$resultMinute Menit $resultSecond Detik";
+        break;
+      case TimeFormat.Detik:
+        return "$resultSecond Detik";
+        break;
+      default:
+        return "$resultHour Jam $resultMinute Menit $resultSecond Detik";
     }
   }
 
