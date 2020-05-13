@@ -24,7 +24,9 @@ class DestinasiApi {
           throw responseJson['message'];
         }
       });
-    } catch (e) {}
+    } catch (e) {
+      throw e;
+    }
     return result;
   }
 }
