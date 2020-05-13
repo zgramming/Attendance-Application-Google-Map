@@ -21,9 +21,11 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
   Future<List<AbsensiStatusModel>> statusAbsensi;
   @override
   void initState() {
-    super.initState();
     now = DateTime.now();
     statusAbsensi = getStatusAbsensi(context.read<UserProvider>().user.idUser, now);
+    print("Calendar Horizontal User ${context.read<UserProvider>().user.idUser}");
+
+    super.initState();
   }
 
   Future<List<AbsensiStatusModel>> getStatusAbsensi(String idUser, DateTime now) async {
