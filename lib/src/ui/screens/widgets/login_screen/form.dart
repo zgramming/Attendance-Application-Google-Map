@@ -93,7 +93,7 @@ class _FormUserState extends State<FormUser> {
             username: username,
             password: password,
           );
-          userProvider.saveSessionUser(list: result);
+          await userProvider.saveSessionUser(list: result);
           Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
           globalProvider.setLoading(false);
         }
