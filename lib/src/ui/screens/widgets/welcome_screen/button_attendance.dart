@@ -28,9 +28,11 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
   Future alreadyAbsen;
   @override
   void initState() {
-    super.initState();
     now = DateTime.now();
     alreadyAbsen = checkAlreadyAbsent(context.read<UserProvider>().user.idUser);
+    print("Button Attendance User ${context.read<UserProvider>().user.idUser}");
+
+    super.initState();
   }
 
   Future checkAlreadyAbsent(String idUser) async {
@@ -88,15 +90,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                       child: ButtonCustom(
                         onPressed: (snapshot.data == 2)
                             ? null
-                            : (snapshot.data == 1)
-                                ? null
-                                : widget.onTapAbsen ??
-                                    () async {
-                                      await context.read<ZAbsenProvider>().getCurrentPosition();
-                                      await context.read<ZAbsenProvider>().saveDestinasiUser(
-                                          context.read<UserProvider>().user.idUser);
-                                      Navigator.of(context).pushNamed(MapScreen.routeNamed);
-                                    },
+                            : (snapshot.data == 1) ? null : widget.onTapAbsen ?? onTapAbsen,
                         padding: const EdgeInsets.symmetric(horizontal: 6.0),
                         child: LiveClock(),
                       ),
@@ -107,19 +101,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                         child: LiveClock(),
                         onPressed: (snapshot.data == 2)
                             ? null
-                            : (snapshot.data != 1)
-                                ? null
-                                : widget.onTapPulang ??
-                                    () async {
-                                      try {
-                                        await context.read<ZAbsenProvider>().getCurrentPosition();
-                                        await context.read<ZAbsenProvider>().saveDestinasiUser(
-                                            context.read<UserProvider>().user.idUser);
-                                        Navigator.of(context).pushNamed(MapScreen.routeNamed);
-                                      } catch (e) {
-                                        globalF.showToast(message: e, isError: true);
-                                      }
-                                    },
+                            : (snapshot.data != 1) ? null : widget.onTapPulang ?? onTapPulang,
                       ),
                     ),
                   ],
@@ -131,5 +113,32 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
         return Text('No Data');
       },
     );
+  }
+
+  void onTapAbsen() async {
+    try {
+      print('Proses Mendapatkan Initial Position');
+      await context.read<ZAbsenProvider>().getCurrentPosition();
+      print('Proses Menyimpan Destinasi User');
+      await context
+          .read<ZAbsenProvider>()
+          .saveDestinasiUser(context.read<UserProvider>().user.idUser)
+          .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
+      print("Proses Perpindahan Screen");
+    } catch (e) {
+      globalF.showToast(message: e, isError: true, isLongDuration: true);
+    }
+  }
+
+  void onTapPulang() async {
+    try {
+      await context.read<ZAbsenProvider>().getCurrentPosition();
+      await context
+          .read<ZAbsenProvider>()
+          .saveDestinasiUser(context.read<UserProvider>().user.idUser);
+      Navigator.of(context).pushNamed(MapScreen.routeNamed);
+    } catch (e) {
+      globalF.showToast(message: e, isError: true);
+    }
   }
 }
