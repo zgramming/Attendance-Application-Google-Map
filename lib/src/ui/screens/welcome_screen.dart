@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 import 'package:location/location.dart';
+import 'package:global_template/global_template.dart';
 
 import './widgets/welcome_screen/fab.dart';
 import './widgets/welcome_screen/user_profile.dart';
 import './widgets/welcome_screen/button_attendance.dart';
 import './widgets/welcome_screen/card_overall_monthly.dart';
-import './widgets/welcome_screen/animation/appbar_animated_color.dart';
 import './widgets/welcome_screen/animated_table_calendar.dart';
+import './widgets/welcome_screen/animation/appbar_animated_color.dart';
 
 import '../../function/zabsen_function.dart';
 
@@ -66,7 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuild Welcome Screen");
+    print(globalF.formatTimeTo("08:05:55", timeFormat: TimeFormat.JamMenitDetik));
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) => commonF.handleScrollNotification(
         notification,
