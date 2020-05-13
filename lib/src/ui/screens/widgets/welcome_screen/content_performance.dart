@@ -19,8 +19,10 @@ class _ContentPerformanceState extends State<ContentPerformance> {
   Future<List<PerformanceModel>> performanceMonthly;
   @override
   void initState() {
-    super.initState();
     performanceMonthly = getPerformanceMonthly(context.read<UserProvider>().user.idUser);
+    print("Content Performance User ${context.read<UserProvider>().user.idUser}");
+
+    super.initState();
   }
 
   Future<List<PerformanceModel>> getPerformanceMonthly(String idUser) async {
@@ -39,7 +41,8 @@ class _ContentPerformanceState extends State<ContentPerformance> {
     print("Content Performance Rebuild");
     return Flexible(
       flex: 2,
-      child: FutureBuilder(
+      child: FutureBuilder<List<PerformanceModel>>(
+        initialData: [],
         future: performanceMonthly,
         builder: (BuildContext context, AsyncSnapshot<List<PerformanceModel>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) return LinearProgressIndicator();
