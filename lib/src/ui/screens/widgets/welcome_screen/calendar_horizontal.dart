@@ -18,10 +18,12 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   DateTime now;
+  Future<List<AbsensiStatusModel>> statusAbsensi;
   @override
   void initState() {
     super.initState();
     now = DateTime.now();
+    statusAbsensi = getStatusAbsensi(context.read<UserProvider>().user.idUser, now);
   }
 
   Future<List<AbsensiStatusModel>> getStatusAbsensi(String idUser, DateTime now) async {
@@ -51,12 +53,17 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
               const SizedBox(height: 10),
               Consumer<UserProvider>(
                 builder: (_, value, child) => FutureBuilder(
-                  future: getStatusAbsensi(value.user.idUser, now),
+                  future: statusAbsensi,
                   builder:
                       (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
                     if (snapshot.connectionState != ConnectionState.done)
                       return LoadingFutureBuilder(isLinearProgressIndicator: true);
-                    if (snapshot.hasError) return Text(snapshot.error.toString());
+                    if (snapshot.hasError)
+                      return RaisedButton(onPressed: () {
+                        statusAbsensi =
+                            getStatusAbsensi(context.read<UserProvider>().user.idUser, now);
+                        setState(() {});
+                      });
                     if (snapshot.hasData) {
                       return Container(
                         height: sizes.height(context) / 8,

@@ -25,10 +25,12 @@ class ButtonAttendance extends StatefulWidget {
 
 class _ButtonAttendanceState extends State<ButtonAttendance> {
   DateTime now;
+  Future alreadyAbsen;
   @override
   void initState() {
-    now = DateTime.now();
     super.initState();
+    now = DateTime.now();
+    alreadyAbsen = checkAlreadyAbsent(context.read<UserProvider>().user.idUser);
   }
 
   Future checkAlreadyAbsent(String idUser) async {
@@ -41,15 +43,23 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
   Widget build(BuildContext context) {
     print("Rebuild Button Attendance Screen");
 
-    final user = Provider.of<UserProvider>(context);
     return FutureBuilder(
-      future: checkAlreadyAbsent(user.user.idUser),
+      future: alreadyAbsen,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return LinearProgressIndicator();
         }
         if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
+          return InkWell(
+            onTap: () {
+              alreadyAbsen = checkAlreadyAbsent(context.read<UserProvider>().user.idUser);
+              setState(() {});
+            },
+            child: Text(
+              "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+              textAlign: TextAlign.center,
+            ),
+          );
         }
         if (snapshot.hasData) {
           return Card(
