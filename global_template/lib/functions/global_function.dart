@@ -65,7 +65,7 @@ class GlobalFunction {
   }
 
   /// Format : Tahun:Bulan:Hari[type=?] , Specific disini maksudnya Hari = Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu
-  String formatYearMonthDaySpecific(DateTime date, {int type = 1}) {
+  String formatYearMonthDaySpecific(DateTime date, {int type = 3}) {
     if (type == 1) {
       return DateFormat.yMEd(appConfig.indonesiaLocale).format(date);
     } else if (type == 2) {
@@ -82,47 +82,51 @@ class GlobalFunction {
     String time, {
     TimeFormat timeFormat,
   }) {
-    String hour = time.replaceAll(":", "").substring(0, 2);
-    String minute = time.replaceAll(":", "").substring(2, 4);
-    String second = time.replaceAll(":", "").substring(4, 6);
-    String resultHour, resultMinute, resultSecond;
-    if (hour.startsWith("0")) {
-      resultHour = hour.substring(1);
+    if (time == null) {
+      return "-";
     } else {
-      resultHour = hour;
-    }
-    if (minute.startsWith("0")) {
-      resultMinute = minute.substring(1);
-    } else {
-      resultMinute = minute;
-    }
-    if (second.startsWith("0")) {
-      resultSecond = second.substring(1);
-    } else {
-      resultSecond = second;
-    }
+      String hour = time.replaceAll(":", "").substring(0, 2);
+      String minute = time.replaceAll(":", "").substring(2, 4);
+      String second = time.replaceAll(":", "").substring(4, 6);
+      String resultHour, resultMinute, resultSecond;
+      if (hour.startsWith("0")) {
+        resultHour = hour.substring(1);
+      } else {
+        resultHour = hour;
+      }
+      if (minute.startsWith("0")) {
+        resultMinute = minute.substring(1);
+      } else {
+        resultMinute = minute;
+      }
+      if (second.startsWith("0")) {
+        resultSecond = second.substring(1);
+      } else {
+        resultSecond = second;
+      }
 
-    switch (timeFormat) {
-      case TimeFormat.Jam:
-        return "$resultHour Jam ";
-        break;
-      case TimeFormat.JamMenit:
-        return "$resultHour Jam $resultMinute Menit";
-        break;
-      case TimeFormat.JamMenitDetik:
-        return "$resultHour Jam $resultMinute Menit $resultSecond Detik";
-        break;
-      case TimeFormat.Menit:
-        return "$resultMinute Menit";
-        break;
-      case TimeFormat.MenitDetik:
-        return "$resultMinute Menit $resultSecond Detik";
-        break;
-      case TimeFormat.Detik:
-        return "$resultSecond Detik";
-        break;
-      default:
-        return "$resultHour Jam $resultMinute Menit $resultSecond Detik";
+      switch (timeFormat) {
+        case TimeFormat.Jam:
+          return "$resultHour Jam ";
+          break;
+        case TimeFormat.JamMenit:
+          return "$resultHour Jam $resultMinute Menit";
+          break;
+        case TimeFormat.JamMenitDetik:
+          return "$resultHour Jam $resultMinute Menit $resultSecond Detik";
+          break;
+        case TimeFormat.Menit:
+          return "$resultMinute Menit";
+          break;
+        case TimeFormat.MenitDetik:
+          return "$resultMinute Menit $resultSecond Detik";
+          break;
+        case TimeFormat.Detik:
+          return "$resultSecond Detik";
+          break;
+        default:
+          return "$resultHour Jam $resultMinute Menit $resultSecond Detik";
+      }
     }
   }
 
