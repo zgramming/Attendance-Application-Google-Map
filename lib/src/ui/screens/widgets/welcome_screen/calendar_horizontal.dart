@@ -53,46 +53,43 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                 ),
               ),
               const SizedBox(height: 10),
-              Consumer<UserProvider>(
-                builder: (_, value, child) => FutureBuilder(
-                  future: statusAbsensi,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done)
-                      return LoadingFutureBuilder(isLinearProgressIndicator: true);
-                    if (snapshot.hasError)
-                      return RaisedButton(onPressed: () {
-                        statusAbsensi =
-                            getStatusAbsensi(context.read<UserProvider>().user.idUser, now);
-                        setState(() {});
-                      });
-                    if (snapshot.hasData) {
-                      return Container(
-                        height: sizes.height(context) / 8,
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        child: ScrollablePositionedList.builder(
-                          initialScrollIndex: now.day,
-                          initialAlignment: .6,
-                          itemCount: globalF.totalDaysOfMonth(
-                            now.year,
-                            now.month,
-                          ),
-                          itemScrollController: itemScrollController,
-                          itemPositionsListener: itemPositionsListener,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (BuildContext context, int index) {
-                            return CardCalendar(
-                              now: now,
-                              index: index,
-                              list: snapshot.data,
-                            );
-                          },
+              FutureBuilder(
+                future: statusAbsensi,
+                builder: (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done)
+                    return LoadingFutureBuilder(isLinearProgressIndicator: true);
+                  if (snapshot.hasError)
+                    return RaisedButton(onPressed: () {
+                      statusAbsensi =
+                          getStatusAbsensi(context.read<UserProvider>().user.idUser, now);
+                      setState(() {});
+                    });
+                  if (snapshot.hasData) {
+                    return Container(
+                      height: sizes.height(context) / 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      child: ScrollablePositionedList.builder(
+                        initialScrollIndex: now.day,
+                        initialAlignment: .6,
+                        itemCount: globalF.totalDaysOfMonth(
+                          now.year,
+                          now.month,
                         ),
-                      );
-                    }
-                    return Text('No Data');
-                  },
-                ),
+                        itemScrollController: itemScrollController,
+                        itemPositionsListener: itemPositionsListener,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CardCalendar(
+                            now: now,
+                            index: index,
+                            list: snapshot.data,
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return Text('No Data');
+                },
               ),
               SizedBox(height: 10),
             ],
