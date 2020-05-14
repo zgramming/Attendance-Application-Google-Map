@@ -12,6 +12,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import './widgets/welcome_screen/button_attendance.dart';
 
+import '../screens/welcome_screen.dart';
+
 import '../../function/zabsen_function.dart';
 import '../../providers/zabsen_provider.dart';
 import '../../providers/user_provider.dart';
@@ -26,7 +28,7 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
 
-  double radiusCircle = 800;
+  double radiusCircle = 300;
 
   @override
   Widget build(BuildContext context) {
@@ -161,9 +163,8 @@ class _MapScreenState extends State<MapScreen> {
           jamAbsenMasuk: timeFormat,
           createdDate: trueTime,
         );
-
         globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
-        Navigator.of(context).pop();
+        Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
       } catch (e) {
         globalF.showToast(message: e, isError: true);
       }
