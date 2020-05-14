@@ -4,15 +4,44 @@ import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
 
 class ZAbsenProvider extends ChangeNotifier {
+  //! Untuk Table Attendance
+  List<AbsensiModel> _tableAttendance = [];
+  List<AbsensiModel> get tableAttendance => [..._tableAttendance];
+
+  Future<List<AbsensiModel>> fetchAbsenMonthly(String idUser, DateTime dateTime) async {
+    final result = await absensiAPI.getAbsenMonthly(idUser: idUser, dateTime: dateTime);
+    setTableAttendance(result, dateTime);
+    return result;
+  }
+
+  void setTableAttendance(List<AbsensiModel> value, DateTime dateTime) {
+    int totalDay = globalF.totalDaysOfMonth(dateTime.year, dateTime.month);
+
+    List<AbsensiModel> tempList = [];
+    for (int i = 1; i <= totalDay; i++) {
+      final result = value.firstWhere((element) => element.tanggalAbsen.day == i,
+          orElse: () => AbsensiModel(jamAbsenMasuk: "-", jamAbsenPulang: "-"));
+      tempList.add(result);
+      _tableAttendance = tempList;
+    }
+  }
+
   DestinasiModel _destinasiModel = DestinasiModel();
   DestinasiModel get destinasiModel => _destinasiModel;
-
   Future<void> saveDestinasiUser(String idUser) async {
     try {
-      final List<DestinasiModel> result = await reusableRequestServer.requestServer(() async {
-        await destinasiAPI.getDestinationById(idUser: idUser);
+      await reusableRequestServer.requestServer(() async {
+        await destinasiAPI
+            .getDestinationById(idUser: idUser)
+            .then((value) => value.forEach((element) {
+                  _destinasiModel = element;
+                }));
       });
-      result.forEach((element) => _destinasiModel = element);
+      // if (result != null) {
+      //   result.forEach((element) => _destinasiModel = element);
+      // } else {
+      //   throw "Tidak Dapat Menentukan Lokasi User";
+      // }
     } catch (e) {
       throw e;
     }
