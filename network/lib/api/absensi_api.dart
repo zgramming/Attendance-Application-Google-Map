@@ -6,11 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:network/network.dart';
 
 class AbsensiApi {
-  Future checkAbsenMasukDanPulang({
+  Future<int> checkAbsenMasukDanPulang({
     @required String idUser,
     @required DateTime tanggalAbsenMasuk,
   }) async {
-    var result;
+    int result;
     try {
       result = await reusableRequestServer.requestServer(() async {
         final response = await http.get(
@@ -120,8 +120,10 @@ class AbsensiApi {
     return result;
   }
 
-  Future<List<AbsensiStatusModel>> getStatusAbsenMonthly(
-      {@required String idUser, @required DateTime dateTime}) async {
+  Future<List<AbsensiStatusModel>> getStatusAbsenMonthly({
+    @required String idUser,
+    @required DateTime dateTime,
+  }) async {
     final result = await reusableRequestServer.requestServer(() async {
       final response = await http.get(
         "${appConfig.baseApiUrl}/${appConfig.absensiController}/getStatusAbsenMonthly?id_user=$idUser&tanggal_absen=$dateTime",
@@ -132,6 +134,28 @@ class AbsensiApi {
       print(data);
       if (response.statusCode == 200) {
         List<AbsensiStatusModel> result = data.map((e) => AbsensiStatusModel.fromJson(e)).toList();
+        return result;
+      } else {
+        throw message;
+      }
+    });
+    return result;
+  }
+
+  Future<List<AbsensiModel>> getAbsenMonthly({
+    @required String idUser,
+    @required DateTime dateTime,
+  }) async {
+    final result = await reusableRequestServer.requestServer(() async {
+      final response = await http.get(
+        "${appConfig.baseApiUrl}/${appConfig.absensiController}/getAbsenMonthly?id_user=$idUser&tanggal_absen=$dateTime",
+      );
+      final Map<String, dynamic> responseJson = json.decode(response.body);
+      final String message = responseJson['message'];
+      final List data = responseJson['data'];
+      print(data);
+      if (response.statusCode == 200) {
+        List<AbsensiModel> result = data.map((e) => AbsensiModel.fromJson(e)).toList();
         return result;
       } else {
         throw message;
