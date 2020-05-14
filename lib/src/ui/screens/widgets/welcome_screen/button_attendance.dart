@@ -25,17 +25,16 @@ class ButtonAttendance extends StatefulWidget {
 
 class _ButtonAttendanceState extends State<ButtonAttendance> {
   DateTime now;
-  Future alreadyAbsen;
+  Future<int> alreadyAbsen;
   @override
   void initState() {
+    super.initState();
     now = DateTime.now();
     alreadyAbsen = checkAlreadyAbsent(context.read<UserProvider>().user.idUser);
     print("Button Attendance User ${context.read<UserProvider>().user.idUser}");
-
-    super.initState();
   }
 
-  Future checkAlreadyAbsent(String idUser) async {
+  Future<int> checkAlreadyAbsent(String idUser) async {
     final result = absensiAPI.checkAbsenMasukDanPulang(
         idUser: idUser, tanggalAbsenMasuk: DateTime(now.year, now.month, now.day));
     return result;
@@ -45,9 +44,9 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
   Widget build(BuildContext context) {
     print("Rebuild Button Attendance Screen");
 
-    return FutureBuilder(
+    return FutureBuilder<int>(
       future: alreadyAbsen,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return LinearProgressIndicator();
         }
@@ -126,7 +125,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
           .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
       print("Proses Perpindahan Screen");
     } catch (e) {
-      globalF.showToast(message: e, isError: true, isLongDuration: true);
+      globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
     }
   }
 
