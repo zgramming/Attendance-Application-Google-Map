@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:location/location.dart';
-import 'package:global_template/global_template.dart';
-import 'package:z_absen/src/providers/user_provider.dart';
 
 import './widgets/welcome_screen/fab.dart';
 import './widgets/welcome_screen/user_profile.dart';
@@ -13,7 +11,6 @@ import './widgets/welcome_screen/animated_table_calendar.dart';
 import './widgets/welcome_screen/animation/appbar_animated_color.dart';
 
 import '../../function/zabsen_function.dart';
-import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const routeNamed = "/welcome-screen";
@@ -29,12 +26,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   bool isChange = false;
   @override
   void initState() {
+    super.initState();
     commonF.initPermission(context);
     _hideFloatingButton = AnimationController(vsync: this, duration: kThemeAnimationDuration);
     _appbarController = AnimationController(vsync: this, duration: kThemeChangeDuration);
     WidgetsBinding.instance.addObserver(this);
-    print("WelcomeScreen User ${context.read<UserProvider>().user.idUser}");
-    super.initState();
   }
 
   @override
@@ -70,7 +66,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    print(globalF.formatTimeTo("08:05:55", timeFormat: TimeFormat.JamMenitDetik));
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) => commonF.handleScrollNotification(
         notification,
