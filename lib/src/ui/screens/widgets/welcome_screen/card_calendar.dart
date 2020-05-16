@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
+import 'package:global_template/global_template.dart';
 
 import '../../../../function/zabsen_function.dart';
 
@@ -28,10 +28,11 @@ class CardCalendar extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
               side: now.day == index + 1
-                  ? BorderSide(color: Colors.green, width: 3)
+                  ? BorderSide(color: colorPallete.primaryColor2, width: 3)
                   : BorderSide(color: Colors.transparent),
             ),
             child: InkWell(
+              //TODO Kalau Card horizontal di click ...
               onTap: () => '',
               borderRadius: BorderRadius.circular(15),
               child: Column(
@@ -47,7 +48,6 @@ class CardCalendar extends StatelessWidget {
                                 now,
                                 index,
                                 colorWeekend: colorPallete.white,
-                                colorWeekDay: colorPallete.black.withOpacity(.7),
                               ),
                             ),
                       ),
