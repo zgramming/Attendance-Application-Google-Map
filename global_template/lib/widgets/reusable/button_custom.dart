@@ -46,7 +46,7 @@ class ButtonCustom extends StatelessWidget {
       disabledElevation: disabledElevation,
       shape: shape,
       textTheme: ButtonTextTheme.primary,
-      color: buttonColor == null ? Theme.of(context).primaryColor : buttonColor,
+      color: buttonColor == null ? colorPallete.primaryColor2 : buttonColor,
       child: child ??
           Text(
             buttonTitle,
