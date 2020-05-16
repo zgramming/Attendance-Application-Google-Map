@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:device_info/device_info.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:package_info/package_info.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -88,6 +89,23 @@ class GlobalProvider extends ChangeNotifier {
   bool get obsecurePassword => _obsecurePassword;
   setObsecurePassword(bool value) {
     _obsecurePassword = !value;
+    notifyListeners();
+  }
+
+  //! Substract And Add Calendar
+  DateTime _dateAddSubstract =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime get dateAddSubstract => _dateAddSubstract;
+
+  void substractMonthCalendar({int howMany = 1}) {
+    final result = Jiffy(_dateAddSubstract).subtract(months: howMany);
+    _dateAddSubstract = result;
+    notifyListeners();
+  }
+
+  void addMonthCalendar({int howMany = 1}) {
+    final result = Jiffy(_dateAddSubstract).add(months: howMany);
+    _dateAddSubstract = result;
     notifyListeners();
   }
 }
