@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:global_template/global_template.dart';
+import 'package:tuple/tuple.dart';
 import 'package:network/network.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:global_template/global_template.dart';
 
 import '../../../../providers/user_provider.dart';
 import '../../welcome_screen.dart';
@@ -17,7 +18,6 @@ class _FormUserState extends State<FormUser> {
   String username, password, fullName;
   @override
   Widget build(BuildContext context) {
-    final GlobalProvider globalProvider = Provider.of(context);
     return Column(
       children: [
         TextFormFieldCustom(
@@ -35,29 +35,38 @@ class _FormUserState extends State<FormUser> {
           textInputAction: TextInputAction.done,
         ),
         SizedBox(height: 20),
-        if (globalProvider.isRegister) ...[
-          TextFormFieldCustom(
-            onSaved: (value) => fullName = value,
-            prefixIcon: Icon(Icons.contacts),
-            labelText: 'Full Name',
-            hintText: '',
-            radius: 50,
-            textInputAction: TextInputAction.done,
-          ),
-          SizedBox(height: 20),
-        ],
-        Consumer<UserProvider>(
-          builder: (_, value, __) => ButtonCustom(
-            onPressed: globalProvider.isLoading
-                ? null
-                : () => _validate(userProvider: value, globalProvider: globalProvider),
-            buttonTitle: globalProvider.isRegister ? " Register" : "Login",
+        Selector<GlobalProvider, bool>(
+          selector: (_, provider) => provider.isRegister,
+          builder: (_, isRegister, __) => Visibility(
+            visible: isRegister ? true : false,
+            child: TextFormFieldCustom(
+              onSaved: (value) => fullName = value,
+              prefixIcon: Icon(Icons.contacts),
+              labelText: 'Full Name',
+              hintText: '',
+              radius: 50,
+              textInputAction: TextInputAction.done,
+            ),
           ),
         ),
         SizedBox(height: 20),
-        OutlineButton(
-          child: Text(globalProvider.isRegister ? "Back To Login" : "Don't Have Fake Account ?"),
-          onPressed: () => globalProvider.setRegister(!globalProvider.isRegister),
+        Selector2<GlobalProvider, GlobalProvider, Tuple2<bool, bool>>(
+          selector: (_, loading, register) => Tuple2(loading.isLoading, register.isRegister),
+          builder: (_, value, __) {
+            print("Form Login ${value.item1} ${value.item2}");
+            return ButtonCustom(
+              onPressed: value.item1 ? null : _validate,
+              buttonTitle: value.item2 ? " Register" : "Login",
+            );
+          },
+        ),
+        SizedBox(height: 20),
+        Selector<GlobalProvider, bool>(
+          selector: (_, provider) => provider.isRegister,
+          builder: (_, isRegister, __) => OutlineButton(
+            child: Text(isRegister ? "Ayo Login" : "Belum Punya Akun ?"),
+            onPressed: () => context.read<GlobalProvider>().setRegister(!isRegister),
+          ),
         )
       ],
       mainAxisSize: MainAxisSize.min,
@@ -65,16 +74,13 @@ class _FormUserState extends State<FormUser> {
     );
   }
 
-  void _validate({
-    @required UserProvider userProvider,
-    @required GlobalProvider globalProvider,
-  }) async {
+  void _validate() async {
     try {
       if (widget.formKey.currentState.validate()) {
         print("success validate");
-        globalProvider.setLoading(true);
+        context.read<GlobalProvider>().setLoading(true);
         widget.formKey.currentState.save();
-        if (globalProvider.isRegister) {
+        if (context.read<GlobalProvider>().isRegister) {
           print("ke register");
           final result = await userApi.userRegister(
             username: username,
@@ -84,8 +90,8 @@ class _FormUserState extends State<FormUser> {
 
           globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
 
-          globalProvider.setRegister(false);
-          globalProvider.setLoading(false);
+          context.read<GlobalProvider>().setRegister(false);
+          context.read<GlobalProvider>().setLoading(false);
         } else {
           print("ke Login");
 
@@ -93,9 +99,9 @@ class _FormUserState extends State<FormUser> {
             username: username,
             password: password,
           );
-          await userProvider.saveSessionUser(list: result);
+          await context.read<UserProvider>().saveSessionUser(list: result);
           Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
-          globalProvider.setLoading(false);
+          context.read<GlobalProvider>().setLoading(false);
         }
       } else {
         print("failed validate");
@@ -104,7 +110,7 @@ class _FormUserState extends State<FormUser> {
     } catch (e) {
       print(e.toString());
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
-      globalProvider.setLoading(false);
+      context.read<GlobalProvider>().setLoading(false);
     }
   }
 }
