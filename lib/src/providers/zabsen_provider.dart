@@ -4,17 +4,13 @@ import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
 
 class ZAbsenProvider extends ChangeNotifier {
-  //! Untuk Table Attendance
-  List<AbsensiModel> _tableAttendance = [];
-  List<AbsensiModel> get tableAttendance => [..._tableAttendance];
-
   Future<List<AbsensiModel>> fetchAbsenMonthly(String idUser, DateTime dateTime) async {
     final result = await absensiAPI.getAbsenMonthly(idUser: idUser, dateTime: dateTime);
-    setTableAttendance(result, dateTime);
-    return result;
+    final resultList = setTableAttendance(result, dateTime);
+    return resultList;
   }
 
-  void setTableAttendance(List<AbsensiModel> value, DateTime dateTime) {
+  List<AbsensiModel> setTableAttendance(List<AbsensiModel> value, DateTime dateTime) {
     int totalDay = globalF.totalDaysOfMonth(dateTime.year, dateTime.month);
 
     List<AbsensiModel> tempList = [];
@@ -22,8 +18,8 @@ class ZAbsenProvider extends ChangeNotifier {
       final result = value.firstWhere((element) => element.tanggalAbsen.day == i,
           orElse: () => AbsensiModel(jamAbsenMasuk: "-", jamAbsenPulang: "-"));
       tempList.add(result);
-      _tableAttendance = tempList;
     }
+    return tempList;
   }
 
   DestinasiModel _destinasiModel = DestinasiModel();
