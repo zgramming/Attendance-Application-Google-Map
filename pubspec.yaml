@@ -32,6 +32,7 @@ dependencies:
   location_permissions: ^2.0.5
   great_circle_distance2: ^1.0.1+1
   scrollable_positioned_list: ^0.1.5
+  tuple: ^1.0.3
 
   global_template:
     path: global_template
