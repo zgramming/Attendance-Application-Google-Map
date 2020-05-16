@@ -17,20 +17,10 @@ class CalendarHorizontal extends StatefulWidget {
 class _CalendarHorizontalState extends State<CalendarHorizontal> {
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
-  DateTime now;
-  Future<List<AbsensiStatusModel>> statusAbsensi;
-  @override
-  void initState() {
-    now = DateTime.now();
-    statusAbsensi = getStatusAbsensi(context.read<UserProvider>().user.idUser, now);
-    print("Calendar Horizontal User ${context.read<UserProvider>().user.idUser}");
 
-    super.initState();
-  }
-
-  Future<List<AbsensiStatusModel>> getStatusAbsensi(String idUser, DateTime now) async {
-    final result = absensiAPI.getStatusAbsenMonthly(idUser: idUser, dateTime: now);
-    print("Hello $result");
+  Future<List<AbsensiStatusModel>> getStatusAbsensi(DateTime now) async {
+    final result = absensiAPI.getStatusAbsenMonthly(
+        idUser: context.read<UserProvider>().user.idUser, dateTime: now);
     return result;
   }
 
@@ -46,50 +36,53 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  globalF.formatYearMonth(now),
-                  style: appTheme.headline6(context),
-                  textAlign: TextAlign.left,
+                child: Selector<GlobalProvider, DateTime>(
+                  selector: (_, provider) => provider.dateAddSubstract,
+                  builder: (_, dateTime, __) => Text(
+                    globalF.formatYearMonth(dateTime),
+                    style: appTheme.headline6(context),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
-              FutureBuilder(
-                future: statusAbsensi,
-                builder: (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done)
-                    return LoadingFutureBuilder(isLinearProgressIndicator: true);
-                  if (snapshot.hasError)
-                    return RaisedButton(onPressed: () {
-                      statusAbsensi =
-                          getStatusAbsensi(context.read<UserProvider>().user.idUser, now);
-                      setState(() {});
-                    });
-                  if (snapshot.hasData) {
-                    return Container(
-                      height: sizes.height(context) / 8,
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                      child: ScrollablePositionedList.builder(
-                        initialScrollIndex: now.day,
-                        initialAlignment: .6,
-                        itemCount: globalF.totalDaysOfMonth(
-                          now.year,
-                          now.month,
+              Selector<GlobalProvider, DateTime>(
+                selector: (_, provider) => provider.dateAddSubstract,
+                builder: (_, dateTime, __) => FutureBuilder(
+                  future: getStatusAbsensi(dateTime),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done)
+                      return LoadingFutureBuilder(isLinearProgressIndicator: true);
+                    if (snapshot.hasError) return RaisedButton(onPressed: () => setState(() => ''));
+                    if (snapshot.hasData) {
+                      print("VALUE SNAPSHOT DATA ${snapshot.data.length}");
+                      return Container(
+                        height: sizes.height(context) / 8,
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ScrollablePositionedList.builder(
+                          initialScrollIndex: dateTime.day,
+                          initialAlignment: .6,
+                          itemCount: globalF.totalDaysOfMonth(
+                            dateTime.year,
+                            dateTime.month,
+                          ),
+                          itemScrollController: itemScrollController,
+                          itemPositionsListener: itemPositionsListener,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int index) {
+                            return CardCalendar(
+                              now: dateTime,
+                              index: index,
+                              list: snapshot.data,
+                            );
+                          },
                         ),
-                        itemScrollController: itemScrollController,
-                        itemPositionsListener: itemPositionsListener,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          return CardCalendar(
-                            now: now,
-                            index: index,
-                            list: snapshot.data,
-                          );
-                        },
-                      ),
-                    );
-                  }
-                  return Text('No Data');
-                },
+                      );
+                    }
+                    return Text('No Data');
+                  },
+                ),
               ),
               SizedBox(height: 10),
             ],
@@ -100,16 +93,23 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
           child: Row(
             children: [
               InkWell(
-                  child: const Icon(FontAwesomeIcons.angleLeft, size: 18), onTap: () => print('')),
-              const SizedBox(width: 20),
-              InkWell(child: const Icon(FontAwesomeIcons.angleRight, size: 18)),
+                  child: const Icon(FontAwesomeIcons.angleLeft, size: 18),
+                  onTap: () => context.read<GlobalProvider>().substractMonthCalendar()),
               const SizedBox(width: 20),
               InkWell(
-                child: const Icon(FontAwesomeIcons.calendar, size: 18),
-                onTap: () => itemScrollController.scrollTo(
-                  index: now.day,
-                  alignment: .6,
-                  duration: Duration(seconds: 2),
+                child: const Icon(FontAwesomeIcons.angleRight, size: 18),
+                onTap: () => context.read<GlobalProvider>().addMonthCalendar(),
+              ),
+              const SizedBox(width: 20),
+              Selector<GlobalProvider, DateTime>(
+                selector: (_, provider) => provider.dateAddSubstract,
+                builder: (_, dateTime, __) => InkWell(
+                  child: const Icon(FontAwesomeIcons.calendar, size: 18),
+                  onTap: () => itemScrollController.scrollTo(
+                    index: dateTime.day,
+                    alignment: .6,
+                    duration: Duration(seconds: 2),
+                  ),
                 ),
               ),
             ],
