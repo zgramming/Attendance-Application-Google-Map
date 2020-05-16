@@ -28,7 +28,7 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
 
-  double radiusCircle = 300;
+  double radiusCircle = 500;
 
   @override
   Widget build(BuildContext context) {

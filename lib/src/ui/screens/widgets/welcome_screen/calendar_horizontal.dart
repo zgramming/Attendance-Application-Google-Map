@@ -56,7 +56,7 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                       return LoadingFutureBuilder(isLinearProgressIndicator: true);
                     if (snapshot.hasError) return RaisedButton(onPressed: () => setState(() => ''));
                     if (snapshot.hasData) {
-                      print("VALUE SNAPSHOT DATA ${snapshot.data.length}");
+                      print("From Calendar Horizontal Snapshot.data ${snapshot.data.length}");
                       return Container(
                         height: sizes.height(context) / 8,
                         margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -93,8 +93,9 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
           child: Row(
             children: [
               InkWell(
-                  child: const Icon(FontAwesomeIcons.angleLeft, size: 18),
-                  onTap: () => context.read<GlobalProvider>().substractMonthCalendar()),
+                child: const Icon(FontAwesomeIcons.angleLeft, size: 18),
+                onTap: () => context.read<GlobalProvider>().substractMonthCalendar(),
+              ),
               const SizedBox(width: 20),
               InkWell(
                 child: const Icon(FontAwesomeIcons.angleRight, size: 18),

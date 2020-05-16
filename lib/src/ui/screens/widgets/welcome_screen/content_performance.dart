@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:network/network.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:global_template/global_template.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+
+import 'subtitle_performance.dart';
 
 import '../../../../providers/user_provider.dart';
 
@@ -42,11 +44,10 @@ class _ContentPerformanceState extends State<ContentPerformance> {
     return Flexible(
       flex: 2,
       child: FutureBuilder<List<PerformanceModel>>(
-        initialData: [],
         future: performanceMonthly,
         builder: (BuildContext context, AsyncSnapshot<List<PerformanceModel>> snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) return LinearProgressIndicator();
-
+          if (snapshot.connectionState != ConnectionState.done)
+            return LoadingFutureBuilder(isLinearProgressIndicator: true);
           if (snapshot.hasError)
             return InkWell(
               onTap: () {
@@ -54,11 +55,8 @@ class _ContentPerformanceState extends State<ContentPerformance> {
                     getPerformanceMonthly(context.read<UserProvider>().user.idUser);
                 setState(() {});
               },
-              child: Text(
-                snapshot.error.toString(),
-              ),
+              child: Text(snapshot.error.toString()),
             );
-
           if (snapshot.hasData) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,37 +128,6 @@ class _ContentPerformanceState extends State<ContentPerformance> {
           }
           return Text('No Data');
         },
-      ),
-    );
-  }
-}
-
-class SubtitlePerformance extends StatelessWidget {
-  const SubtitlePerformance({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      fit: FlexFit.tight,
-      child: Row(
-        children: [
-          const Flexible(
-            child: Text(
-              'Hari Kerja',
-              textAlign: TextAlign.center,
-            ),
-            fit: FlexFit.tight,
-          ),
-          const Flexible(
-            child: Text(
-              'Tepat Waktu',
-              textAlign: TextAlign.center,
-            ),
-            fit: FlexFit.tight,
-          ),
-        ],
       ),
     );
   }

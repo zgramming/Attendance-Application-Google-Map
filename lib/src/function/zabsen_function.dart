@@ -212,15 +212,16 @@ class CommonFunction {
       }
     } else {
       //* Jika Tanggal Absen Lebih Dari Hari Ini , Tidak Memunculkan Circle dan Iconnya
-      if (result.tanggalAbsen.day >= DateTime.now().day) {
-        icon = SizedBox();
-      } else {
-        icon = CircleAvatar(
-          child: Icon(FontAwesomeIcons.question, size: 8),
-          radius: 8,
-          foregroundColor: Colors.white,
-        );
-      }
+      // if (result.tanggalAbsen.day >= DateTime.now().day) {
+      //   icon = SizedBox();
+      // } else {
+      //   icon = CircleAvatar(
+      //     child: Icon(FontAwesomeIcons.question, size: 8),
+      //     radius: 8,
+      //     foregroundColor: Colors.white,
+      //   );
+      // }
+      icon = SizedBox();
     }
     return icon;
   }
