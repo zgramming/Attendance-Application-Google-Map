@@ -17,17 +17,10 @@ class TableAttendance extends StatefulWidget {
 }
 
 class _TableAttendanceState extends State<TableAttendance> {
-  Future<List<AbsensiModel>> absensiMonthly;
-  DateTime now;
-  @override
-  void initState() {
-    now = DateTime.now();
-    absensiMonthly = getAbsenMonthly(context.read<UserProvider>().user.idUser, now);
-    super.initState();
-  }
-
-  Future<List<AbsensiModel>> getAbsenMonthly(String idUser, DateTime now) async {
-    final result = context.read<ZAbsenProvider>().fetchAbsenMonthly(idUser, now);
+  Future<List<AbsensiModel>> getAbsenMonthly(DateTime now) async {
+    final result = context
+        .read<ZAbsenProvider>()
+        .fetchAbsenMonthly(context.read<UserProvider>().user.idUser, now);
     return result;
   }
 
@@ -42,15 +35,18 @@ class _TableAttendanceState extends State<TableAttendance> {
             children: [
               IconButton(
                 icon: const Icon(FontAwesomeIcons.angleLeft),
-                onPressed: () {},
+                onPressed: () => context.read<GlobalProvider>().substractMonthCalendar(),
               ),
-              Text(
-                globalF.formatYearMonth(DateTime.now(), type: 3),
-                style: appTheme.subtitle1(context),
+              Selector<GlobalProvider, DateTime>(
+                selector: (_, provider) => provider.dateAddSubstract,
+                builder: (_, dateTime, __) => Text(
+                  globalF.formatYearMonth(dateTime, type: 3),
+                  style: appTheme.subtitle1(context),
+                ),
               ),
               IconButton(
                 icon: const Icon(FontAwesomeIcons.angleRight),
-                onPressed: () {},
+                onPressed: () => context.read<GlobalProvider>().addMonthCalendar(),
               ),
             ],
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -77,37 +73,36 @@ class _TableAttendanceState extends State<TableAttendance> {
                   ),
                 ),
               ),
-              FutureBuilder(
-                future: absensiMonthly,
-                builder: (BuildContext context, AsyncSnapshot<List<AbsensiModel>> snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done)
-                    return LoadingFutureBuilder(isLinearProgressIndicator: true);
-                  if (snapshot.hasError)
-                    return RaisedButton(
-                      onPressed: () {
-                        setState(() {
-                          absensiMonthly =
-                              getAbsenMonthly(context.read<UserProvider>().user.idUser, now);
-                        });
-                      },
-                      child: Text(snapshot.error.toString()),
-                    );
-                  if (snapshot.hasData) {
-                    return Container(
-                      child: ListView.builder(
-                        itemCount: snapshot.data.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.all(0),
-                        itemBuilder: (BuildContext context, int index) {
-                          final result = snapshot.data[index];
-                          return TableAttendanceBody(index: index, now: now, result: result);
-                        },
-                      ),
-                    );
-                  }
-                  return Text('no data');
-                },
+              Selector<GlobalProvider, DateTime>(
+                selector: (_, provider) => provider.dateAddSubstract,
+                builder: (_, dateTime, __) => FutureBuilder(
+                  future: getAbsenMonthly(dateTime),
+                  builder: (BuildContext context, AsyncSnapshot<List<AbsensiModel>> snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done)
+                      return LoadingFutureBuilder(isLinearProgressIndicator: true);
+                    if (snapshot.hasError)
+                      return RaisedButton(
+                        onPressed: () => setState(() => ''),
+                        child: Text(snapshot.error.toString()),
+                      );
+                    if (snapshot.hasData) {
+                      print("From Table Attendance Snapshot.data ${snapshot.data.length}");
+                      return Container(
+                        child: ListView.builder(
+                          itemCount: snapshot.data.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(0),
+                          itemBuilder: (BuildContext context, int index) {
+                            final result = snapshot.data[index];
+                            return TableAttendanceBody(index: index, now: dateTime, result: result);
+                          },
+                        ),
+                      );
+                    }
+                    return Text('no data');
+                  },
+                ),
               ),
             ],
           ),
