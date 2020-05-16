@@ -122,50 +122,6 @@ class CommonFunction {
     }
   }
 
-  //* Fungsi Untuk Membuat Icon Berdasarkan Status Absensi User
-  Widget setStatusAbsenIcon(List<AbsensiStatusModel> data, int day) {
-    final result = data.firstWhere(
-      (element) => element.tanggalAbsen.day == day + 1,
-      orElse: () => AbsensiStatusModel(
-        tanggalAbsen: DateTime(DateTime.now().year, DateTime.now().month, day + 1),
-      ),
-    );
-    Widget icon;
-    if (result.status != null) {
-      //* Jika Status Absen Tepat Waktu
-      if (result.status.toLowerCase() == "o") {
-        icon = CircleAvatar(
-          child: Icon(FontAwesomeIcons.check, size: 8),
-          radius: 8,
-          backgroundColor: Colors.green,
-        );
-        //* Jika Status Absen Telat
-      } else if (result.status.toLowerCase() == "t") {
-        icon = CircleAvatar(
-          child: Icon(FontAwesomeIcons.minusSquare, size: 8),
-          radius: 8,
-          backgroundColor: Colors.orange,
-        );
-
-        //* Jika Status Absen Alpha
-      } else {
-        icon = CircleAvatar(
-          child: Icon(FontAwesomeIcons.times, size: 8),
-          radius: 8,
-          backgroundColor: Colors.red,
-        );
-      }
-    } else {
-      //* Jika Tanggal Absen Lebih Dari Hari Ini
-      if (result.tanggalAbsen.day >= DateTime.now().day) {
-        icon = SizedBox();
-      } else {
-        icon = CircleAvatar(child: Icon(FontAwesomeIcons.question, size: 8), radius: 8);
-      }
-    }
-    return icon;
-  }
-
   //! Fungsi Selain Maps
 
   //* Fungsi Mendapatkan Waktu dari Internet.
@@ -218,6 +174,57 @@ class CommonFunction {
     return false;
   }
 
+  //* Fungsi Untuk Membuat Icon Berdasarkan Status Absensi User
+  Widget setStatusAbsenIcon(List<AbsensiStatusModel> data, int day) {
+    final result = data.firstWhere(
+      (element) => element.tanggalAbsen.day == day + 1,
+      orElse: () => AbsensiStatusModel(
+        tanggalAbsen: DateTime(DateTime.now().year, DateTime.now().month, day + 1),
+      ),
+    );
+    Widget icon;
+    if (result.status != null) {
+      //* Jika Status Absen Tepat Waktu
+      if (result.status.toLowerCase() == "o") {
+        icon = CircleAvatar(
+          child: Icon(FontAwesomeIcons.check, size: 8),
+          radius: 8,
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+        );
+        //* Jika Status Absen Telat
+      } else if (result.status.toLowerCase() == "t") {
+        icon = CircleAvatar(
+          child: Icon(FontAwesomeIcons.minusSquare, size: 8),
+          radius: 8,
+          backgroundColor: Colors.orange,
+          foregroundColor: Colors.white,
+        );
+
+        //* Jika Status Absen Alpha
+      } else {
+        icon = CircleAvatar(
+          child: Icon(FontAwesomeIcons.times, size: 8),
+          radius: 8,
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+        );
+      }
+    } else {
+      //* Jika Tanggal Absen Lebih Dari Hari Ini , Tidak Memunculkan Circle dan Iconnya
+      if (result.tanggalAbsen.day >= DateTime.now().day) {
+        icon = SizedBox();
+      } else {
+        icon = CircleAvatar(
+          child: Icon(FontAwesomeIcons.question, size: 8),
+          radius: 8,
+          foregroundColor: Colors.white,
+        );
+      }
+    }
+    return icon;
+  }
+
   String getDayName(DateTime dateTime, int indexDay) {
     final result = globalF.formatDay(DateTime(dateTime.year, dateTime.month, indexDay + 1));
     return result;
@@ -231,7 +238,7 @@ class CommonFunction {
         daysName.toLowerCase() == "min") {
       return colorWeekend ?? colorPallete.weekEnd;
     } else {
-      return colorWeekDay ?? null;
+      return colorWeekDay;
     }
   }
 }
