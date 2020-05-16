@@ -127,6 +127,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
   void onTapAbsen() async {
     //! Membuat Button Menjadi Disable , Untuk Prevent Double Click
     context.read<GlobalProvider>().setLoading(true);
+    // Future.delayed(Duration(seconds: 4), () => context.read<GlobalProvider>().setLoading(false));
     try {
       print('Proses Mendapatkan Initial Position');
       await context.read<ZAbsenProvider>().getCurrentPosition();
