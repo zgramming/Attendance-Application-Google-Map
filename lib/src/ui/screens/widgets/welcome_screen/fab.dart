@@ -11,13 +11,14 @@ class FabChangeMode extends StatelessWidget {
       onPressed: () =>
           context.read<GlobalProvider>().setChangeMode(context.read<GlobalProvider>().isChangeMode),
       mini: true,
-      child: Consumer<GlobalProvider>(
+      child: Selector<GlobalProvider, bool>(
+        selector: (_, provider) => provider.isChangeMode,
         builder: (_, value, __) => AnimatedSwitcher(
           duration: Duration(seconds: 1),
           switchInCurve: Curves.decelerate,
           switchOutCurve: Curves.decelerate,
           child: Icon(
-            value.isChangeMode ? FontAwesomeIcons.calendarDay : FontAwesomeIcons.table,
+            value ? FontAwesomeIcons.calendarDay : FontAwesomeIcons.table,
             key: UniqueKey(),
             color: colorPallete.white,
           ),

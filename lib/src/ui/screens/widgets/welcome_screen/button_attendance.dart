@@ -86,21 +86,31 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                 Row(
                   children: [
                     Flexible(
-                      child: ButtonCustom(
-                        onPressed: (snapshot.data == 2)
-                            ? null
-                            : (snapshot.data == 1) ? null : widget.onTapAbsen ?? onTapAbsen,
-                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                        child: LiveClock(),
+                      child: Selector<GlobalProvider, bool>(
+                        selector: (_, provider) => provider.isLoading,
+                        builder: (_, isLoading, __) => ButtonCustom(
+                          onPressed: isLoading
+                              ? null
+                              : (snapshot.data == 2)
+                                  ? null
+                                  : (snapshot.data == 1) ? null : widget.onTapAbsen ?? onTapAbsen,
+                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                          child: LiveClock(),
+                        ),
                       ),
                     ),
                     Flexible(
-                      child: ButtonCustom(
-                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                        child: LiveClock(),
-                        onPressed: (snapshot.data == 2)
-                            ? null
-                            : (snapshot.data != 1) ? null : widget.onTapPulang ?? onTapPulang,
+                      child: Selector<GlobalProvider, bool>(
+                        selector: (_, provider) => provider.isChangeMode,
+                        builder: (context, isLoading, child) => ButtonCustom(
+                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                          child: LiveClock(),
+                          onPressed: isLoading
+                              ? null
+                              : (snapshot.data == 2)
+                                  ? null
+                                  : (snapshot.data != 1) ? null : widget.onTapPulang ?? onTapPulang,
+                        ),
                       ),
                     ),
                   ],
@@ -115,6 +125,8 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
   }
 
   void onTapAbsen() async {
+    //! Membuat Button Menjadi Disable , Untuk Prevent Double Click
+    context.read<GlobalProvider>().setLoading(true);
     try {
       print('Proses Mendapatkan Initial Position');
       await context.read<ZAbsenProvider>().getCurrentPosition();
@@ -124,20 +136,26 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
           .saveDestinasiUser(context.read<UserProvider>().user.idUser)
           .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
       print("Proses Perpindahan Screen");
+      context.read<GlobalProvider>().setLoading(false);
     } catch (e) {
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      context.read<GlobalProvider>().setLoading(false);
     }
   }
 
   void onTapPulang() async {
+    context.read<GlobalProvider>().setLoading(true);
+
     try {
       await context.read<ZAbsenProvider>().getCurrentPosition();
       await context
           .read<ZAbsenProvider>()
           .saveDestinasiUser(context.read<UserProvider>().user.idUser);
       Navigator.of(context).pushNamed(MapScreen.routeNamed);
+      context.read<GlobalProvider>().setLoading(false);
     } catch (e) {
       globalF.showToast(message: e, isError: true);
+      context.read<GlobalProvider>().setLoading(false);
     }
   }
 }
