@@ -134,9 +134,9 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
       await context
           .read<ZAbsenProvider>()
           .saveDestinasiUser(context.read<UserProvider>().user.idUser)
+          .then((_) => context.read<GlobalProvider>().setLoading(false))
           .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
       print("Proses Perpindahan Screen");
-      context.read<GlobalProvider>().setLoading(false);
     } catch (e) {
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
       context.read<GlobalProvider>().setLoading(false);
@@ -145,14 +145,13 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
 
   void onTapPulang() async {
     context.read<GlobalProvider>().setLoading(true);
-
     try {
       await context.read<ZAbsenProvider>().getCurrentPosition();
       await context
           .read<ZAbsenProvider>()
-          .saveDestinasiUser(context.read<UserProvider>().user.idUser);
-      Navigator.of(context).pushNamed(MapScreen.routeNamed);
-      context.read<GlobalProvider>().setLoading(false);
+          .saveDestinasiUser(context.read<UserProvider>().user.idUser)
+          .then((_) => context.read<GlobalProvider>().setLoading(false))
+          .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
     } catch (e) {
       globalF.showToast(message: e, isError: true);
       context.read<GlobalProvider>().setLoading(false);
