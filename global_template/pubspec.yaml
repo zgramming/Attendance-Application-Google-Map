@@ -19,6 +19,7 @@ dependencies:
   fluttertoast: ^4.0.1
   intl: ^0.16.1
   ntp: ^1.0.6
+  jiffy: ^3.0.1
 
 dev_dependencies:
   flutter_test:
