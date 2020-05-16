@@ -89,10 +89,13 @@ class _MapScreenState extends State<MapScreen> {
                     bottom: 30,
                     left: 10,
                     right: 50,
-                    child: ButtonAttendance(
-                      onTapAbsen: () => _validateAbsenMasuk(radiusCircle),
-                      backgroundColor: Colors.transparent,
-                      onTapPulang: () => _validateAbsenPulang(radiusCircle),
+                    child: Selector<GlobalProvider, bool>(
+                      selector: (_, provider) => provider.isLoading,
+                      builder: (_, isLoading, __) => ButtonAttendance(
+                        onTapAbsen: () => _validateAbsenMasuk(radiusCircle),
+                        backgroundColor: Colors.transparent,
+                        onTapPulang: () => _validateAbsenPulang(radiusCircle),
+                      ),
                     ),
                   ),
                   Positioned(
@@ -143,6 +146,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _validateAbsenMasuk(double radius) async {
+    context.read<GlobalProvider>().setLoading(true);
     final absenProvider = context.read<ZAbsenProvider>();
     final userProvider = context.read<UserProvider>();
     final trueTime = await commonF.getTrueTime();
@@ -164,16 +168,20 @@ class _MapScreenState extends State<MapScreen> {
           createdDate: trueTime,
         );
         globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
+        context.read<GlobalProvider>().setLoading(false);
         Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
       } catch (e) {
         globalF.showToast(message: e, isError: true);
+        context.read<GlobalProvider>().setLoading(false);
       }
     } else {
       globalF.showToast(message: "Anda Diluar Jangkauan Absensi", isError: true);
+      context.read<GlobalProvider>().setLoading(false);
     }
   }
 
   void _validateAbsenPulang(double radius) async {
+    context.read<GlobalProvider>().setLoading(true);
     final absenProvider = context.read<ZAbsenProvider>();
     final userProvider = context.read<UserProvider>();
     final trueTime = await commonF.getTrueTime();
@@ -194,9 +202,11 @@ class _MapScreenState extends State<MapScreen> {
         updateDate: trueTime,
       );
       globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
-      Navigator.of(context).pop();
+      context.read<GlobalProvider>().setLoading(false);
+      Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
     } else {
       globalF.showToast(message: "Anda Diluar Jangkauan Absensi", isError: true);
+      context.read<GlobalProvider>().setLoading(false);
     }
   }
 }
