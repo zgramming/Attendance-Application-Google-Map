@@ -2,13 +2,15 @@ import 'package:network/network.dart';
 import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:provider/provider.dart';
-import 'package:z_absen/src/providers/zabsen_provider.dart';
 
-import '../../../../providers/user_provider.dart';
 import './table_attendance_body.dart';
 
+import '../../../../providers/zabsen_provider.dart';
+import '../../../../providers/user_provider.dart';
+
+//TODO Fixed FutureBuilder keep Firing Because Using Provider.
+// Example , when press button to absen , table automatic refresh, it should be fixed!.
 class TableAttendance extends StatefulWidget {
   @override
   _TableAttendanceState createState() => _TableAttendanceState();
@@ -25,7 +27,7 @@ class _TableAttendanceState extends State<TableAttendance> {
   }
 
   Future<List<AbsensiModel>> getAbsenMonthly(String idUser, DateTime now) async {
-    final result = absensiAPI.getAbsenMonthly(idUser: idUser, dateTime: now);
+    final result = context.read<ZAbsenProvider>().fetchAbsenMonthly(idUser, now);
     return result;
   }
 
@@ -61,54 +63,51 @@ class _TableAttendanceState extends State<TableAttendance> {
           child: Column(
             children: [
               Container(
-                color: Colors.amber,
+                color: colorPallete.accentColor,
                 padding: const EdgeInsets.all(8.0),
                 child: DefaultTextStyle(
                   style: appTheme.button(context),
                   child: Row(
                     children: [
-                      const Flexible(child: Text('Tanggal'), fit: FlexFit.tight, flex: 2),
-                      const Flexible(child: Text('Datang'), fit: FlexFit.tight),
-                      const Flexible(child: Text('Pulang'), fit: FlexFit.tight),
-                      const Flexible(child: Text('Durasi'), fit: FlexFit.tight),
+                      rowHeader(context, "Tanggal", flex: 2),
+                      rowHeader(context, "Datang"),
+                      rowHeader(context, "Pulang"),
+                      rowHeader(context, "Durasi"),
                     ],
                   ),
                 ),
               ),
-              Consumer<ZAbsenProvider>(
-                builder: (_, provider, __) => FutureBuilder(
-                  future: provider.fetchAbsenMonthly(context.read<UserProvider>().user.idUser, now),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    print("PANJANG TABLE ATTENDANCE ${provider.tableAttendance.length}");
-                    if (snapshot.connectionState != ConnectionState.done)
-                      return LoadingFutureBuilder(isLinearProgressIndicator: true);
-                    if (snapshot.hasError)
-                      return RaisedButton(
-                        onPressed: () {
-                          setState(() {
-                            absensiMonthly =
-                                getAbsenMonthly(context.read<UserProvider>().user.idUser, now);
-                          });
+              FutureBuilder(
+                future: absensiMonthly,
+                builder: (BuildContext context, AsyncSnapshot<List<AbsensiModel>> snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done)
+                    return LoadingFutureBuilder(isLinearProgressIndicator: true);
+                  if (snapshot.hasError)
+                    return RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          absensiMonthly =
+                              getAbsenMonthly(context.read<UserProvider>().user.idUser, now);
+                        });
+                      },
+                      child: Text(snapshot.error.toString()),
+                    );
+                  if (snapshot.hasData) {
+                    return Container(
+                      child: ListView.builder(
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(0),
+                        itemBuilder: (BuildContext context, int index) {
+                          final result = snapshot.data[index];
+                          return TableAttendanceBody(index: index, now: now, result: result);
                         },
-                        child: Text(snapshot.error.toString()),
-                      );
-                    if (snapshot.hasData) {
-                      return Container(
-                        child: ListView.builder(
-                          itemCount: provider.tableAttendance.length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.all(0),
-                          itemBuilder: (BuildContext context, int index) {
-                            final result = provider.tableAttendance[index];
-                            return TableAttendanceBody(index: index, now: now, result: result);
-                          },
-                        ),
-                      );
-                    }
-                    return Text('no data');
-                  },
-                ),
+                      ),
+                    );
+                  }
+                  return Text('no data');
+                },
               ),
             ],
           ),
@@ -116,5 +115,19 @@ class _TableAttendanceState extends State<TableAttendance> {
       ],
       crossAxisAlignment: CrossAxisAlignment.stretch,
     );
+  }
+
+  Flexible rowHeader(
+    BuildContext context,
+    String result, {
+    int flex = 1,
+    TextAlign textAlign = TextAlign.center,
+  }) {
+    var text = Text(
+      result,
+      textAlign: textAlign,
+      style: TextStyle(color: colorPallete.white, fontWeight: FontWeight.bold),
+    );
+    return Flexible(child: text, fit: FlexFit.tight, flex: flex);
   }
 }
