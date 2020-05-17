@@ -55,7 +55,7 @@ class TableAttendanceBody extends StatelessWidget {
     var text = Padding(
       padding: padding ?? EdgeInsets.all(0),
       child: Text(
-        result,
+        result ?? "-",
         style: appTheme.caption(context).copyWith(fontWeight: FontWeight.w600, fontSize: 11),
         textAlign: textAlign,
       ),
