@@ -32,6 +32,12 @@ class _MapScreenState extends State<MapScreen> {
   double radiusCircle = 10;
 
   @override
+  void initState() {
+    trackingLocation();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     print("Rebuild Maps Screen");
 
@@ -51,7 +57,8 @@ class _MapScreenState extends State<MapScreen> {
                     builder: (context, value, child) {
                       final distanceTwoLocation =
                           commonF.getDistanceLocation(value.item1, value.item2);
-                      print("Jarak $distanceTwoLocation || Lokasi Saya ${value.item1}");
+                      print(
+                          "Jarak $distanceTwoLocation || Lokasi Saya ${value.item1.latitude} ${value.item1.longitude}");
                       return GoogleMap(
                         myLocationEnabled: true,
                         initialCameraPosition: CameraPosition(
@@ -59,9 +66,9 @@ class _MapScreenState extends State<MapScreen> {
                           zoom: 14.4746,
                         ),
                         onMapCreated: (controller) {
-                          trackingLocation();
-                          _gotToCenterUser();
                           _controller.complete(controller);
+                          // trackingLocation();
+                          _gotToCenterUser();
                         },
                         circles: Set.of(
                           {
@@ -96,12 +103,18 @@ class _MapScreenState extends State<MapScreen> {
                           Tuple2(provider1.currentPosition, provider2.destinasiModel),
                       builder: (_, value, __) => ButtonAttendance(
                         onTapAbsen: () => _validateAbsenMasuk(
-                          commonF.getDistanceLocation(value.item1, value.item2),
+                          commonF.getDistanceLocation(
+                            value.item1,
+                            value.item2,
+                          ),
                           radiusCircle,
                         ),
                         backgroundColor: Colors.transparent,
                         onTapPulang: () => _validateAbsenPulang(
-                          commonF.getDistanceLocation(value.item1, value.item2),
+                          commonF.getDistanceLocation(
+                            value.item1,
+                            value.item2,
+                          ),
                           radiusCircle,
                         ),
                       ),
@@ -124,10 +137,16 @@ class _MapScreenState extends State<MapScreen> {
                     builder: (_, value, __) => Align(
                       alignment: Alignment.topCenter,
                       child: Container(
-                        height: 200,
+                        padding: const EdgeInsets.all(14.0),
                         color: commonF.changeColorRadius(
                             commonF.getDistanceLocation(value.item1, value.item2), radiusCircle),
-                        child: Text('${value.item1.latitude} || ${value.item1.longitude}'),
+                        child: Text(
+                          "${value.item1.latitude} || ${value.item1.longitude} \n Jarak Ke Destinasi : ${commonF.getDistanceLocation(value.item1, value.item2).toStringAsFixed(1)} Meter",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: colorPallete.white,
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -143,9 +162,10 @@ class _MapScreenState extends State<MapScreen> {
   void trackingLocation() async {
     Location location = Location();
     //? Untuk Setting Interval Update Tracking Lokasi User
-    location.changeSettings(interval: 1000);
+    location.changeSettings(interval: 2500);
     location.onLocationChanged.listen((currentLocation) {
       if (currentLocation == null) {
+        print("CURRENT LOCATION RESULT NULL $currentLocation");
         return null;
       } else {
         context.read<ZAbsenProvider>().setTrackingLocation(currentLocation);
@@ -160,8 +180,8 @@ class _MapScreenState extends State<MapScreen> {
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(
-            context.read<ZAbsenProvider>().currentPosition.latitude ?? 1,
-            context.read<ZAbsenProvider>().currentPosition.longitude ?? 1,
+            context.read<ZAbsenProvider>().currentPosition.latitude,
+            context.read<ZAbsenProvider>().currentPosition.longitude,
           ),
           zoom: 20.5,
         ),

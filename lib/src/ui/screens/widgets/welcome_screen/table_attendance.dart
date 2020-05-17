@@ -9,8 +9,6 @@ import './table_attendance_body.dart';
 import '../../../../providers/zabsen_provider.dart';
 import '../../../../providers/user_provider.dart';
 
-//TODO Fixed FutureBuilder keep Firing Because Using Provider.
-// Example , when press button to absen , table automatic refresh, it should be fixed!.
 class TableAttendance extends StatefulWidget {
   @override
   _TableAttendanceState createState() => _TableAttendanceState();

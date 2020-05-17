@@ -31,7 +31,6 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
     super.initState();
     now = DateTime.now();
     alreadyAbsen = checkAlreadyAbsent(context.read<UserProvider>().user.idUser);
-    print("Button Attendance User ${context.read<UserProvider>().user.idUser}");
   }
 
   Future<int> checkAlreadyAbsent(String idUser) async {

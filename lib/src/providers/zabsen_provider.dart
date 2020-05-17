@@ -27,17 +27,12 @@ class ZAbsenProvider extends ChangeNotifier {
   Future<void> saveDestinasiUser(String idUser) async {
     try {
       await reusableRequestServer.requestServer(() async {
-        await destinasiAPI
-            .getDestinationById(idUser: idUser)
-            .then((value) => value.forEach((element) {
-                  _destinasiModel = element;
-                }));
+        await destinasiAPI.getDestinationById(idUser: idUser).then((value) => value.forEach(
+              (element) {
+                _destinasiModel = element;
+              },
+            ));
       });
-      // if (result != null) {
-      //   result.forEach((element) => _destinasiModel = element);
-      // } else {
-      //   throw "Tidak Dapat Menentukan Lokasi User";
-      // }
     } catch (e) {
       throw e;
     }
@@ -49,13 +44,21 @@ class ZAbsenProvider extends ChangeNotifier {
 
   Future<void> getCurrentPosition() async {
     Location location = Location();
-    final LocationData result =
-        await reusableRequestServer.requestServer(() async => await location.getLocation());
-    if (result != null) {
-      _currentPosition = result;
+    try {
+      await reusableRequestServer.requestServer(
+        () async => await location.getLocation().then((value) {
+          if (value != null) {
+            _currentPosition = value;
+            print(
+                "Mendapatkan Lokasi User Sekarang ${_currentPosition.latitude} || ${_currentPosition.longitude}");
+          } else {
+            throw "Tidak Dapat Menemukan Lokasi User";
+          }
+        }),
+      );
+    } catch (e) {
+      throw e;
     }
-
-    print("Hello From Current Position $_currentPosition");
     notifyListeners();
   }
 
