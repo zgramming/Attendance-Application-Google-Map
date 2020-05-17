@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
+import 'package:network/network.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/user_provider.dart';
 
@@ -25,20 +26,21 @@ class UserProfile extends StatelessWidget {
                   .copyWith(fontFamily: 'Righteous', color: colorPallete.black),
             ),
             const SizedBox(height: 10),
-            Consumer<UserProvider>(
+            Selector<UserProvider, UserModel>(
+              selector: (_, provider) => provider.user,
               builder: (_, value, __) => Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Text(
-                      value.user.fullName,
+                      value.fullName,
                       style: appTheme.subtitle2(context),
                     ),
                   ),
                   ShowImageNetwork(
-                    imageUrl: value.user.image.isEmpty
+                    imageUrl: value.image.isEmpty
                         ? "https://flutter.io/images/catalog-widget-placeholder.png"
-                        : "${appConfig.baseImageApiUrl}/user/${value.user.image}",
+                        : "${appConfig.baseImageApiUrl}/user/${value.image}",
                     isCircle: true,
                     padding: const EdgeInsets.all(20),
                     fit: BoxFit.cover,
