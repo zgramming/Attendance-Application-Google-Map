@@ -71,18 +71,16 @@ class CommonFunction {
   //* Rumus ini yang akan digunakan untuk memperkirakan user sudah didalam radius absen / belum
 
   double getDistanceLocation(
-    double latitude1,
-    double longitude1,
-    double latitude2,
-    double longitude2, {
+    LocationData locationData,
+    DestinasiModel destinasiModel, {
     int typeCalculate = 1,
     bool isKm = false,
   }) {
     var calculate = GreatCircleDistance.fromDegrees(
-      latitude1: latitude1,
-      longitude1: longitude1,
-      latitude2: latitude2,
-      longitude2: longitude2,
+      latitude1: locationData.latitude,
+      longitude1: locationData.longitude,
+      latitude2: destinasiModel.latitude,
+      longitude2: destinasiModel.longitude,
     );
 
     var result;
@@ -132,7 +130,7 @@ class CommonFunction {
     try {
       result = await reusableRequestServer.requestServer(() async => await NTP.now());
     } catch (e) {
-      result = null;
+      throw e;
     }
     return result;
   }
@@ -187,7 +185,7 @@ class CommonFunction {
       //* Jika Status Absen Tepat Waktu
       if (result.status.toLowerCase() == "o") {
         icon = CircleAvatar(
-          child: Icon(FontAwesomeIcons.check, size: 8),
+          child: Icon(FontAwesomeIcons.calendarCheck, size: 8),
           radius: 8,
           backgroundColor: Colors.green,
           foregroundColor: Colors.white,
@@ -195,7 +193,7 @@ class CommonFunction {
         //* Jika Status Absen Telat
       } else if (result.status.toLowerCase() == "t") {
         icon = CircleAvatar(
-          child: Icon(FontAwesomeIcons.minusSquare, size: 8),
+          child: Icon(FontAwesomeIcons.calendarMinus, size: 8),
           radius: 8,
           backgroundColor: Colors.orange,
           foregroundColor: Colors.white,
@@ -204,7 +202,7 @@ class CommonFunction {
         //* Jika Status Absen Alpha
       } else {
         icon = CircleAvatar(
-          child: Icon(FontAwesomeIcons.times, size: 8),
+          child: Icon(FontAwesomeIcons.calendarTimes, size: 8),
           radius: 8,
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
