@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
 import 'package:provider/provider.dart';
@@ -37,13 +38,35 @@ class UserProfile extends StatelessWidget {
                       style: appTheme.subtitle2(context),
                     ),
                   ),
-                  ShowImageNetwork(
-                    imageUrl: value.image.isEmpty
-                        ? "https://flutter.io/images/catalog-widget-placeholder.png"
-                        : "${appConfig.baseImageApiUrl}/user/${value.image}",
-                    isCircle: true,
-                    padding: const EdgeInsets.all(20),
-                    fit: BoxFit.cover,
+                  Stack(
+                    children: [
+                      InkWell(
+                        //TODO Update Image User
+                        onTap: () => print('Lakukan Update Image Disini'),
+                        borderRadius: BorderRadius.circular(20),
+                        child: ShowImageNetwork(
+                          imageUrl: value.image.isEmpty
+                              ? "https://flutter.io/images/catalog-widget-placeholder.png"
+                              : "${appConfig.baseImageApiUrl}/user/${value.image}",
+                          isCircle: true,
+                          padding: const EdgeInsets.all(20),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: CircleAvatar(
+                          backgroundColor: colorPallete.accentColor,
+                          foregroundColor: colorPallete.white,
+                          radius: 10,
+                          child: Icon(
+                            FontAwesomeIcons.cameraRetro,
+                            size: 10,
+                          ),
+                        ),
+                      )
+                    ],
                   )
                 ],
               ),
