@@ -28,9 +28,7 @@ class ZAbsenProvider extends ChangeNotifier {
     try {
       await reusableRequestServer.requestServer(() async {
         await destinasiAPI.getDestinationById(idUser: idUser).then((value) => value.forEach(
-              (element) {
-                _destinasiModel = element;
-              },
+              (element) => _destinasiModel = element,
             ));
       });
     } catch (e) {
@@ -44,18 +42,25 @@ class ZAbsenProvider extends ChangeNotifier {
 
   Future<void> getCurrentPosition() async {
     // Location location = Location();
+    Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     try {
       await reusableRequestServer.requestServer(
-        () async => await Geolocator().getCurrentPosition().then((value) {
-          if (value != null) {
-            _currentPosition = value;
-            print(
-                "Mendapatkan Lokasi User Sekarang ${_currentPosition.latitude} || ${_currentPosition.longitude}");
-          } else {
-            throw "Tidak Dapat Menemukan Lokasi User";
-          }
-        }),
-      );
+          //! Pertama Dapatkan Lokasi Terakhir User, Kalau Lokasi Terakhir == null maka dapatkan lokasi user sekarang.
+          () async => await geolocator.getLastKnownPosition().then((lastPosition) async {
+                if (lastPosition != null) {
+                  _currentPosition = lastPosition;
+                  print("Mendapatkan Lokasi Terakhir User $lastPosition");
+                } else {
+                  await geolocator.getCurrentPosition().then((currentPosition) {
+                    if (currentPosition != null) {
+                      _currentPosition = currentPosition;
+                      print("Mendapatkan Lokasi Terbaru User $lastPosition");
+                    } else {
+                      throw "Tidak Dapat Menemukan Lokasi Kamu";
+                    }
+                  });
+                }
+              }));
     } catch (e) {
       throw e;
     }
@@ -64,14 +69,6 @@ class ZAbsenProvider extends ChangeNotifier {
 
   void setTrackingLocation(Position position) {
     _currentPosition = position;
-    notifyListeners();
-  }
-
-  DateTime _trueTime;
-  DateTime get trueTime => _trueTime;
-
-  void setTrueTime(DateTime value) {
-    _trueTime = value;
     notifyListeners();
   }
 }
