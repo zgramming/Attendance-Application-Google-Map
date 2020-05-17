@@ -171,14 +171,15 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void trackingLocation() async {
-    var geolocator = Geolocator();
-    var locationOptions = LocationOptions();
-    _positionStream = geolocator.getPositionStream(locationOptions).listen((Position position) {
-      if (position != null) {
+    if (_positionStream == null) {
+      const LocationOptions locationOptions = LocationOptions();
+      final Stream<Position> positionStream = Geolocator().getPositionStream(locationOptions);
+      _positionStream = positionStream.listen((Position position) {
         context.read<ZAbsenProvider>().setTrackingLocation(position);
-        print("CURRENT LOCATION RESULT NULL $position");
-      }
-    }, onError: (err) => print("Error Tracking Location User $err"));
+        print(
+            "Berhasil Tracking Dengan Hasil Lat=${position.latitude} Long=${position.longitude} Accuracy=${position.accuracy} Speed=${position.speed} Mocked=${position.mocked}");
+      });
+    }
   }
 
   Future<void> _gotToCenterUser() async {
@@ -205,7 +206,7 @@ class _MapScreenState extends State<MapScreen> {
         final trueTime = await commonF.getTrueTime();
         final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
         print('PROSES INPUT ABSENSI MASUK');
-        final result = await absensiAPI.absensiMasuk(
+        final result = await userProvider.absensiMasuk(
           idUser: userProvider.user.idUser,
           tanggalAbsen: trueTime,
           tanggalAbsenMasuk: trueTime,
@@ -235,7 +236,7 @@ class _MapScreenState extends State<MapScreen> {
       final trueTime = await commonF.getTrueTime();
       final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
       print('PROSES INPUT ABSENSI PULANG');
-      final result = await absensiAPI.absensiPulang(
+      final result = await userProvider.absensiPulang(
         idUser: userProvider.user.idUser,
         tanggalAbsenPulang: trueTime,
         jamAbsenPulang: timeFormat,
