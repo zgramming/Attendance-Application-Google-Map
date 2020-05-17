@@ -45,4 +45,44 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
     return result;
   }
+
+  Future<String> absensiMasuk({
+    @required String idUser,
+    @required DateTime tanggalAbsen,
+    @required DateTime tanggalAbsenMasuk,
+    @required String jamAbsenMasuk,
+    @required DateTime createdDate,
+  }) async {
+    try {
+      final result = await absensiAPI.absensiMasuk(
+        idUser: idUser,
+        tanggalAbsen: tanggalAbsen,
+        tanggalAbsenMasuk: tanggalAbsenMasuk,
+        jamAbsenMasuk: jamAbsenMasuk,
+        createdDate: createdDate,
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<String> absensiPulang({
+    @required String idUser,
+    @required DateTime tanggalAbsenPulang,
+    @required String jamAbsenPulang,
+    @required DateTime updateDate,
+  }) async {
+    try {
+      final result = await absensiAPI.absensiPulang(
+        idUser: idUser,
+        tanggalAbsenPulang: tanggalAbsenPulang,
+        jamAbsenPulang: jamAbsenPulang,
+        updateDate: updateDate,
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
