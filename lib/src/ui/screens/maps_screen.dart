@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:intl/intl.dart';
+import 'package:tuple/tuple.dart';
 import 'package:network/network.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
 
-  double radiusCircle = 500;
+  double radiusCircle = 10;
 
   @override
   Widget build(BuildContext context) {
@@ -44,44 +45,44 @@ class _MapScreenState extends State<MapScreen> {
               constraints: BoxConstraints(minHeight: sizes.height(context)),
               child: Stack(
                 children: [
-                  Consumer<ZAbsenProvider>(
-                    builder: (_, absenProvider, __) {
-                      final distanceTwoLocation = commonF.getDistanceLocation(
-                        absenProvider.currentPosition.latitude,
-                        absenProvider.currentPosition.longitude,
-                        absenProvider.destinasiModel.latitude,
-                        absenProvider.destinasiModel.longitude,
-                      );
-                      print(
-                          "Jarak $distanceTwoLocation || Lokasi Saya ${absenProvider.currentPosition}");
+                  Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<LocationData, DestinasiModel>>(
+                    selector: (_, provider1, provider2) =>
+                        Tuple2(provider1.currentPosition, provider2.destinasiModel),
+                    builder: (context, value, child) {
+                      final distanceTwoLocation =
+                          commonF.getDistanceLocation(value.item1, value.item2);
+                      print("Jarak $distanceTwoLocation || Lokasi Saya ${value.item1}");
                       return GoogleMap(
+                        myLocationEnabled: true,
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(value.item1.latitude, value.item1.longitude),
+                          zoom: 14.4746,
+                        ),
+                        onMapCreated: (controller) {
+                          trackingLocation();
+                          _gotToCenterUser();
+                          _controller.complete(controller);
+                        },
                         circles: Set.of(
                           {
                             Circle(
                               circleId: CircleId('1'),
                               strokeColor: Colors.transparent,
                               fillColor: commonF
-                                  .changeColorRadius(distanceTwoLocation, radiusCircle)
+                                  .changeColorRadius(
+                                    commonF.getDistanceLocation(value.item1, value.item2),
+                                    radiusCircle,
+                                  )
                                   .withOpacity(.6),
+                              //! Ini LatLng untuk posisi Destinasi Yang Dituju (Lapangan Kampung Kepu)
                               center: LatLng(
-                                absenProvider.destinasiModel.latitude,
-                                absenProvider.destinasiModel.longitude,
+                                value.item2.latitude,
+                                value.item2.longitude,
                               ),
                               radius: radiusCircle,
                             ),
                           },
                         ),
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(absenProvider.currentPosition.latitude,
-                              absenProvider.currentPosition.longitude),
-                          zoom: 14.4746,
-                        ),
-                        onMapCreated: (controller) {
-                          getLocation(absenProvider);
-                          _gotToCenterUser(absenProvider);
-                          _controller.complete(controller);
-                        },
-                        myLocationEnabled: true,
                       );
                     },
                   ),
@@ -89,12 +90,20 @@ class _MapScreenState extends State<MapScreen> {
                     bottom: 30,
                     left: 10,
                     right: 50,
-                    child: Selector<GlobalProvider, bool>(
-                      selector: (_, provider) => provider.isLoading,
-                      builder: (_, isLoading, __) => ButtonAttendance(
-                        onTapAbsen: () => _validateAbsenMasuk(radiusCircle),
+                    child: Selector2<ZAbsenProvider, ZAbsenProvider,
+                        Tuple2<LocationData, DestinasiModel>>(
+                      selector: (_, provider1, provider2) =>
+                          Tuple2(provider1.currentPosition, provider2.destinasiModel),
+                      builder: (_, value, __) => ButtonAttendance(
+                        onTapAbsen: () => _validateAbsenMasuk(
+                          commonF.getDistanceLocation(value.item1, value.item2),
+                          radiusCircle,
+                        ),
                         backgroundColor: Colors.transparent,
-                        onTapPulang: () => _validateAbsenPulang(radiusCircle),
+                        onTapPulang: () => _validateAbsenPulang(
+                          commonF.getDistanceLocation(value.item1, value.item2),
+                          radiusCircle,
+                        ),
                       ),
                     ),
                   ),
@@ -109,6 +118,19 @@ class _MapScreenState extends State<MapScreen> {
                     top: 10,
                     left: 10,
                   ),
+                  Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<LocationData, DestinasiModel>>(
+                    selector: (_, provider1, provider2) =>
+                        Tuple2(provider1.currentPosition, provider2.destinasiModel),
+                    builder: (_, value, __) => Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        height: 200,
+                        color: commonF.changeColorRadius(
+                            commonF.getDistanceLocation(value.item1, value.item2), radiusCircle),
+                        child: Text('${value.item1.latitude} || ${value.item1.longitude}'),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -118,26 +140,28 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void getLocation(ZAbsenProvider provider) async {
+  void trackingLocation() async {
     Location location = Location();
-    location.changeSettings(interval: 2500);
+    //? Untuk Setting Interval Update Tracking Lokasi User
+    location.changeSettings(interval: 1000);
     location.onLocationChanged.listen((currentLocation) {
       if (currentLocation == null) {
         return null;
       } else {
-        provider.setTrackingLocation(currentLocation);
+        context.read<ZAbsenProvider>().setTrackingLocation(currentLocation);
+        print("RESULT FROM TRACKING LOCATION USER $currentLocation");
       }
-    });
+    }, onError: (e) => print(e.toString()));
   }
 
-  Future<void> _gotToCenterUser(ZAbsenProvider provider) async {
+  Future<void> _gotToCenterUser() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(
-            provider.currentPosition.latitude ?? 1,
-            provider.currentPosition.longitude ?? 1,
+            context.read<ZAbsenProvider>().currentPosition.latitude ?? 1,
+            context.read<ZAbsenProvider>().currentPosition.longitude ?? 1,
           ),
           zoom: 20.5,
         ),
@@ -145,21 +169,15 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _validateAbsenMasuk(double radius) async {
+  void _validateAbsenMasuk(double distanceTwoLocation, double radius) async {
     context.read<GlobalProvider>().setLoading(true);
-    final absenProvider = context.read<ZAbsenProvider>();
     final userProvider = context.read<UserProvider>();
-    final trueTime = await commonF.getTrueTime();
-    final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
-    final distanceTwoLocation = commonF.getDistanceLocation(
-      absenProvider.currentPosition.latitude,
-      absenProvider.currentPosition.longitude,
-      absenProvider.destinasiModel.latitude,
-      absenProvider.destinasiModel.longitude,
-    );
-    final isUserInsideRadius = commonF.isInsideRadiusCircle(distanceTwoLocation, radius);
-    if (isUserInsideRadius) {
+    final isInsideRadius = commonF.isInsideRadiusCircle(distanceTwoLocation, radius);
+    if (isInsideRadius) {
       try {
+        final trueTime = await commonF.getTrueTime();
+        final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
+        print('PROSES INPUT ABSENSI MASUK');
         final result = await absensiAPI.absensiMasuk(
           idUser: userProvider.user.idUser,
           tanggalAbsen: trueTime,
@@ -169,6 +187,8 @@ class _MapScreenState extends State<MapScreen> {
         );
         globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
         context.read<GlobalProvider>().setLoading(false);
+        print('SELESAI INPUT ABSENSI MASUK');
+
         Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
       } catch (e) {
         globalF.showToast(message: e, isError: true);
@@ -180,21 +200,14 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  void _validateAbsenPulang(double radius) async {
+  void _validateAbsenPulang(double distanceTwoLocation, double radius) async {
     context.read<GlobalProvider>().setLoading(true);
-    final absenProvider = context.read<ZAbsenProvider>();
     final userProvider = context.read<UserProvider>();
-    final trueTime = await commonF.getTrueTime();
-    final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
-    final distanceTwoLocation = commonF.getDistanceLocation(
-      absenProvider.currentPosition.latitude,
-      absenProvider.currentPosition.longitude,
-      absenProvider.destinasiModel.latitude,
-      absenProvider.destinasiModel.longitude,
-    );
-
-    final isUserInsideRadius = commonF.isInsideRadiusCircle(distanceTwoLocation, radius);
-    if (isUserInsideRadius) {
+    final isInsideRadius = commonF.isInsideRadiusCircle(distanceTwoLocation, radius);
+    if (isInsideRadius) {
+      final trueTime = await commonF.getTrueTime();
+      final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
+      print('PROSES INPUT ABSENSI PULANG');
       final result = await absensiAPI.absensiPulang(
         idUser: userProvider.user.idUser,
         tanggalAbsenPulang: trueTime,
@@ -203,6 +216,8 @@ class _MapScreenState extends State<MapScreen> {
       );
       globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
       context.read<GlobalProvider>().setLoading(false);
+      print('SELESAI INPUT ABSENSI PULANG');
+
       Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
     } else {
       globalF.showToast(message: "Anda Diluar Jangkauan Absensi", isError: true);
