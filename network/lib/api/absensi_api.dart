@@ -48,7 +48,7 @@ class AbsensiApi {
             "jam_absen_masuk": "$jamAbsenMasuk",
             "created_date": "$createdDate"
           },
-        );
+        ).timeout((Duration(minutes: 1)));
         final Map<String, dynamic> responseJson = json.decode(response.body);
         final String message = responseJson['message'];
         if (response.statusCode == 200) {
@@ -69,29 +69,34 @@ class AbsensiApi {
     @required String jamAbsenPulang,
     @required DateTime updateDate,
   }) async {
-    var result = await reusableRequestServer.requestServer(() async {
-      final response = await http.post(
-        "${appConfig.baseApiUrl}/${appConfig.absensiController}/absensiPulang",
-        headers: appConfig.headersApi,
-        body: {
-          "id_user": idUser,
-          "tanggal_absen_pulang": "$tanggalAbsenPulang",
-          "jam_absen_pulang": "$jamAbsenPulang",
-          "update_date": "$updateDate"
-        },
-      );
-      final Map<String, dynamic> responseJson = json.decode(response.body);
-      final String message = responseJson['message'];
-      print(response.body);
-      print("Absensi Pulang $responseJson");
+    var result;
+    try {
+      result = await reusableRequestServer.requestServer(() async {
+        final response = await http.post(
+          "${appConfig.baseApiUrl}/${appConfig.absensiController}/absensiPulang",
+          headers: appConfig.headersApi,
+          body: {
+            "id_user": idUser,
+            "tanggal_absen_pulang": "$tanggalAbsenPulang",
+            "jam_absen_pulang": "$jamAbsenPulang",
+            "update_date": "$updateDate"
+          },
+        ).timeout(Duration(minutes: 1));
+        final Map<String, dynamic> responseJson = json.decode(response.body);
+        final String message = responseJson['message'];
+        print(response.body);
+        print("Absensi Pulang $responseJson");
 
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        return message;
-      } else {
-        throw message;
-      }
-    });
+        print(response.statusCode);
+        if (response.statusCode == 200) {
+          return message;
+        } else {
+          throw message;
+        }
+      });
+    } catch (e) {
+      throw e;
+    }
 
     return result;
   }
