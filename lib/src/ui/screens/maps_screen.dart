@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:tuple/tuple.dart';
 import 'package:network/network.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -28,6 +29,7 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
+  StreamSubscription<Position> _positionStream;
 
   double radiusCircle = 10;
 
@@ -35,6 +37,15 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     trackingLocation();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_positionStream != null) {
+      _positionStream.cancel();
+      _positionStream = null;
+    }
+    super.dispose();
   }
 
   @override
@@ -51,7 +62,7 @@ class _MapScreenState extends State<MapScreen> {
               constraints: BoxConstraints(minHeight: sizes.height(context)),
               child: Stack(
                 children: [
-                  Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<LocationData, DestinasiModel>>(
+                  Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
                     selector: (_, provider1, provider2) =>
                         Tuple2(provider1.currentPosition, provider2.destinasiModel),
                     builder: (context, value, child) {
@@ -97,8 +108,8 @@ class _MapScreenState extends State<MapScreen> {
                     bottom: 30,
                     left: 10,
                     right: 50,
-                    child: Selector2<ZAbsenProvider, ZAbsenProvider,
-                        Tuple2<LocationData, DestinasiModel>>(
+                    child:
+                        Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
                       selector: (_, provider1, provider2) =>
                           Tuple2(provider1.currentPosition, provider2.destinasiModel),
                       builder: (_, value, __) => ButtonAttendance(
@@ -131,7 +142,7 @@ class _MapScreenState extends State<MapScreen> {
                     top: 10,
                     left: 10,
                   ),
-                  Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<LocationData, DestinasiModel>>(
+                  Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
                     selector: (_, provider1, provider2) =>
                         Tuple2(provider1.currentPosition, provider2.destinasiModel),
                     builder: (_, value, __) => Align(
@@ -160,18 +171,14 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void trackingLocation() async {
-    Location location = Location();
-    //? Untuk Setting Interval Update Tracking Lokasi User
-    location.changeSettings(interval: 2500);
-    location.onLocationChanged.listen((currentLocation) {
-      if (currentLocation == null) {
-        print("CURRENT LOCATION RESULT NULL $currentLocation");
-        return null;
-      } else {
-        context.read<ZAbsenProvider>().setTrackingLocation(currentLocation);
-        print("RESULT FROM TRACKING LOCATION USER $currentLocation");
+    var geolocator = Geolocator();
+    var locationOptions = LocationOptions();
+    _positionStream = geolocator.getPositionStream(locationOptions).listen((Position position) {
+      if (position != null) {
+        context.read<ZAbsenProvider>().setTrackingLocation(position);
+        print("CURRENT LOCATION RESULT NULL $position");
       }
-    }, onError: (e) => print(e.toString()));
+    }, onError: (err) => print("Error Tracking Location User $err"));
   }
 
   Future<void> _gotToCenterUser() async {

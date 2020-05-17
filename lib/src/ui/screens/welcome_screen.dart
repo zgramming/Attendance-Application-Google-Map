@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 import './widgets/welcome_screen/fab.dart';
 import './widgets/welcome_screen/user_profile.dart';
@@ -36,18 +36,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.paused) {
-      if (!await commonF.serviceEnabled()) {
+      if (!await commonF.getGPSService()) {
         Navigator.of(context).pop();
-      } else if (await commonF.checkLocationPermission() != PermissionStatus.granted) {
+      } else if (await commonF.getGeolocationPermission() != GeolocationStatus.granted) {
         Navigator.of(context).pop();
       }
       print("Trigger Paused");
     }
     if (state == AppLifecycleState.resumed) {
       // commonF.initPermission(context);
-      if (!await commonF.serviceEnabled()) {
+      if (!await commonF.getGPSService()) {
         commonF.initPermission(context);
-      } else if (await commonF.checkLocationPermission() != PermissionStatus.granted) {
+      } else if (await commonF.getGeolocationPermission() != GeolocationStatus.granted) {
         commonF.initPermission(context);
       }
       print("Trigger Resumed");

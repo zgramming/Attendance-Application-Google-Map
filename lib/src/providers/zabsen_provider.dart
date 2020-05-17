@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
 
@@ -39,14 +39,14 @@ class ZAbsenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  LocationData _currentPosition;
-  LocationData get currentPosition => _currentPosition;
+  Position _currentPosition;
+  Position get currentPosition => _currentPosition;
 
   Future<void> getCurrentPosition() async {
-    Location location = Location();
+    // Location location = Location();
     try {
       await reusableRequestServer.requestServer(
-        () async => await location.getLocation().then((value) {
+        () async => await Geolocator().getCurrentPosition().then((value) {
           if (value != null) {
             _currentPosition = value;
             print(
@@ -62,8 +62,8 @@ class ZAbsenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setTrackingLocation(LocationData result) {
-    _currentPosition = result;
+  void setTrackingLocation(Position position) {
+    _currentPosition = position;
     notifyListeners();
   }
 

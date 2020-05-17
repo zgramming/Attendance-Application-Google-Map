@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:android_intent/android_intent.dart';
 import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,36 +10,29 @@ import 'package:network/network.dart';
 import 'package:ntp/ntp.dart';
 
 class CommonFunction {
-  Location location = Location();
-
   void initPermission(BuildContext context) async {
-    final permissionStatus = await checkLocationPermission();
-    final serviceEnable = await serviceEnabled();
-    // final requestPermisionStatus = await _requestPermissionStatus();
-    // final requestService = await _requestService();
-    //* Jika Lokasi Permission Tidak Didapatkan
-    if (permissionStatus != PermissionStatus.granted) {
+    final geolocationStatus = await getGeolocationPermission();
+    final gpsStatus = await getGPSService();
+    // print("Init Permission GeolocationStatus $geolocationStatus");
+    // print("Init Permission GeolocationGPS $gpsStatus");
+    if (geolocationStatus != GeolocationStatus.granted) {
       showDialog(
         context: context,
-        builder: (ctx) => PopupPermission(
-          typePermission: 'Lokasi',
+        child: PopupPermission(
+          typePermission: "Lokasi",
           iconPermission: FontAwesomeIcons.locationArrow,
           showCloseButton: false,
-          onAccept: () async {
-            final bool result = await lc.LocationPermissions().openAppSettings();
-            print("result open appseting $result");
-          },
+          onAccept: () async => await lc.LocationPermissions().openAppSettings(),
         ),
       );
-      //* Jika GPS Permission Tidak Didapatkan
-    } else if (!serviceEnable) {
+    } else if (!gpsStatus) {
       showDialog(
         context: context,
-        builder: (ctx) => PopupPermission(
-          typePermission: 'GPS',
+        child: PopupPermission(
+          typePermission: "GPS",
           iconPermission: FontAwesomeIcons.mapMarkedAlt,
           showCloseButton: false,
-          onAccept: () {
+          onAccept: () async {
             final AndroidIntent intent =
                 const AndroidIntent(action: 'action_location_source_settings');
             intent.launch();
@@ -49,36 +42,41 @@ class CommonFunction {
     }
   }
 
-  Future<PermissionStatus> checkLocationPermission() async {
-    final result = await location.hasPermission();
+  //! Geolocator Permission
+  Future<GeolocationStatus> getGeolocationPermission() async {
+    GeolocationStatus result;
+    try {
+      result = await reusableRequestServer
+          .requestServer(() async => await Geolocator().checkGeolocationPermissionStatus());
+    } catch (e) {
+      throw e;
+    }
     return result;
   }
 
-  Future<bool> serviceEnabled() async {
-    final result = await location.serviceEnabled();
+  Future<bool> getGPSService() async {
+    bool result;
+    try {
+      result = await reusableRequestServer
+          .requestServer(() async => await Geolocator().isLocationServiceEnabled());
+    } catch (e) {
+      throw e;
+    }
     return result;
   }
-  // Future<PermissionStatus> _requestPermissionStatus() async {
-  //   final result = await location.requestPermission();
-  //   return result;
-  // }
-
-  // Future<bool> _requestService() async {
-  //   final result = await location.requestService();
-  //   return result;
-  // }
+  //! Batas Geolocator Permission
   //* Rumus Untuk Mendapatkan Jarak Antara Dua Lokasi
   //* Rumus ini yang akan digunakan untuk memperkirakan user sudah didalam radius absen / belum
 
   double getDistanceLocation(
-    LocationData locationData,
+    Position position,
     DestinasiModel destinasiModel, {
     int typeCalculate = 1,
     bool isKm = false,
   }) {
     var calculate = GreatCircleDistance.fromDegrees(
-      latitude1: locationData.latitude,
-      longitude1: locationData.longitude,
+      latitude1: position.latitude,
+      longitude1: position.longitude,
       latitude2: destinasiModel.latitude,
       longitude2: destinasiModel.longitude,
     );
