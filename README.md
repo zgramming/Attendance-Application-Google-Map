@@ -1,16 +1,23 @@
-# z_absen
+# Attendance Application [Google Maps Version]
 
-Example Absent Application Using Gmaps /MapBox
+Open Source Project Attendance Application Implement With Google Maps Flutter
 
-## Getting Started
+# Configuration Project 
 
-This project is a starting point for a Flutter application.
+Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with yours.
 
-A few resources to get you started if this is your first Flutter project:
+```
+<manifest ...
+  <application ...
+    <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="YOUR KEY HERE"/>
+```
+## Test Application
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+|app-arm64-v8a|app-armeabi-v7a|app-x86_64|app-release|
+|:----:|:---------:|:-----:|:------:|
+|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://www.google.com)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://www.google.com)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://www.google.com)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://www.google.com)
+|7,37MB | 7,02 MB | 7,59 MB | 19,8 MB |
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
