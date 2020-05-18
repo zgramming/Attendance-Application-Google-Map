@@ -1,15 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:global_template/global_template.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:network/network.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:global_template/global_template.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../../../providers/user_provider.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
   const UserProfile({
     Key key,
   }) : super(key: key);
 
+  @override
+  _UserProfileState createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     print("Rebuild User Profile");
@@ -22,9 +29,10 @@ class UserProfile extends StatelessWidget {
             const SizedBox(height: kToolbarHeight),
             Text(
               'Selamat Datang',
-              style: appTheme
-                  .headline5(context)
-                  .copyWith(fontFamily: 'Righteous', color: colorPallete.black),
+              style: appTheme.headline5(context).copyWith(
+                    fontFamily: 'Righteous',
+                    color: colorPallete.black,
+                  ),
             ),
             const SizedBox(height: 10),
             Selector<UserProvider, UserModel>(
@@ -42,7 +50,7 @@ class UserProfile extends StatelessWidget {
                     children: [
                       InkWell(
                         //TODO Update Image User
-                        onTap: () => print('Lakukan Update Image Disini'),
+                        onTap: _userUpdateImage,
                         borderRadius: BorderRadius.circular(20),
                         child: ShowImageNetwork(
                           imageUrl: value.image.isEmpty
@@ -75,5 +83,31 @@ class UserProfile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _userUpdateImage() async {
+    final imageFile = await ImagePicker.pickImage(
+      source: ImageSource.camera,
+      preferredCameraDevice: CameraDevice.front,
+      maxHeight: 500,
+      maxWidth: 600,
+    );
+    if (imageFile == null) {
+      print("Tidak Jadi Mengambil Gambar");
+      return null;
+    } else {
+      try {
+        final userProvider = context.read<UserProvider>();
+        print("Proses Upload & Update Image ");
+        final result = await userProvider.userUpdateImage(userProvider.user.idUser, imageFile);
+
+        print("Proses Update Session User ");
+        print("Image Size ${await imageFile.length()}");
+        await userProvider.saveSessionUser(list: result);
+        globalF.showToast(message: "Berhasil Update Gambar Profile ", isSuccess: true);
+      } catch (e) {
+        globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      }
+    }
   }
 }
