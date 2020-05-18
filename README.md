@@ -16,7 +16,7 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 
 |app-arm64-v8a|app-armeabi-v7a|app-x86_64|app-release|
 |:----:|:---------:|:-----:|:------:|
-|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://www.google.com)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://www.google.com)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://www.google.com)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://www.google.com)
+|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-arm64-v8a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-armeabi-v7a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-x86_64.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-release.zip)
 |7,37MB | 7,02 MB | 7,59 MB | 19,8 MB |
 
 ## Contributing
