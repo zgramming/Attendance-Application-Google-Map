@@ -59,9 +59,9 @@ class UserApi {
     @required String idUser,
     @required File imageFile,
   }) async {
-    var result;
+    List<UserModel> result;
     try {
-      result = reusableRequestServer.requestServer(() async {
+      result = await reusableRequestServer.requestServer(() async {
         final String _nameFileFromAPI = "file";
         var stream = new http.ByteStream(Stream.castFrom(imageFile.openRead()));
         final length = await imageFile.length();
@@ -97,4 +97,4 @@ class UserApi {
   }
 }
 
-final userApi = UserApi();
+final userAPI = UserApi();

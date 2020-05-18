@@ -82,7 +82,7 @@ class _FormUserState extends State<FormUser> {
         widget.formKey.currentState.save();
         if (context.read<GlobalProvider>().isRegister) {
           print("ke register");
-          final result = await userApi.userRegister(
+          final result = await userAPI.userRegister(
             username: username,
             password: password,
             fullName: fullName,
@@ -95,7 +95,7 @@ class _FormUserState extends State<FormUser> {
         } else {
           print("ke Login");
 
-          final result = await userApi.userLogin(
+          final result = await userAPI.userLogin(
             username: username,
             password: password,
           );
