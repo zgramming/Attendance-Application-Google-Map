@@ -12,7 +12,7 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
     <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="YOUR KEY HERE"/>
 ```
-## Test Application
+## Download Application
 
 |app-arm64-v8a|app-armeabi-v7a|app-x86_64|app-release|
 |:----:|:---------:|:-----:|:------:|
