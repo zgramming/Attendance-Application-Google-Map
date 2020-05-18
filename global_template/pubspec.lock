@@ -63,7 +63,7 @@ packages:
       name: device_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.2+3"
+    version: "0.4.2+4"
   fake_async:
     dependency: transitive
     description:
@@ -90,13 +90,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.2"
-  flutter_plugin_android_lifecycle:
-    dependency: transitive
-    description:
-      name: flutter_plugin_android_lifecycle
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.7"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -128,20 +121,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.4"
-  image_picker:
-    dependency: "direct main"
-    description:
-      name: image_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.6+1"
-  image_picker_platform_interface:
-    dependency: transitive
-    description:
-      name: image_picker_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   intl:
     dependency: "direct main"
     description:
@@ -190,7 +169,7 @@ packages:
       name: package_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0+17"
+    version: "0.4.0+18"
   path:
     dependency: transitive
     description:
@@ -204,7 +183,7 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.7"
+    version: "1.6.8"
   path_provider_macos:
     dependency: transitive
     description:
@@ -218,7 +197,7 @@ packages:
       name: path_provider_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   pedantic:
     dependency: transitive
     description:
@@ -246,21 +225,21 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0"
+    version: "4.1.2"
   rxdart:
     dependency: transitive
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.24.0"
+    version: "0.24.1"
   shared_preferences:
     dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.7+1"
+    version: "0.5.7+2"
   shared_preferences_macos:
     dependency: transitive
     description:
@@ -274,7 +253,7 @@ packages:
       name: shared_preferences_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.4"
   shared_preferences_web:
     dependency: transitive
     description:
@@ -372,5 +351,5 @@ packages:
     source: hosted
     version: "2.0.8"
 sdks:
-  dart: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0 <2.0.0"
+  dart: ">=2.8.0 <3.0.0"
+  flutter: ">=1.16.0 <2.0.0"

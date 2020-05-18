@@ -5,17 +5,16 @@ author:
 homepage:
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^4.0.5+1
-  shared_preferences: ^0.5.7
-  package_info: ^0.4.0+17
-  device_info: ^0.4.2+2
-  image_picker: ^0.6.5+3
-  cached_network_image: ^2.2.0
+  provider: ^4.1.2
+  shared_preferences: ^0.5.7+2
+  package_info: ^0.4.0+18
+  device_info: ^0.4.2+4
+  cached_network_image: ^2.2.0+1
   fluttertoast: ^4.0.1
   intl: ^0.16.1
   ntp: ^1.0.6

@@ -77,7 +77,7 @@ packages:
       name: device_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.2+3"
+    version: "0.4.2+4"
   equatable:
     dependency: transitive
     description:
@@ -274,7 +274,7 @@ packages:
       name: package_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0+17"
+    version: "0.4.0+18"
   path:
     dependency: transitive
     description:
@@ -337,7 +337,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0"
+    version: "4.1.2"
   quiver:
     dependency: transitive
     description:
@@ -365,7 +365,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.7+1"
+    version: "0.5.7+2"
   shared_preferences_macos:
     dependency: transitive
     description:
@@ -491,5 +491,5 @@ packages:
     source: hosted
     version: "2.0.8"
 sdks:
-  dart: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0 <2.0.0"
+  dart: ">=2.8.0 <3.0.0"
+  flutter: ">=1.16.0 <2.0.0"
