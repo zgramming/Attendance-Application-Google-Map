@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -80,6 +81,15 @@ class UserProvider extends ChangeNotifier {
         jamAbsenPulang: jamAbsenPulang,
         updateDate: updateDate,
       );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<UserModel>> userUpdateImage(String idUser, File image) async {
+    try {
+      final result = await userAPI.userUpdateImage(idUser: idUser, imageFile: image);
       return result;
     } catch (e) {
       throw e;
