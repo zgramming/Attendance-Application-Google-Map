@@ -41,17 +41,14 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void dispose() {
-    if (_positionStream != null) {
-      _positionStream.cancel();
-      _positionStream = null;
-    }
+    _positionStream?.cancel();
+    print("Dispose Stream Listen");
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     print("Rebuild Maps Screen");
-
     return WillPopScope(
       onWillPop: () async => false,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -78,7 +75,6 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                         onMapCreated: (controller) {
                           _controller.complete(controller);
-                          // trackingLocation();
                           _gotToCenterUser();
                         },
                         circles: Set.of(
@@ -170,16 +166,14 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void trackingLocation() async {
-    if (_positionStream == null) {
-      const LocationOptions locationOptions = LocationOptions();
-      final Stream<Position> positionStream = Geolocator().getPositionStream(locationOptions);
-      _positionStream = positionStream.listen((Position position) {
-        context.read<ZAbsenProvider>().setTrackingLocation(position);
-        print(
-            "Berhasil Tracking Dengan Hasil Lat=${position.latitude} Long=${position.longitude} Accuracy=${position.accuracy} Speed=${position.speed} Mocked=${position.mocked}");
-      });
-    }
+  trackingLocation() {
+    const LocationOptions locationOptions = LocationOptions();
+    final Stream<Position> positionStream = Geolocator().getPositionStream(locationOptions);
+    _positionStream = positionStream.listen((Position position) {
+      context.read<ZAbsenProvider>().setTrackingLocation(position);
+      print(
+          "Berhasil Tracking Dengan Hasil Lat=${position.latitude} Long=${position.longitude} Accuracy=${position.accuracy} Speed=${position.speed} Mocked=${position.mocked}");
+    }, onError: (error) => print("Error Handling Listen Stream ${error.toString()}"));
   }
 
   Future<void> _gotToCenterUser() async {
