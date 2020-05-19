@@ -21,7 +21,7 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 
 ## Example Application
 
-![Example](https://flutter-absensi.000webhostapp.com/readme/example.gif)
+<img src="https://flutter-absensi.000webhostapp.com/readme/example.gif" width="50px">
 
 
 ## Contributing
