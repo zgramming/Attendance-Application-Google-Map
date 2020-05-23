@@ -13,7 +13,7 @@
         android:label="ZAbsenin"
         android:icon="@mipmap/ic_launcher">
          <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="YOUR KEY HERE "/>
+               android:value="AIzaSyDvOGYN1Fqt4U5T5XP5a1Ku4nSfwOvqY-0"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
