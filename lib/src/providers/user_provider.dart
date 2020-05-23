@@ -113,4 +113,23 @@ class UserProvider extends ChangeNotifier {
       throw e;
     }
   }
+
+  Future<String> destinationRegister({
+    @required String idUser,
+    @required String nameDestination,
+    @required double latitude,
+    @required double longitude,
+  }) async {
+    try {
+      final result = await destinasiAPI.destinationRegister(
+        idUser: idUser,
+        nameDestination: nameDestination,
+        latitude: latitude,
+        longitude: longitude,
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
