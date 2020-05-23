@@ -1,3 +1,4 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tuple/tuple.dart';
 import 'package:network/network.dart';
 import 'package:flutter/material.dart';
@@ -22,15 +23,17 @@ class _FormUserState extends State<FormUser> {
       children: [
         TextFormFieldCustom(
           onSaved: (value) => username = value,
-          hintText: '',
+          disableOutlineBorder: false,
+          labelText: "Username",
+          prefixIcon: Icon(FontAwesomeIcons.userCircle),
           radius: 50,
         ),
         SizedBox(height: 20),
         TextFormFieldCustom(
           onSaved: (value) => password = value,
           isPassword: true,
+          disableOutlineBorder: false,
           labelText: 'Password',
-          hintText: '',
           radius: 50,
           textInputAction: TextInputAction.done,
         ),
@@ -41,9 +44,9 @@ class _FormUserState extends State<FormUser> {
             visible: isRegister ? true : false,
             child: TextFormFieldCustom(
               onSaved: (value) => fullName = value,
-              prefixIcon: Icon(Icons.contacts),
-              labelText: 'Full Name',
-              hintText: '',
+              prefixIcon: Icon(FontAwesomeIcons.user),
+              labelText: 'Nama Lengkap',
+              disableOutlineBorder: false,
               radius: 50,
               textInputAction: TextInputAction.done,
             ),
