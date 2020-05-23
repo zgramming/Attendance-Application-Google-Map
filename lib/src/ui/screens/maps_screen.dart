@@ -57,10 +57,10 @@ class _MapScreenState extends State<MapScreen> {
               Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
                 selector: (_, provider1, provider2) =>
                     Tuple2(provider1.currentPosition, provider2.destinasiModel),
-                builder: (context, value, child) {
-                  final distanceTwoLocation = commonF.getDistanceLocation(value.item1, value.item2);
-                  print(
-                      "Jarak $distanceTwoLocation || Lokasi Saya ${value.item1.latitude} ${value.item1.longitude}");
+                builder: (_, value, __) {
+                  // final distanceTwoLocation = commonF.getDistanceLocation(value.item1, value.item2);
+                  // print(
+                  //     "Jarak $distanceTwoLocation || Lokasi Saya ${value.item1.latitude} ${value.item1.longitude}");
                   return GoogleMap(
                     myLocationEnabled: true,
                     initialCameraPosition: CameraPosition(
