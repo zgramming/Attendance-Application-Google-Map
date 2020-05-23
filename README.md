@@ -1,6 +1,6 @@
 # Attendance Application [Google Maps Version]
 
-Open Source Project Attendance Application Implement With Google Maps Flutter
+Implement How To Use Flutter Google Maps With Real Project
 
 # Configuration Project 
 
@@ -18,6 +18,24 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 |:----:|:---------:|:-----:|:------:|
 |[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-arm64-v8a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-armeabi-v7a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-x86_64.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-release.zip)
 |7,37MB | 7,02 MB | 7,59 MB | 19,8 MB |
+
+## How Application Will Look
+
+|Splash Screen|Form Login|Form Register|
+|:-----------:|:--------:|:-----------:|
+|<img src="https://flutter-absensi.000webhostapp.com/readme/splash_screen.gif" height="500">|<img src="https://flutter-absensi.000webhostapp.com/readme/form_login.png" height="500">|<img src="https://flutter-absensi.000webhostapp.com/readme/form_register.png" height="500">|
+
+|Welcome Screen|Maps Screen|
+|:------------:|:---------:|
+|<img src="https://flutter-absensi.000webhostapp.com/readme/welcome_screen.gif" height="500">|<img src="https://flutter-absensi.000webhostapp.com/readme/maps_screen.gif" height="500">|
+
+## How To Use Application
+
+## Improvement Waiting List
+- [ ] Adding Feature Check Mockup Location While Attendance.
+- [ ] Adding Feature Add Destination based on user choose in maps.
+- [ ] Adding Feature Update User Profile
+- [ ] Unimaginable Improvements 
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
