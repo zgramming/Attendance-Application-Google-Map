@@ -17,6 +17,7 @@ class TextFormFieldCustom extends StatelessWidget {
   final bool centerText;
   final bool isValidatorEnable;
   final bool disableOutlineBorder;
+  final bool autoFocus;
 
   final int minLines;
   final int maxLines;
@@ -35,6 +36,9 @@ class TextFormFieldCustom extends StatelessWidget {
   final List<TextInputFormatter> inputFormatter;
 
   final TextEditingController controller;
+
+  final TextStyle hintStyle;
+
   final Function(String) onFieldSubmitted;
   final Function(String) onSaved;
 
@@ -53,6 +57,8 @@ class TextFormFieldCustom extends StatelessWidget {
     this.radius = 8,
     this.hintText,
     this.labelText,
+    this.hintStyle,
+    this.autoFocus = false,
     this.centerText = false,
     this.isDone = false,
     this.isPassword = false,
@@ -69,6 +75,7 @@ class TextFormFieldCustom extends StatelessWidget {
     final globalProvider = Provider.of<GlobalProvider>(context);
 
     return TextFormField(
+      autofocus: autoFocus,
       controller: controller,
       textAlign: centerText ? TextAlign.center : TextAlign.left,
       obscureText: (isPassword && globalProvider.obsecurePassword) ? true : false,
@@ -79,6 +86,7 @@ class TextFormFieldCustom extends StatelessWidget {
       decoration: InputDecoration(
         fillColor: backgroundColor,
         filled: true,
+        hintStyle: hintStyle,
         prefixIcon: isPassword ? Icon(Icons.lock) : prefixIcon,
         suffixIcon: isPassword
             ? IconButton(
