@@ -6,6 +6,7 @@ import './ui/screens/splash_screen.dart';
 import './ui/screens/welcome_screen.dart';
 import './ui/screens/login_screen.dart';
 import './ui/screens/maps_screen.dart';
+import './ui/screens/user_profil_screen.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.routeNamed: (context) => WelcomeScreen(),
         LoginScreen.routeNamed: (context) => LoginScreen(),
         MapScreen.routeNamed: (context) => MapScreen(),
+        UserProfilScreen.routeNamed: (context) => UserProfilScreen(),
       },
     );
   }
