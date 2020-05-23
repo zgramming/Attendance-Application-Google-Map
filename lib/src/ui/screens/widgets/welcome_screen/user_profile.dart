@@ -7,16 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../providers/user_provider.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  _UserProfileState createState() => _UserProfileState();
-}
-
-class _UserProfileState extends State<UserProfile> {
+class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("Rebuild User Profile");
@@ -26,7 +17,6 @@ class _UserProfileState extends State<UserProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: kToolbarHeight),
             Text(
               'Selamat Datang',
               style: appTheme.headline5(context).copyWith(
@@ -50,7 +40,7 @@ class _UserProfileState extends State<UserProfile> {
                     children: [
                       InkWell(
                         //TODO Update Image User
-                        onTap: _userUpdateImage,
+                        onTap: () => _userUpdateImage(context),
                         borderRadius: BorderRadius.circular(20),
                         child: ShowImageNetwork(
                           imageUrl: value.image.isEmpty
@@ -85,7 +75,7 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  void _userUpdateImage() async {
+  void _userUpdateImage(BuildContext context) async {
     final imageFile = await ImagePicker.pickImage(
       source: ImageSource.camera,
       preferredCameraDevice: CameraDevice.front,
