@@ -95,6 +95,52 @@ class UserApi {
     }
     return result;
   }
+
+  Future<List<UserModel>> userUpdateFullName({
+    @required String idUser,
+    @required String fullName,
+  }) async {
+    var result;
+    result = await reusableRequestServer.requestServer(() async {
+      final response = await http.post(
+          '${appConfig.baseApiUrl}/${appConfig.userController}/userUpdateFullName',
+          headers: appConfig.headersApi,
+          body: {
+            "id_user":"$idUser",
+            "full_name": "$fullName",
+          });
+      final Map<String, dynamic> responseJson = json.decode(response.body);
+      if (response.statusCode == 200) {
+        List userList = responseJson['data'];
+        List<UserModel> result = userList.map((e) => UserModel.fromJson(e)).toList();
+        return result;
+      } else {
+        throw responseJson['message'];
+      }
+    });
+    return result;
+  }
+
+  Future<String> userDelete({@required String idUser}) async {
+    String result;
+    try {
+      result = await reusableRequestServer.requestServer(() async {
+        final response = await http
+            .post("${appConfig.baseApiUrl}/${appConfig.userController}/userDelete", body: {
+          "id_user": "$idUser",
+        });
+        final Map<String, dynamic> responseJson = json.decode(response.body);
+        if (response.statusCode == 200) {
+          return responseJson['message'];
+        } else {
+          throw responseJson['message'];
+        }
+      });
+    } catch (e) {
+      throw e;
+    }
+    return result;
+  }
 }
 
 final userAPI = UserApi();
