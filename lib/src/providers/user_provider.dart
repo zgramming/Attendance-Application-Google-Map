@@ -95,4 +95,22 @@ class UserProvider extends ChangeNotifier {
       throw e;
     }
   }
+
+  Future<List<UserModel>> userUpdateFullName(String idUser, String fullName) async {
+    try {
+      final result = await userAPI.userUpdateFullName(idUser: idUser, fullName: fullName);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<String> userDelete({@required String idUser}) async {
+    try {
+      final result = await userAPI.userDelete(idUser: idUser);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
