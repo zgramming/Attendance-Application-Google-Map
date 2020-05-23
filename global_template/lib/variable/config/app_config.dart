@@ -3,9 +3,9 @@ class AppConfig {
 
   final Map<String, String> headersApi = {'Content-Type': 'application/x-www-form-urlencoded'};
 
-  final String baseImageApiUrl = 'https://flutter-absensi.000webhostapp.com/zabsenin/images';
-  final String baseFilesApiUrl = 'https://flutter-absensi.000webhostapp.com/zabsenin/files/';
-  final String baseApiUrl = 'https://flutter-absensi.000webhostapp.com/zabsenin/api/';
+  final String baseImageApiUrl = 'http://www.zimprov.id/images';
+  final String baseFilesApiUrl = 'http://www.zimprov.id/files/';
+  final String baseApiUrl = 'http://www.zimprov.id/api/';
 
   final String indonesiaLocale = 'id_ID';
 
