@@ -16,6 +16,7 @@ class TextFormFieldCustom extends StatelessWidget {
   final bool isDone;
   final bool centerText;
   final bool isValidatorEnable;
+  final bool disableOutlineBorder;
 
   final int minLines;
   final int maxLines;
@@ -32,10 +33,13 @@ class TextFormFieldCustom extends StatelessWidget {
   final FocusNode focusNode;
 
   final List<TextInputFormatter> inputFormatter;
+
+  final TextEditingController controller;
   final Function(String) onFieldSubmitted;
   final Function(String) onSaved;
 
   TextFormFieldCustom({
+    this.controller,
     this.prefixIcon = const Icon(Icons.supervised_user_circle),
     this.suffixIcon,
     this.initialValue,
@@ -47,16 +51,17 @@ class TextFormFieldCustom extends StatelessWidget {
     this.inputFormatter,
     this.onFieldSubmitted,
     this.radius = 8,
-    this.hintText = "Username",
-    this.labelText = "Username",
+    this.hintText,
+    this.labelText,
     this.centerText = false,
     this.isDone = false,
     this.isPassword = false,
+    this.disableOutlineBorder = true,
     this.isEnabled = true,
     this.isValidatorEnable = true,
     this.backgroundColor = Colors.white,
     this.keyboardType = TextInputType.text,
-    this.textInputAction = TextInputAction.next,
+    this.textInputAction = TextInputAction.done,
     @required this.onSaved,
   });
   @override
@@ -64,6 +69,7 @@ class TextFormFieldCustom extends StatelessWidget {
     final globalProvider = Provider.of<GlobalProvider>(context);
 
     return TextFormField(
+      controller: controller,
       textAlign: centerText ? TextAlign.center : TextAlign.left,
       obscureText: (isPassword && globalProvider.obsecurePassword) ? true : false,
       enabled: isEnabled,
@@ -85,20 +91,26 @@ class TextFormFieldCustom extends StatelessWidget {
             : suffixIcon,
         hintText: hintText,
         labelText: labelText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius),
-          borderSide: BorderSide(
-            color: borderColor ?? Colors.grey[400],
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: borderFocusColor ?? Theme.of(context).primaryColor,
-          ),
-        ),
+        border: disableOutlineBorder
+            ? null
+            : OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius),
+              ),
+        enabledBorder: disableOutlineBorder
+            ? null
+            : OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius),
+                borderSide: BorderSide(
+                  color: borderColor ?? Colors.grey[400],
+                ),
+              ),
+        focusedBorder: disableOutlineBorder
+            ? null
+            : OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: borderFocusColor ?? Theme.of(context).primaryColor,
+                ),
+              ),
         contentPadding: const EdgeInsets.all(8.0),
       ),
       textInputAction: isDone ? TextInputAction.done : textInputAction,
