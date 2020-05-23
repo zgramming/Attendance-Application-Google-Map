@@ -4,9 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:tuple/tuple.dart';
 import 'package:network/network.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-// import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -51,115 +49,107 @@ class _MapScreenState extends State<MapScreen> {
     print("Rebuild Maps Screen");
     return WillPopScope(
       onWillPop: () async => false,
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(statusBarColor: colorPallete.primaryColor),
-        child: SafeArea(
-          child: Scaffold(
-            body: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: sizes.height(context)),
-              child: Stack(
-                children: [
-                  Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
-                    selector: (_, provider1, provider2) =>
-                        Tuple2(provider1.currentPosition, provider2.destinasiModel),
-                    builder: (context, value, child) {
-                      final distanceTwoLocation =
-                          commonF.getDistanceLocation(value.item1, value.item2);
-                      print(
-                          "Jarak $distanceTwoLocation || Lokasi Saya ${value.item1.latitude} ${value.item1.longitude}");
-                      return GoogleMap(
-                        myLocationEnabled: true,
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(value.item1.latitude, value.item1.longitude),
-                          zoom: 14.4746,
-                        ),
-                        onMapCreated: (controller) {
-                          _controller.complete(controller);
-                          _gotToCenterUser();
-                        },
-                        circles: Set.of(
-                          {
-                            Circle(
-                              circleId: CircleId('1'),
-                              strokeColor: Colors.transparent,
-                              fillColor: commonF
-                                  .changeColorRadius(
-                                    commonF.getDistanceLocation(value.item1, value.item2),
-                                    radiusCircle,
-                                  )
-                                  .withOpacity(.6),
-                              //! Ini LatLng untuk posisi Destinasi Yang Dituju (Lapangan Kampung Kepu)
-                              center: LatLng(
-                                value.item2.latitude,
-                                value.item2.longitude,
-                              ),
-                              radius: radiusCircle,
-                            ),
-                          },
-                        ),
-                      );
+      child: Scaffold(
+        body: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: sizes.height(context)),
+          child: Stack(
+            children: [
+              Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
+                selector: (_, provider1, provider2) =>
+                    Tuple2(provider1.currentPosition, provider2.destinasiModel),
+                builder: (context, value, child) {
+                  final distanceTwoLocation = commonF.getDistanceLocation(value.item1, value.item2);
+                  print(
+                      "Jarak $distanceTwoLocation || Lokasi Saya ${value.item1.latitude} ${value.item1.longitude}");
+                  return GoogleMap(
+                    myLocationEnabled: true,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(value.item1.latitude, value.item1.longitude),
+                      zoom: 14.4746,
+                    ),
+                    onMapCreated: (controller) {
+                      _controller.complete(controller);
+                      _gotToCenterUser();
                     },
-                  ),
-                  Positioned(
-                    bottom: 30,
-                    left: 10,
-                    right: 50,
-                    child:
-                        Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
-                      selector: (_, provider1, provider2) =>
-                          Tuple2(provider1.currentPosition, provider2.destinasiModel),
-                      builder: (_, value, __) => ButtonAttendance(
-                        onTapAbsen: () => _validateAbsenMasuk(
-                          commonF.getDistanceLocation(
-                            value.item1,
-                            value.item2,
+                    circles: Set.of(
+                      {
+                        Circle(
+                          circleId: CircleId('1'),
+                          strokeColor: Colors.transparent,
+                          fillColor: commonF
+                              .changeColorRadius(
+                                commonF.getDistanceLocation(value.item1, value.item2),
+                                radiusCircle,
+                              )
+                              .withOpacity(.6),
+                          center: LatLng(
+                            value.item2.latitude,
+                            value.item2.longitude,
                           ),
-                          radiusCircle,
+                          radius: radiusCircle,
                         ),
-                        backgroundColor: Colors.transparent,
-                        onTapPulang: () => _validateAbsenPulang(
-                          commonF.getDistanceLocation(
-                            value.item1,
-                            value.item2,
-                          ),
-                          radiusCircle,
-                        ),
-                      ),
+                      },
                     ),
-                  ),
-                  Positioned(
-                    child: InkWell(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: CircleAvatar(
-                        backgroundColor: colorPallete.white,
-                        child: Icon(FontAwesomeIcons.times),
-                      ),
-                    ),
-                    top: 10,
-                    left: 10,
-                  ),
-                  Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
-                    selector: (_, provider1, provider2) =>
-                        Tuple2(provider1.currentPosition, provider2.destinasiModel),
-                    builder: (_, value, __) => Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        padding: const EdgeInsets.all(14.0),
-                        color: commonF.changeColorRadius(
-                            commonF.getDistanceLocation(value.item1, value.item2), radiusCircle),
-                        child: Text(
-                          "${value.item1.latitude} || ${value.item1.longitude} \n Jarak Ke Destinasi : ${commonF.getDistanceLocation(value.item1, value.item2).toStringAsFixed(1)} Meter",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: colorPallete.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
+                  );
+                },
               ),
-            ),
+              Positioned(
+                bottom: 30,
+                left: 10,
+                right: 50,
+                child: Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
+                  selector: (_, provider1, provider2) =>
+                      Tuple2(provider1.currentPosition, provider2.destinasiModel),
+                  builder: (_, value, __) => ButtonAttendance(
+                    onTapAbsen: () => _validateAbsenMasuk(
+                      commonF.getDistanceLocation(
+                        value.item1,
+                        value.item2,
+                      ),
+                      radiusCircle,
+                    ),
+                    backgroundColor: Colors.transparent,
+                    onTapPulang: () => _validateAbsenPulang(
+                      commonF.getDistanceLocation(
+                        value.item1,
+                        value.item2,
+                      ),
+                      radiusCircle,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                child: InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: CircleAvatar(
+                    backgroundColor: colorPallete.white,
+                    child: Icon(FontAwesomeIcons.times),
+                  ),
+                ),
+                top: 10,
+                left: 10,
+              ),
+              Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
+                selector: (_, provider1, provider2) =>
+                    Tuple2(provider1.currentPosition, provider2.destinasiModel),
+                builder: (_, value, __) => Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    padding: const EdgeInsets.all(14.0),
+                    color: commonF.changeColorRadius(
+                        commonF.getDistanceLocation(value.item1, value.item2), radiusCircle),
+                    child: Text(
+                      "${value.item1.latitude} || ${value.item1.longitude} \n Jarak Ke Destinasi : ${commonF.getDistanceLocation(value.item1, value.item2).toStringAsFixed(1)} Meter",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: colorPallete.white,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),

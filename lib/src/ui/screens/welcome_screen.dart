@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geolocator/geolocator.dart';
 
 import './widgets/welcome_screen/fab.dart';
+import './widgets/drawer/drawer_custom.dart';
 import './widgets/welcome_screen/user_profile.dart';
 import './widgets/welcome_screen/button_attendance.dart';
 import './widgets/welcome_screen/card_overall_monthly.dart';
@@ -72,39 +72,35 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         controllerButton: _hideFloatingButton,
         appBarController: _appbarController,
       ),
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-            statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark),
-        child: SafeArea(
-          child: Scaffold(
-            body: Stack(
-              fit: StackFit.expand,
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      UserProfile(),
-                      CardOverallMonthly(),
-                      AnimatedCalendarAndTable(),
-                      const SizedBox(height: 1000),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  left: 10,
-                  right: 60,
-                  bottom: 10,
-                  child: ScaleTransition(
-                    scale: _hideFloatingButton,
-                    child: ButtonAttendance(),
-                  ),
-                ),
-                AppBarAnimatedColor(controller: _appbarController),
-              ],
+      child: Scaffold(
+        drawer: DrawerCustom(),
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: kToolbarHeight * 1.5),
+                  UserProfile(),
+                  CardOverallMonthly(),
+                  AnimatedCalendarAndTable(),
+                  const SizedBox(height: 1000),
+                ],
+              ),
             ),
-            floatingActionButton: FabChangeMode(),
-          ),
+            Positioned(
+              left: 10,
+              right: 60,
+              bottom: 10,
+              child: ScaleTransition(
+                scale: _hideFloatingButton,
+                child: ButtonAttendance(),
+              ),
+            ),
+            AppBarAnimatedColor(controller: _appbarController),
+          ],
         ),
+        floatingActionButton: FabChangeMode(),
       ),
     );
   }
