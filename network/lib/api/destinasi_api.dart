@@ -29,6 +29,36 @@ class DestinasiApi {
     }
     return result;
   }
+
+  Future<String> destinationRegister({
+    @required String idUser,
+    @required String nameDestination,
+    @required double latitude,
+    @required double longitude,
+  }) async {
+    var result;
+    try {
+      result = await reusableRequestServer.requestServer(() async {
+        final response = await http.post(
+            "${appConfig.baseApiUrl}/${appConfig.destinasiController}/destinationRegister",
+            body: {
+              "id_user": "$idUser",
+              "nama_destinasi": "$nameDestination",
+              "latitude": "$latitude",
+              "longitude": "$longitude",
+            });
+        final Map<String, dynamic> responseJson = json.decode(response.body);
+        if (response.statusCode == 201) {
+          return responseJson['message'];
+        } else {
+          throw responseJson['message'];
+        }
+      });
+    } catch (e) {
+      throw e;
+    }
+    return result;
+  }
 }
 
 final destinasiAPI = DestinasiApi();
