@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:global_template/global_template.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:network/network.dart';
 
 class ZAbsenProvider extends ChangeNotifier {
@@ -69,6 +70,15 @@ class ZAbsenProvider extends ChangeNotifier {
 
   void setTrackingLocation(Position position) {
     _currentPosition = position;
+    notifyListeners();
+  }
+
+  CameraPosition _cameraPosition;
+  CameraPosition get cameraPosition => _cameraPosition;
+
+  void setCameraPosition(CameraPosition value) {
+    _cameraPosition = value;
+    print("${_cameraPosition.target.latitude} || ${_cameraPosition.target.longitude}");
     notifyListeners();
   }
 }
