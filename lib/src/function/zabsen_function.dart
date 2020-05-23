@@ -81,7 +81,7 @@ class CommonFunction {
       longitude2: destinasiModel.longitude,
     );
 
-    var result;
+    double result;
     if (typeCalculate == 1) {
       result = calculate.haversineDistance();
     } else if (typeCalculate == 2) {
