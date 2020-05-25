@@ -10,7 +10,7 @@ import './widgets/welcome_screen/card_overall_monthly.dart';
 import './widgets/welcome_screen/animated_table_calendar.dart';
 import './widgets/welcome_screen/animation/appbar_animated_color.dart';
 
-import '../../function/zabsen_function.dart';
+import '../../function/common_function.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const routeNamed = "/welcome-screen";
