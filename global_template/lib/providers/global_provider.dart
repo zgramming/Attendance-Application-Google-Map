@@ -65,7 +65,7 @@ class GlobalProvider extends ChangeNotifier {
     return result;
   }
 
-  bool _isChangeMode = false, _isLoading = false, _isRegister = false;
+  bool _isChangeMode = false, _isLoading = false, _isImageLoading = false, _isRegister = false;
 
   bool get isChangeMode => _isChangeMode;
   void setChangeMode(bool value) {
@@ -76,6 +76,12 @@ class GlobalProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   void setLoading(bool value) {
     _isLoading = value;
+    notifyListeners();
+  }
+
+  bool get isImageLoading => _isImageLoading;
+  void setImageLoading(bool value) {
+    _isImageLoading = value;
     notifyListeners();
   }
 
