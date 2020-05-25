@@ -1,12 +1,12 @@
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tuple/tuple.dart';
 import 'package:network/network.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../../providers/user_provider.dart';
 import '../../welcome_screen.dart';
+import '../../../../providers/user_provider.dart';
 
 class FormUser extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -56,11 +56,12 @@ class _FormUserState extends State<FormUser> {
         Selector2<GlobalProvider, GlobalProvider, Tuple2<bool, bool>>(
           selector: (_, loading, register) => Tuple2(loading.isLoading, register.isRegister),
           builder: (_, value, __) {
-            print("Form Login ${value.item1} ${value.item2}");
-            return ButtonCustom(
-              onPressed: value.item1 ? null : _validate,
-              buttonTitle: value.item2 ? " Register" : "Login",
-            );
+            return value.item1
+                ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                : ButtonCustom(
+                    onPressed: _validate,
+                    buttonTitle: value.item2 ? " Register" : "Login",
+                  );
           },
         ),
         SizedBox(height: 20),
@@ -80,11 +81,9 @@ class _FormUserState extends State<FormUser> {
   void _validate() async {
     try {
       if (widget.formKey.currentState.validate()) {
-        print("success validate");
         context.read<GlobalProvider>().setLoading(true);
         widget.formKey.currentState.save();
         if (context.read<GlobalProvider>().isRegister) {
-          print("ke register");
           final result = await userAPI.userRegister(
             username: username,
             password: password,
@@ -96,8 +95,6 @@ class _FormUserState extends State<FormUser> {
           context.read<GlobalProvider>().setRegister(false);
           context.read<GlobalProvider>().setLoading(false);
         } else {
-          print("ke Login");
-
           final result = await userAPI.userLogin(
             username: username,
             password: password,
@@ -107,7 +104,6 @@ class _FormUserState extends State<FormUser> {
           context.read<GlobalProvider>().setLoading(false);
         }
       } else {
-        print("failed validate");
         return null;
       }
     } catch (e) {
