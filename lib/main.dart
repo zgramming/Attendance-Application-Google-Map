@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 
-import 'src/providers/zabsen_provider.dart';
+import 'src/providers/absen_provider.dart';
 import 'src/providers/user_provider.dart';
+import 'src/providers/maps_provider.dart';
 import 'src/app.dart';
 
 Future<void> main() async {
@@ -13,11 +14,14 @@ Future<void> main() async {
         ChangeNotifierProvider<GlobalProvider>(
           create: (_) => GlobalProvider(),
         ),
-        ChangeNotifierProvider<ZAbsenProvider>(
-          create: (_) => ZAbsenProvider(),
+        ChangeNotifierProvider<AbsenProvider>(
+          create: (_) => AbsenProvider(),
         ),
         ChangeNotifierProvider<UserProvider>(
           create: (_) => UserProvider(),
+        ),
+        ChangeNotifierProvider<MapsProvider>(
+          create: (_) => MapsProvider(),
         ),
       ],
       child: MyApp(),
