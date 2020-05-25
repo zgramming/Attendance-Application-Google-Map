@@ -6,6 +6,7 @@ class DestinasiModel {
   double longitude;
   String keterangan;
   String image;
+  String status;
 
   DestinasiModel({
     this.idDestinasi,
@@ -15,6 +16,7 @@ class DestinasiModel {
     this.longitude,
     this.keterangan,
     this.image,
+    this.status,
   });
 
   factory DestinasiModel.fromJson(Map<String, dynamic> json) => DestinasiModel(
@@ -25,6 +27,7 @@ class DestinasiModel {
         longitude: double.parse(json["longitude"]),
         keterangan: json["keterangan"],
         image: json["image"],
+        status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,5 +38,6 @@ class DestinasiModel {
         "longitude": longitude,
         "keterangan": keterangan,
         "image": image,
+        "status": status,
       };
 }
