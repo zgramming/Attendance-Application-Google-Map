@@ -14,9 +14,11 @@ import './widgets/welcome_screen/button_attendance.dart';
 
 import '../screens/welcome_screen.dart';
 
-import '../../function/zabsen_function.dart';
-import '../../providers/zabsen_provider.dart';
+import '../../function/common_function.dart';
+
+import '../../providers/absen_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../providers/maps_provider.dart';
 
 class MapScreen extends StatefulWidget {
   static const routeNamed = "/map-screen";
@@ -54,13 +56,10 @@ class _MapScreenState extends State<MapScreen> {
           constraints: BoxConstraints(minHeight: sizes.height(context)),
           child: Stack(
             children: [
-              Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
+              Selector2<MapsProvider, AbsenProvider, Tuple2<Position, DestinasiModel>>(
                 selector: (_, provider1, provider2) =>
                     Tuple2(provider1.currentPosition, provider2.destinasiModel),
                 builder: (_, value, __) {
-                  // final distanceTwoLocation = commonF.getDistanceLocation(value.item1, value.item2);
-                  // print(
-                  //     "Jarak $distanceTwoLocation || Lokasi Saya ${value.item1.latitude} ${value.item1.longitude}");
                   return GoogleMap(
                     myLocationEnabled: true,
                     initialCameraPosition: CameraPosition(
@@ -97,24 +96,26 @@ class _MapScreenState extends State<MapScreen> {
                 bottom: 30,
                 left: 10,
                 right: 50,
-                child: Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
+                child: Selector2<MapsProvider, AbsenProvider, Tuple2<Position, DestinasiModel>>(
                   selector: (_, provider1, provider2) =>
                       Tuple2(provider1.currentPosition, provider2.destinasiModel),
                   builder: (_, value, __) => ButtonAttendance(
-                    onTapAbsen: () => _validateAbsenMasuk(
-                      commonF.getDistanceLocation(
+                    onTapAbsen: () => _validateAbsen(
+                      distanceTwoLocation: commonF.getDistanceLocation(
                         value.item1,
                         value.item2,
                       ),
-                      radiusCircle,
+                      radius: radiusCircle,
+                      isAbsentIn: true,
                     ),
                     backgroundColor: Colors.transparent,
-                    onTapPulang: () => _validateAbsenPulang(
-                      commonF.getDistanceLocation(
+                    onTapPulang: () => _validateAbsen(
+                      distanceTwoLocation: commonF.getDistanceLocation(
                         value.item1,
                         value.item2,
                       ),
-                      radiusCircle,
+                      radius: radiusCircle,
+                      isAbsentIn: false,
                     ),
                   ),
                 ),
@@ -130,7 +131,7 @@ class _MapScreenState extends State<MapScreen> {
                 top: 10,
                 left: 10,
               ),
-              Selector2<ZAbsenProvider, ZAbsenProvider, Tuple2<Position, DestinasiModel>>(
+              Selector2<MapsProvider, AbsenProvider, Tuple2<Position, DestinasiModel>>(
                 selector: (_, provider1, provider2) =>
                     Tuple2(provider1.currentPosition, provider2.destinasiModel),
                 builder: (_, value, __) => Align(
@@ -160,7 +161,7 @@ class _MapScreenState extends State<MapScreen> {
     const LocationOptions locationOptions = LocationOptions();
     final Stream<Position> positionStream = Geolocator().getPositionStream(locationOptions);
     _positionStream = positionStream.listen((Position position) {
-      context.read<ZAbsenProvider>().setTrackingLocation(position);
+      context.read<MapsProvider>().setTrackingLocation(position);
       print(
           "Berhasil Tracking Dengan Hasil Lat=${position.latitude} Long=${position.longitude} Accuracy=${position.accuracy} Speed=${position.speed} Mocked=${position.mocked}");
     }, onError: (error) => print("Error Handling Listen Stream ${error.toString()}"));
@@ -172,8 +173,8 @@ class _MapScreenState extends State<MapScreen> {
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(
-            context.read<ZAbsenProvider>().currentPosition.latitude,
-            context.read<ZAbsenProvider>().currentPosition.longitude,
+            context.read<MapsProvider>().currentPosition.latitude,
+            context.read<MapsProvider>().currentPosition.longitude,
           ),
           zoom: 20.5,
         ),
@@ -181,59 +182,48 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _validateAbsenMasuk(double distanceTwoLocation, double radius) async {
-    context.read<GlobalProvider>().setLoading(true);
+  void _validateAbsen({
+    @required double distanceTwoLocation,
+    @required double radius,
+    @required bool isAbsentIn,
+  }) async {
     final userProvider = context.read<UserProvider>();
+    final absenProvider = context.read<AbsenProvider>();
+    final globalProvider = context.read<GlobalProvider>();
     final isInsideRadius = commonF.isInsideRadiusCircle(distanceTwoLocation, radius);
     if (isInsideRadius) {
       try {
+        globalProvider.setLoading(true);
         final trueTime = await commonF.getTrueTime();
         final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
         print('PROSES INPUT ABSENSI MASUK');
-        final result = await userProvider.absensiMasuk(
-          idUser: userProvider.user.idUser,
-          tanggalAbsen: trueTime,
-          tanggalAbsenMasuk: trueTime,
-          jamAbsenMasuk: timeFormat,
-          createdDate: trueTime,
-        );
+        String result;
+        if (isAbsentIn) {
+          result = await absenProvider.absensiMasuk(
+            idUser: userProvider.user.idUser,
+            tanggalAbsen: trueTime,
+            tanggalAbsenMasuk: trueTime,
+            jamAbsenMasuk: timeFormat,
+            createdDate: trueTime,
+          );
+        } else {
+          result = await absenProvider.absensiPulang(
+            idUser: userProvider.user.idUser,
+            tanggalAbsenPulang: trueTime,
+            jamAbsenPulang: timeFormat,
+            updateDate: trueTime,
+          );
+        }
         globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
-        context.read<GlobalProvider>().setLoading(false);
+        globalProvider.setLoading(false);
         print('SELESAI INPUT ABSENSI MASUK');
-
         Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
       } catch (e) {
-        globalF.showToast(message: e, isError: true);
-        context.read<GlobalProvider>().setLoading(false);
+        globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+        globalProvider.setLoading(false);
       }
     } else {
       globalF.showToast(message: "Anda Diluar Jangkauan Absensi", isError: true);
-      context.read<GlobalProvider>().setLoading(false);
-    }
-  }
-
-  void _validateAbsenPulang(double distanceTwoLocation, double radius) async {
-    context.read<GlobalProvider>().setLoading(true);
-    final userProvider = context.read<UserProvider>();
-    final isInsideRadius = commonF.isInsideRadiusCircle(distanceTwoLocation, radius);
-    if (isInsideRadius) {
-      final trueTime = await commonF.getTrueTime();
-      final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
-      print('PROSES INPUT ABSENSI PULANG');
-      final result = await userProvider.absensiPulang(
-        idUser: userProvider.user.idUser,
-        tanggalAbsenPulang: trueTime,
-        jamAbsenPulang: timeFormat,
-        updateDate: trueTime,
-      );
-      globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
-      context.read<GlobalProvider>().setLoading(false);
-      print('SELESAI INPUT ABSENSI PULANG');
-
-      Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
-    } else {
-      globalF.showToast(message: "Anda Diluar Jangkauan Absensi", isError: true);
-      context.read<GlobalProvider>().setLoading(false);
     }
   }
 }
