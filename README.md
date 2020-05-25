@@ -32,11 +32,12 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 ## How To Use Application
 
 ## Improvement Waiting List
-- [ ] Adding Feature Check Mockup Location While Attendance.
-- [ ] Adding Feature Add Destination based on user choose in maps.
-- [ ] Adding Feature Update & Delete User Profile
-- [ ] Adding Feature Pick Destination
-- [ ] Adding Drawer => Absensi , Destinasi , Akun 
+
+- [ ] Adding Feature Check Mockup Location While Attendance
+- [x] Adding Feature Add Destination based on user choose in maps
+- [x] Adding Feature Update & Delete User Profile
+- [x] Adding Feature Pick Destination
+- [x] Adding Drawer => Absensi , Destinasi , Akun
 - [ ] Unimaginable Improvements 
 
 ## Contributing
