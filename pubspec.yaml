@@ -33,6 +33,7 @@ dependencies:
   scrollable_positioned_list: ^0.1.5
   tuple: ^1.0.3
   image_picker: ^0.6.6+1
+  url_launcher: ^5.4.10
 
   global_template:
     path: global_template
