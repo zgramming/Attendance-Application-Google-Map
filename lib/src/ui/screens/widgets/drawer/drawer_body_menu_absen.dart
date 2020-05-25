@@ -3,11 +3,13 @@ import 'package:network/network.dart';
 import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 
-import '../../maps_screen.dart';
-import '../../../../providers/zabsen_provider.dart';
-import '../../../../providers/user_provider.dart';
-
 import './drawer_body_menu.dart';
+
+import '../../maps_screen.dart';
+
+import '../../../../providers/absen_provider.dart';
+import '../../../../providers/user_provider.dart';
+import '../../../../providers/maps_provider.dart';
 
 class DrawerBodyMenuAbsen extends StatefulWidget {
   const DrawerBodyMenuAbsen({
@@ -101,10 +103,10 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
     context.read<GlobalProvider>().setLoading(true);
     try {
       print('Proses Mendapatkan Initial Position');
-      await context.read<ZAbsenProvider>().getCurrentPosition();
+      await context.read<MapsProvider>().getCurrentPosition();
       print('Proses Menyimpan Destinasi User');
       await context
-          .read<ZAbsenProvider>()
+          .read<AbsenProvider>()
           .saveDestinasiUser(context.read<UserProvider>().user.idUser)
           .then((_) => context.read<GlobalProvider>().setLoading(false))
           .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
@@ -117,9 +119,9 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
   void onTapPulang() async {
     context.read<GlobalProvider>().setLoading(true);
     try {
-      await context.read<ZAbsenProvider>().getCurrentPosition();
+      await context.read<MapsProvider>().getCurrentPosition();
       await context
-          .read<ZAbsenProvider>()
+          .read<AbsenProvider>()
           .saveDestinasiUser(context.read<UserProvider>().user.idUser)
           .then((_) => context.read<GlobalProvider>().setLoading(false))
           .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
