@@ -36,36 +36,40 @@ class UserProfile extends StatelessWidget {
                       style: appTheme.subtitle2(context),
                     ),
                   ),
-                  Stack(
-                    children: [
-                      InkWell(
-                        //TODO Update Image User
-                        onTap: () => _userUpdateImage(context),
-                        borderRadius: BorderRadius.circular(20),
-                        child: ShowImageNetwork(
-                          imageUrl: value.image.isEmpty
-                              ? "https://flutter.io/images/catalog-widget-placeholder.png"
-                              : "${appConfig.baseImageApiUrl}/user/${value.image}",
-                          isCircle: true,
-                          padding: const EdgeInsets.all(20),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: CircleAvatar(
-                          backgroundColor: colorPallete.accentColor,
-                          foregroundColor: colorPallete.white,
-                          radius: 10,
-                          child: Icon(
-                            FontAwesomeIcons.cameraRetro,
-                            size: 10,
+                  Selector<GlobalProvider, bool>(
+                    selector: (_, globalProvider) => globalProvider.isImageLoading,
+                    builder: (_, isImageLoading, __) => isImageLoading
+                        ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                        : Stack(
+                            children: [
+                              InkWell(
+                                onTap: () => _userUpdateImage(context),
+                                borderRadius: BorderRadius.circular(20),
+                                child: ShowImageNetwork(
+                                  imageUrl: value.image.isEmpty
+                                      ? "https://flutter.io/images/catalog-widget-placeholder.png"
+                                      : "${appConfig.baseImageApiUrl}/user/${value.image}",
+                                  isCircle: true,
+                                  padding: const EdgeInsets.all(20),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: CircleAvatar(
+                                  backgroundColor: colorPallete.accentColor,
+                                  foregroundColor: colorPallete.white,
+                                  radius: 10,
+                                  child: Icon(
+                                    FontAwesomeIcons.cameraRetro,
+                                    size: 10,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                      )
-                    ],
-                  )
+                  ),
                 ],
               ),
             )
@@ -76,6 +80,8 @@ class UserProfile extends StatelessWidget {
   }
 
   void _userUpdateImage(BuildContext context) async {
+    final globalProvider = context.read<GlobalProvider>();
+    final userProvider = context.read<UserProvider>();
     final imageFile = await ImagePicker.pickImage(
       source: ImageSource.camera,
       preferredCameraDevice: CameraDevice.front,
@@ -87,7 +93,7 @@ class UserProfile extends StatelessWidget {
       return null;
     } else {
       try {
-        final userProvider = context.read<UserProvider>();
+        globalProvider.setImageLoading(true);
         print("Proses Upload & Update Image ");
         final result = await userProvider.userUpdateImage(userProvider.user.idUser, imageFile);
 
@@ -95,8 +101,10 @@ class UserProfile extends StatelessWidget {
         print("Image Size ${await imageFile.length()}");
         await userProvider.saveSessionUser(list: result);
         globalF.showToast(message: "Berhasil Update Gambar Profile ", isSuccess: true);
+        globalProvider.setImageLoading(false);
       } catch (e) {
         globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+        globalProvider.setImageLoading(false);
       }
     }
   }
