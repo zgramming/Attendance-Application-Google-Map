@@ -10,9 +10,11 @@ import './drawer_body_menu_absen.dart';
 import '../../login_screen.dart';
 import '../../user_profil_screen.dart';
 import '../../add_destination_screen.dart';
+import '../../pick_destination_screen.dart';
 
-import '../../../../providers/zabsen_provider.dart';
+import '../../../../providers/absen_provider.dart';
 import '../../../../providers/user_provider.dart';
+import '../../../../providers/maps_provider.dart';
 
 class DrawerBody extends StatelessWidget {
   const DrawerBody({
@@ -38,7 +40,7 @@ class DrawerBody extends StatelessWidget {
         DrawerBodyMenu(
           icon: FontAwesomeIcons.mapMarkerAlt,
           subtitle: "Pilih Destinasi ",
-          onTap: () => Navigator.of(context).pushNamed(AddDestinationScreen.routeNamed),
+          onTap: () => Navigator.of(context).pushNamed(PickDestinationScreen.routeNamed),
         ),
         DrawerBodyTitle(title: "Akun"),
         DrawerBodyMenu(
@@ -79,10 +81,10 @@ class DrawerBody extends StatelessWidget {
     // Future.delayed(Duration(seconds: 4), () => context.read<GlobalProvider>().setLoading(false));
     try {
       print('Proses Mendapatkan Initial Position');
-      await context.read<ZAbsenProvider>().getCurrentPosition();
+      await context.read<MapsProvider>().getCurrentPosition();
       print('Proses Menyimpan Destinasi User');
       await context
-          .read<ZAbsenProvider>()
+          .read<AbsenProvider>()
           .saveDestinasiUser(context.read<UserProvider>().user.idUser)
           .then((_) => context.read<GlobalProvider>().setLoading(false))
           .then((_) => Navigator.of(context).pushNamed(AddDestinationScreen.routeNamed));
