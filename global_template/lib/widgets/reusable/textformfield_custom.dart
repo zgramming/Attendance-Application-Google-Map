@@ -40,6 +40,7 @@ class TextFormFieldCustom extends StatelessWidget {
   final TextStyle hintStyle;
 
   final Function(String) onFieldSubmitted;
+  final Function(String) onChanged;
   final Function(String) onSaved;
 
   TextFormFieldCustom({
@@ -54,6 +55,7 @@ class TextFormFieldCustom extends StatelessWidget {
     this.borderFocusColor,
     this.inputFormatter,
     this.onFieldSubmitted,
+    this.onChanged,
     this.radius = 8,
     this.hintText,
     this.labelText,
@@ -126,6 +128,7 @@ class TextFormFieldCustom extends StatelessWidget {
       inputFormatters: inputFormatter,
       focusNode: focusNode,
       onFieldSubmitted: onFieldSubmitted,
+      onChanged: onChanged,
       validator: isValidatorEnable
           ? (value) {
               if (value.isEmpty || value == null) {
