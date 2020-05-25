@@ -11,7 +11,6 @@ class UserProvider extends ChangeNotifier {
   }
   final String userKey = 'userKey';
   UserModel _user = UserModel();
-
   UserModel get user => _user;
 
   Future<void> saveSessionUser({
@@ -47,46 +46,6 @@ class UserProvider extends ChangeNotifier {
     return result;
   }
 
-  Future<String> absensiMasuk({
-    @required String idUser,
-    @required DateTime tanggalAbsen,
-    @required DateTime tanggalAbsenMasuk,
-    @required String jamAbsenMasuk,
-    @required DateTime createdDate,
-  }) async {
-    try {
-      final result = await absensiAPI.absensiMasuk(
-        idUser: idUser,
-        tanggalAbsen: tanggalAbsen,
-        tanggalAbsenMasuk: tanggalAbsenMasuk,
-        jamAbsenMasuk: jamAbsenMasuk,
-        createdDate: createdDate,
-      );
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<String> absensiPulang({
-    @required String idUser,
-    @required DateTime tanggalAbsenPulang,
-    @required String jamAbsenPulang,
-    @required DateTime updateDate,
-  }) async {
-    try {
-      final result = await absensiAPI.absensiPulang(
-        idUser: idUser,
-        tanggalAbsenPulang: tanggalAbsenPulang,
-        jamAbsenPulang: jamAbsenPulang,
-        updateDate: updateDate,
-      );
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
-
   Future<List<UserModel>> userUpdateImage(String idUser, File image) async {
     try {
       final result = await userAPI.userUpdateImage(idUser: idUser, imageFile: image);
@@ -108,25 +67,6 @@ class UserProvider extends ChangeNotifier {
   Future<String> userDelete({@required String idUser}) async {
     try {
       final result = await userAPI.userDelete(idUser: idUser);
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<String> destinationRegister({
-    @required String idUser,
-    @required String nameDestination,
-    @required double latitude,
-    @required double longitude,
-  }) async {
-    try {
-      final result = await destinasiAPI.destinationRegister(
-        idUser: idUser,
-        nameDestination: nameDestination,
-        latitude: latitude,
-        longitude: longitude,
-      );
       return result;
     } catch (e) {
       throw e;
