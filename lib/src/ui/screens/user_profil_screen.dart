@@ -25,9 +25,14 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: InkWell(
-              onTap: () => _userUpdateFullName(context),
-              child: Icon(FontAwesomeIcons.check),
+            child: Selector<GlobalProvider, bool>(
+              selector: (_, provider) => provider.isLoading,
+              builder: (_, isLoading, __) => isLoading
+                  ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                  : InkWell(
+                      onTap: () => _userUpdateFullName(context),
+                      child: Icon(FontAwesomeIcons.check),
+                    ),
             ),
           ),
         ],
@@ -42,33 +47,38 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
                 const SizedBox(height: 15),
                 Align(
                   alignment: Alignment.center,
-                  child: Stack(
-                    children: [
-                      InkWell(
-                        onTap: () => _userUpdateImage(context),
-                        borderRadius: BorderRadius.circular(40),
-                        child: ShowImageNetwork(
-                          imageUrl: "${appConfig.baseImageApiUrl}/user/${user.image}",
-                          isCircle: true,
-                          alignment: Alignment.center,
-                          imageCircleRadius: 80,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: CircleAvatar(
-                          backgroundColor: colorPallete.accentColor,
-                          foregroundColor: colorPallete.white,
-                          radius: 20,
-                          child: Icon(
-                            FontAwesomeIcons.cameraRetro,
-                            size: 20,
+                  child: Selector<GlobalProvider, bool>(
+                    selector: (_, globalProvider) => globalProvider.isImageLoading,
+                    builder: (_, isImageLoading, __) => isImageLoading
+                        ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                        : Stack(
+                            children: [
+                              InkWell(
+                                onTap: () => _userUpdateImage(context),
+                                borderRadius: BorderRadius.circular(40),
+                                child: ShowImageNetwork(
+                                  imageUrl: "${appConfig.baseImageApiUrl}/user/${user.image}",
+                                  isCircle: true,
+                                  alignment: Alignment.center,
+                                  imageCircleRadius: 80,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: CircleAvatar(
+                                  backgroundColor: colorPallete.accentColor,
+                                  foregroundColor: colorPallete.white,
+                                  radius: 20,
+                                  child: Icon(
+                                    FontAwesomeIcons.cameraRetro,
+                                    size: 20,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                      )
-                    ],
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -104,6 +114,8 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
   }
 
   void _userUpdateImage(BuildContext context) async {
+    final globalProvider = context.read<GlobalProvider>();
+    final userProvider = context.read<UserProvider>();
     final imageFile = await ImagePicker.pickImage(
       source: ImageSource.camera,
       preferredCameraDevice: CameraDevice.front,
@@ -115,7 +127,8 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
       return null;
     } else {
       try {
-        final userProvider = context.read<UserProvider>();
+        globalProvider.setImageLoading(true);
+
         print("Proses Upload & Update Image ");
         final result = await userProvider.userUpdateImage(userProvider.user.idUser, imageFile);
 
@@ -123,24 +136,30 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
         print("Image Size ${await imageFile.length()}");
         await userProvider.saveSessionUser(list: result);
         globalF.showToast(message: "Berhasil Update Gambar Profile ", isSuccess: true);
+        globalProvider.setImageLoading(false);
       } catch (e) {
         globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+        globalProvider.setImageLoading(false);
       }
     }
   }
 
   void _userUpdateFullName(BuildContext context) async {
     final form = _formKey.currentState;
+    final userProvider = context.read<UserProvider>();
+    final globalProvider = context.read<GlobalProvider>();
+
     if (form.validate()) {
       form.save();
-      print(fullName);
       try {
-        final userProvider = context.read<UserProvider>();
+        globalProvider.setLoading(true);
         final result = await userProvider.userUpdateFullName(userProvider.user.idUser, fullName);
         await userProvider.saveSessionUser(list: result);
         globalF.showToast(message: "Berhasil Update Nama Lengkap", isSuccess: true);
+        globalProvider.setLoading(false);
       } catch (e) {
         globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+        globalProvider.setLoading(false);
       }
     } else {
       globalF.showToast(message: "Form Tidak Lengkap", isError: true, isLongDuration: true);
