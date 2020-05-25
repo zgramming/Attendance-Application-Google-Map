@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import './table_attendance_body.dart';
 
-import '../../../../providers/zabsen_provider.dart';
+import '../../../../providers/absen_provider.dart';
 import '../../../../providers/user_provider.dart';
 
 class TableAttendance extends StatefulWidget {
@@ -17,7 +17,7 @@ class TableAttendance extends StatefulWidget {
 class _TableAttendanceState extends State<TableAttendance> {
   Future<List<AbsensiModel>> getAbsenMonthly(DateTime now) async {
     final result = context
-        .read<ZAbsenProvider>()
+        .read<AbsenProvider>()
         .fetchAbsenMonthly(context.read<UserProvider>().user.idUser, now);
     return result;
   }

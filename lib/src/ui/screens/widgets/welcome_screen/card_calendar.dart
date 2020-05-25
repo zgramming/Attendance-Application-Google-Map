@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:network/network.dart';
 import 'package:global_template/global_template.dart';
 
-import '../../../../function/zabsen_function.dart';
+import '../../../../function/common_function.dart';
 
 class CardCalendar extends StatelessWidget {
   const CardCalendar({
