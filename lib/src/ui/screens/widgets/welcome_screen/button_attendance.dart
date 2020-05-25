@@ -8,7 +8,8 @@ import '../live_clock.dart';
 import '../../maps_screen.dart';
 
 import '../../../../providers/user_provider.dart';
-import '../../../../providers/zabsen_provider.dart';
+import '../../../../providers/absen_provider.dart';
+import '../../../../providers/maps_provider.dart';
 
 class ButtonAttendance extends StatefulWidget {
   final Function onTapAbsen;
@@ -92,7 +93,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                               ? null
                               : (snapshot.data == 2)
                                   ? null
-                                  : (snapshot.data == 1) ? null : widget.onTapAbsen ?? onTapAbsen,
+                                  : (snapshot.data == 1) ? null : widget.onTapAbsen ?? goToMaps,
                           padding: const EdgeInsets.symmetric(horizontal: 6.0),
                           child: isLoading ? Text("Loading...") : LiveClock(),
                         ),
@@ -108,7 +109,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                               ? null
                               : (snapshot.data == 2)
                                   ? null
-                                  : (snapshot.data != 1) ? null : widget.onTapPulang ?? onTapPulang,
+                                  : (snapshot.data != 1) ? null : widget.onTapPulang ?? goToMaps,
                         ),
                       ),
                     ),
@@ -123,37 +124,25 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
     );
   }
 
-  void onTapAbsen() async {
+  void goToMaps() async {
     //! Membuat Button Menjadi Disable , Untuk Prevent Double Click
-    context.read<GlobalProvider>().setLoading(true);
-    // Future.delayed(Duration(seconds: 4), () => context.read<GlobalProvider>().setLoading(false));
+    final globalProvider = context.read<GlobalProvider>();
+    final absenProvider = context.read<AbsenProvider>();
+    final userProvider = context.read<UserProvider>();
+    final mapsProvider = context.read<MapsProvider>();
     try {
+      globalProvider.setLoading(true);
       print('Proses Mendapatkan Initial Position');
-      await context.read<ZAbsenProvider>().getCurrentPosition();
+      await mapsProvider.getCurrentPosition();
       print('Proses Menyimpan Destinasi User');
-      await context
-          .read<ZAbsenProvider>()
-          .saveDestinasiUser(context.read<UserProvider>().user.idUser)
-          .then((_) => context.read<GlobalProvider>().setLoading(false))
-          .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
+      await absenProvider.saveDestinasiUser(userProvider.user.idUser, isSelected: "t");
+      print("Nonaktif Loading");
+      globalProvider.setLoading(false);
+      print("Pindah Ke Halaman Maps");
+      Navigator.of(context).pushNamed(MapScreen.routeNamed);
     } catch (e) {
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
-      context.read<GlobalProvider>().setLoading(false);
-    }
-  }
-
-  void onTapPulang() async {
-    context.read<GlobalProvider>().setLoading(true);
-    try {
-      await context.read<ZAbsenProvider>().getCurrentPosition();
-      await context
-          .read<ZAbsenProvider>()
-          .saveDestinasiUser(context.read<UserProvider>().user.idUser)
-          .then((_) => context.read<GlobalProvider>().setLoading(false))
-          .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
-    } catch (e) {
-      globalF.showToast(message: e, isError: true);
-      context.read<GlobalProvider>().setLoading(false);
+      globalProvider.setLoading(false);
     }
   }
 }
