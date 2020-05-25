@@ -6,12 +6,15 @@ import 'package:http/http.dart' as http;
 import 'package:network/network.dart';
 
 class DestinasiApi {
-  Future<List<DestinasiModel>> getDestinationById({@required String idUser}) async {
-    var result;
+  Future<List<DestinasiModel>> getDestinationById({
+    @required String idUser,
+    String isSelected,
+  }) async {
+    List<DestinasiModel> result;
     try {
       result = await reusableRequestServer.requestServer(() async {
         final response = await http.get(
-          "${appConfig.baseApiUrl}/${appConfig.destinasiController}/destinationById?id_user=$idUser",
+          "${appConfig.baseApiUrl}/${appConfig.destinasiController}/destinationById?id_user=$idUser&is_selected=$isSelected",
         );
         final Map<String, dynamic> responseJson = json.decode(response.body);
         print(responseJson);
