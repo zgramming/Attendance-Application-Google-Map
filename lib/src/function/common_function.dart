@@ -1,13 +1,14 @@
+import 'package:ntp/ntp.dart';
+import 'package:network/network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:android_intent/android_intent.dart';
 import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:location_permissions/location_permissions.dart' as lc;
-import 'package:network/network.dart';
-import 'package:ntp/ntp.dart';
 
 class CommonFunction {
   void initPermission(BuildContext context) async {
@@ -236,6 +237,17 @@ class CommonFunction {
       return colorWeekend ?? colorPallete.weekEnd;
     } else {
       return colorWeekDay;
+    }
+  }
+
+  Future<void> openGoogleMap(double latitude, double longitude) async {
+    final String googleMapUrl =
+        "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+
+    try {
+      await canLaunch(googleMapUrl);
+    } catch (e) {
+      throw e;
     }
   }
 }
