@@ -62,6 +62,48 @@ class DestinasiApi {
     }
     return result;
   }
+
+  Future<String> destinationUpdateStatus(String idDestinasi) async {
+    var result;
+    try {
+      result = await reusableRequestServer.requestServer(() async {
+        final response = await http.post(
+          "${appConfig.baseApiUrl}/${appConfig.absensiController}/destinationUpdateStatus",
+          body: {"id_destinasi": "$idDestinasi"},
+        );
+        final Map<String, dynamic> responseJson = json.decode(response.body);
+        if (response.statusCode == 200) {
+          return responseJson['message'];
+        } else {
+          throw responseJson['message'];
+        }
+      });
+    } catch (e) {
+      throw e;
+    }
+    return result;
+  }
+
+  Future<String> destinationDelete(String idDestinasi) async {
+    var result;
+    try {
+      result = await reusableRequestServer.requestServer(() async {
+        final response = await http.post(
+          "${appConfig.baseApiUrl}/${appConfig.absensiController}/destinationDelete",
+          body: {"id_destinasi": "$idDestinasi"},
+        );
+        final Map<String, dynamic> responseJson = json.decode(response.body);
+        if (response.statusCode == 200) {
+          return responseJson['message'];
+        } else {
+          throw responseJson['message'];
+        }
+      });
+    } catch (e) {
+      throw e;
+    }
+    return result;
+  }
 }
 
 final destinasiAPI = DestinasiApi();
