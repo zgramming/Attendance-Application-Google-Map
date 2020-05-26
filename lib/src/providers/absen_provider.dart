@@ -1,10 +1,16 @@
 import 'package:flutter/foundation.dart';
-import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
+import 'package:global_template/global_template.dart';
 
 class AbsenProvider extends ChangeNotifier {
   DestinasiModel _destinasiModel = DestinasiModel();
   DestinasiModel get destinasiModel => _destinasiModel;
+
+  List<DestinasiModel> _listDestinasi = [];
+  List<DestinasiModel> get listDestinasi => [..._listDestinasi];
+
+  List<DestinasiModel> _filteredListDestinasi = [];
+  List<DestinasiModel> get filteredListDestinasi => [..._filteredListDestinasi];
 
   Future<List<AbsensiModel>> fetchAbsenMonthly(String idUser, DateTime dateTime) async {
     try {
@@ -87,7 +93,40 @@ class AbsenProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> saveDestinasiUser(String idUser, {String isSelected}) async {
+  Future<void> fetchDestinationUser(String idUser, {String isSelected}) async {
+    try {
+      final result = await destinasiAPI.getDestinationById(idUser: idUser, isSelected: isSelected);
+      final List<DestinasiModel> tempList = [...?result];
+      _listDestinasi = tempList;
+
+      print("List Destinasi Length ${_listDestinasi.length} ");
+    } catch (e) {
+      throw e;
+    }
+    notifyListeners();
+  }
+
+  Future<String> destinationUpdateStatus(String idDestinasi) async {
+    try {
+      final result = await destinasiAPI.destinationUpdateStatus(idDestinasi);
+      setSelectedDestination(idDestinasi);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<String> destinationDelete(String idDestinasi) async {
+    try {
+      final result = await destinasiAPI.destinationDelete(idDestinasi);
+      deleteDestination(idDestinasi);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> saveSelectedDestinationUser(String idUser, {String isSelected}) async {
     try {
       final result = await destinasiAPI.getDestinationById(idUser: idUser, isSelected: isSelected);
       if (result.isNotEmpty || result != null) {
@@ -99,6 +138,52 @@ class AbsenProvider extends ChangeNotifier {
     } catch (e) {
       throw e;
     }
+    notifyListeners();
+  }
+
+  void filterListDestination(String query) {
+    List<DestinasiModel> tempList = [];
+    List<DestinasiModel> notSelectedDestination =
+        _listDestinasi.where((element) => element.status != "t").toList();
+    if (query.isEmpty) {
+      tempList = [];
+    } else {
+      notSelectedDestination.forEach((element) {
+        if (element.namaDestinasi.toLowerCase().contains(query.toLowerCase())) {
+          tempList.add(element);
+        }
+      });
+    }
+    _filteredListDestinasi = tempList;
+
+    notifyListeners();
+  }
+
+  void resetFilterListDestination() {
+    List<DestinasiModel> tempList = [];
+    _filteredListDestinasi = tempList;
+    notifyListeners();
+  }
+
+  void setSelectedDestination(String idDestinasi) {
+    List<DestinasiModel> tempList = [];
+    for (var item in _listDestinasi) {
+      if (item.status == "t") {
+        item.status = null;
+      }
+      if (item.idDestinasi == idDestinasi) {
+        item.status = "t";
+      }
+
+      tempList.add(item);
+    }
+
+    _listDestinasi = tempList;
+    notifyListeners();
+  }
+
+  void deleteDestination(String idDestinasi) {
+    _listDestinasi.removeWhere((element) => element.idDestinasi == idDestinasi);
     notifyListeners();
   }
 }
