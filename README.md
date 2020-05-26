@@ -21,13 +21,13 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 
 ## How Application Will Look
 
-|Splash Screen|Form Login|Form Register|
+|Splash Screen|Home Screen|Profil Screen|
 |:-----------:|:--------:|:-----------:|
-|<img src="https://flutter-absensi.000webhostapp.com/readme/splash_screen.gif" height="500">|<img src="https://flutter-absensi.000webhostapp.com/readme/form_login.png" height="500">|<img src="https://flutter-absensi.000webhostapp.com/readme/form_register.png" height="500">|
+|<img src="http://www.zimprov.id/readme/absensi_online/splash_screen.gif" height="500">|<img src="http://www.zimprov.id/readme/absensi_online/welcome_screen.gif" height="500">|<img src="http://www.zimprov.id/readme/absensi_online/profil_screen.gif" height="500">|
 
-|Welcome Screen|Maps Screen|
-|:------------:|:---------:|
-|<img src="https://flutter-absensi.000webhostapp.com/readme/welcome_screen.gif" height="500">|<img src="https://flutter-absensi.000webhostapp.com/readme/maps_screen.gif" height="500">|
+|Add Destination|Pick Destination|Maps Screen|
+|:-------------:|:--------------:|:---------:|
+|<img src="http://www.zimprov.id/readme/absensi_online/add_destination.gif" height="500">|<img src="http://www.zimprov.id/readme/absensi_online/pick_destination.gif" height="500">|<img src="http://www.zimprov.id/readme/absensi_online/maps_screen.gif" height="500">|
 
 ## How To Use Application
 
