@@ -6,6 +6,8 @@ class ColorPallete {
   Brightness getAppTheme(BuildContext context) => Theme.of(context).brightness;
   Color white = const Color(0xFFFFFFFF);
   Color black = const Color(0xFF222831);
+  Color red = const Color(0xFFd63447);
+  Color green = const Color(0xFF21bf73);
   Color transparent = const Color(0x00000000);
   Color weekEnd = const Color(0xFFf0134d);
 
