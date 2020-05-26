@@ -245,7 +245,11 @@ class CommonFunction {
         "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
 
     try {
-      await canLaunch(googleMapUrl);
+      if (await canLaunch(googleMapUrl)) {
+        await launch(googleMapUrl);
+      } else {
+        throw 'Could not open the map.';
+      }
     } catch (e) {
       throw e;
     }
