@@ -135,7 +135,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
       print('Proses Mendapatkan Initial Position');
       await mapsProvider.getCurrentPosition();
       print('Proses Menyimpan Destinasi User');
-      await absenProvider.saveDestinasiUser(userProvider.user.idUser, isSelected: "t");
+      await absenProvider.saveSelectedDestinationUser(userProvider.user.idUser, isSelected: "t");
       print("Nonaktif Loading");
       globalProvider.setLoading(false);
       print("Pindah Ke Halaman Maps");

@@ -51,28 +51,30 @@ class DrawerBody extends StatelessWidget {
         DrawerBodyMenu(
           icon: FontAwesomeIcons.userTimes,
           subtitle: "Hapus Akun",
-          onTap: () async {
-            print("Proses Delete User");
-            await context
-                .read<UserProvider>()
-                .userDelete(idUser: context.read<UserProvider>().user.idUser);
-            print("Proses Hapus Session User");
-            await context.read<UserProvider>().removeSessionUser();
-            print("Proses Pindah Halaman");
-            Navigator.of(context).pushReplacementNamed(LoginScreen.routeNamed);
-          },
+          onTap: () => _userDelete(context),
         ),
         DrawerBodyMenu(
           icon: FontAwesomeIcons.signOutAlt,
           subtitle: "Keluar",
-          onTap: () async {
-            print("Proses Perpindahan Hlaman");
-            Navigator.of(context).pushReplacementNamed(LoginScreen.routeNamed);
-          },
+          onTap: () => _userLogout(context),
         ),
       ],
       crossAxisAlignment: CrossAxisAlignment.stretch,
     );
+  }
+
+  void _userLogout(BuildContext context) async {
+    await context.read<UserProvider>().removeSessionUser();
+    Navigator.of(context).pushReplacementNamed(LoginScreen.routeNamed);
+  }
+
+  void _userDelete(BuildContext context) async {
+    print("Proses Delete User");
+    await context.read<UserProvider>().userDelete(idUser: context.read<UserProvider>().user.idUser);
+    print("Proses Hapus Session User");
+    await context.read<UserProvider>().removeSessionUser();
+    print("Proses Pindah Halaman");
+    Navigator.of(context).pushReplacementNamed(LoginScreen.routeNamed);
   }
 
   void goToAddDestination(BuildContext context) async {
@@ -85,7 +87,7 @@ class DrawerBody extends StatelessWidget {
       print('Proses Menyimpan Destinasi User');
       await context
           .read<AbsenProvider>()
-          .saveDestinasiUser(context.read<UserProvider>().user.idUser)
+          .saveSelectedDestinationUser(context.read<UserProvider>().user.idUser)
           .then((_) => context.read<GlobalProvider>().setLoading(false))
           .then((_) => Navigator.of(context).pushNamed(AddDestinationScreen.routeNamed));
     } catch (e) {

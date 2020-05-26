@@ -18,7 +18,6 @@ class CardCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuild Card Calendar");
     return SizedBox(
       width: sizes.width(context) / 5.5,
       child: Stack(

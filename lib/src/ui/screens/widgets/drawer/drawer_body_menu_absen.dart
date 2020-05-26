@@ -107,7 +107,7 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
       print('Proses Menyimpan Destinasi User');
       await context
           .read<AbsenProvider>()
-          .saveDestinasiUser(context.read<UserProvider>().user.idUser)
+          .saveSelectedDestinationUser(context.read<UserProvider>().user.idUser)
           .then((_) => context.read<GlobalProvider>().setLoading(false))
           .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
     } catch (e) {
@@ -122,7 +122,7 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
       await context.read<MapsProvider>().getCurrentPosition();
       await context
           .read<AbsenProvider>()
-          .saveDestinasiUser(context.read<UserProvider>().user.idUser)
+          .saveSelectedDestinationUser(context.read<UserProvider>().user.idUser)
           .then((_) => context.read<GlobalProvider>().setLoading(false))
           .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
     } catch (e) {

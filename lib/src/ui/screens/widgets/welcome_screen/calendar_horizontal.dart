@@ -20,7 +20,9 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
 
   Future<List<AbsensiStatusModel>> getStatusAbsensi(DateTime now) async {
     final result = absensiAPI.getStatusAbsenMonthly(
-        idUser: context.read<UserProvider>().user.idUser, dateTime: now);
+      idUser: context.read<UserProvider>().user.idUser,
+      dateTime: now,
+    );
     return result;
   }
 
@@ -52,11 +54,13 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                   future: getStatusAbsensi(dateTime),
                   builder:
                       (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done)
+                    if (snapshot.connectionState != ConnectionState.done) {
                       return LoadingFutureBuilder(isLinearProgressIndicator: true);
-                    if (snapshot.hasError) return RaisedButton(onPressed: () => setState(() => ''));
+                    }
+                    if (snapshot.hasError) {
+                      return RaisedButton(onPressed: () => setState(() => ''));
+                    }
                     if (snapshot.hasData) {
-                      print("From Calendar Horizontal Snapshot.data ${snapshot.data.length}");
                       return Container(
                         height: sizes.height(context) / 8,
                         margin: const EdgeInsets.symmetric(horizontal: 8),
