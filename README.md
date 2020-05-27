@@ -14,10 +14,10 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 ```
 ## Download Application
 
-|app-arm64-v8a|app-armeabi-v7a|app-x86_64|app-release|
-|:----:|:---------:|:-----:|:------:|
-|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-arm64-v8a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-armeabi-v7a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-x86_64.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-release.zip)
-|7,8 MB|7,4 MB|8 MB|21 MB|
+|app-arm64-v8a|app-armeabi-v7a|app-x86_64|
+|:-----------:|:-------------:|:--------:|
+|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-arm64-v8a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-armeabi-v7a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-x86_64-release.apk)|
+|7,8 MB|7,4 MB|8 MB|
 
 ## How Application Will Look
 
