@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: "Absen OnlineKu",
       theme: ThemeData(
         primaryColor: colorPallete.primaryColor,
         accentColor: colorPallete.accentColor,

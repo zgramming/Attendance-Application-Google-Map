@@ -12,7 +12,6 @@ import '../../user_profil_screen.dart';
 import '../../add_destination_screen.dart';
 import '../../pick_destination_screen.dart';
 
-import '../../../../providers/absen_provider.dart';
 import '../../../../providers/user_provider.dart';
 import '../../../../providers/maps_provider.dart';
 
