@@ -16,18 +16,18 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 
 |app-arm64-v8a|app-armeabi-v7a|app-x86_64|app-release|
 |:----:|:---------:|:-----:|:------:|
-|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-arm64-v8a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-armeabi-v7a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-x86_64.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](https://flutter-absensi.000webhostapp.com/zabsenin/apk/app-release.zip)
-|7,37MB | 7,02 MB | 7,59 MB | 19,8 MB |
+|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-arm64-v8a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-armeabi-v7a.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-x86_64.zip)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-release.zip)
+|7,8 MB|7,4 MB|8 MB|21 MB|
 
 ## How Application Will Look
 
-|Splash Screen|Form Login|Form Register|
-|:-----------:|:--------:|:-----------:|
-|<img src="https://flutter-absensi.000webhostapp.com/readme/splash_screen.gif" height="500">|<img src="https://flutter-absensi.000webhostapp.com/readme/form_login.png" height="500">|<img src="https://flutter-absensi.000webhostapp.com/readme/form_register.png" height="500">|
+|Splash Screen|Home Screen|Profil Screen|Maps Screen|
+|:-----------:|:--------:|:------------:|:---------:|
+|<img src="http://www.zimprov.id/readme/absensi_online/splash_screen.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/welcome_screen.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/profil_screen.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/maps_screen.gif" height="400" width="200">|
 
-|Welcome Screen|Maps Screen|
-|:------------:|:---------:|
-|<img src="https://flutter-absensi.000webhostapp.com/readme/welcome_screen.gif" height="500">|<img src="https://flutter-absensi.000webhostapp.com/readme/maps_screen.gif" height="500">|
+|Add Destination|Pick Destination|
+|:-------------:|:--------------:|
+|<img src="http://www.zimprov.id/readme/absensi_online/add_destination.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/pick_destination.gif" height="400" width="200">|
 
 ## How To Use Application
 
