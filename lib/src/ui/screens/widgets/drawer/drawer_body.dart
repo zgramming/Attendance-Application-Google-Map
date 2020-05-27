@@ -84,12 +84,10 @@ class DrawerBody extends StatelessWidget {
     try {
       print('Proses Mendapatkan Initial Position');
       await context.read<MapsProvider>().getCurrentPosition();
+      context.read<GlobalProvider>().setLoading(false);
+      Navigator.of(context).pushNamed(AddDestinationScreen.routeNamed);
+
       print('Proses Menyimpan Destinasi User');
-      await context
-          .read<AbsenProvider>()
-          .saveSelectedDestinationUser(context.read<UserProvider>().user.idUser)
-          .then((_) => context.read<GlobalProvider>().setLoading(false))
-          .then((_) => Navigator.of(context).pushNamed(AddDestinationScreen.routeNamed));
     } catch (e) {
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
       context.read<GlobalProvider>().setLoading(false);
