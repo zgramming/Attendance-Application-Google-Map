@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="ZAbsenin"
+        android:label="Absen OnlineKu"
         android:icon="@mipmap/ic_launcher">
          <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyDvOGYN1Fqt4U5T5XP5a1Ku4nSfwOvqY-0"/>
