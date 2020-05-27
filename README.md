@@ -21,13 +21,13 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 
 ## How Application Will Look
 
-|Splash Screen|Home Screen|Profil Screen|
-|:-----------:|:--------:|:-----------:|
-|<img src="http://www.zimprov.id/readme/absensi_online/splash_screen.gif" height="600" width="300">|<img src="http://www.zimprov.id/readme/absensi_online/welcome_screen.gif" height="600" width="300">|<img src="http://www.zimprov.id/readme/absensi_online/profil_screen.gif" height="600" width="300">|
+|Splash Screen|Home Screen|Profil Screen|Maps Screen|
+|:-----------:|:--------:|:------------:|:---------:|
+|<img src="http://www.zimprov.id/readme/absensi_online/splash_screen.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/welcome_screen.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/profil_screen.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/maps_screen.gif" height="400" width="200">|
 
-|Add Destination|Pick Destination|Maps Screen|
-|:-------------:|:--------------:|:---------:|
-|<img src="http://www.zimprov.id/readme/absensi_online/add_destination.gif" height="600" width="300">|<img src="http://www.zimprov.id/readme/absensi_online/pick_destination.gif" height="600" width="300">|<img src="http://www.zimprov.id/readme/absensi_online/maps_screen.gif" height="600" width="300">|
+|Add Destination|Pick Destination|
+|:-------------:|:--------------:|
+|<img src="http://www.zimprov.id/readme/absensi_online/add_destination.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/pick_destination.gif" height="400" width="200">|
 
 ## How To Use Application
 
