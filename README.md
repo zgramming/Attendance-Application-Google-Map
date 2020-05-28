@@ -33,7 +33,7 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 
 ## Improvement Waiting List
 
-- [ ] Adding Feature Check Mockup Location While Attendance
+- [x] Adding Feature Check Mockup Location While Attendance
 - [x] Adding Feature Add Destination based on user choose in maps
 - [x] Adding Feature Update & Delete User Profile
 - [x] Adding Feature Pick Destination
