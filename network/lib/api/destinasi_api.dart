@@ -63,13 +63,16 @@ class DestinasiApi {
     return result;
   }
 
-  Future<String> destinationUpdateStatus(String idDestinasi) async {
+  Future<String> destinationUpdateStatus({
+    @required String idDestinasi,
+    @required String idUser,
+  }) async {
     var result;
     try {
       result = await reusableRequestServer.requestServer(() async {
         final response = await http.post(
           "${appConfig.baseApiUrl}/${appConfig.absensiController}/destinationUpdateStatus",
-          body: {"id_destinasi": "$idDestinasi"},
+          body: {"id_destinasi": "$idDestinasi", "id_user": "$idUser"},
         );
         final Map<String, dynamic> responseJson = json.decode(response.body);
         if (response.statusCode == 200) {

@@ -5,6 +5,7 @@ import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../providers/absen_provider.dart';
+import '../../../../providers/user_provider.dart';
 
 class ListDestination extends StatelessWidget {
   const ListDestination({
@@ -62,10 +63,13 @@ class ListDestination extends StatelessWidget {
   void _destinationUpdateStatus(BuildContext context, String idDestinasi) async {
     final absenProvider = context.read<AbsenProvider>();
     final globalProvider = context.read<GlobalProvider>();
-
+    final userProvider = context.read<UserProvider>();
     try {
       globalProvider.setLoading(true);
-      final result = await absenProvider.destinationUpdateStatus(idDestinasi);
+      final result = await absenProvider.destinationUpdateStatus(
+        idDestinasi: idDestinasi,
+        idUser: userProvider.user.idUser,
+      );
       globalProvider.setLoading(false);
       globalF.showToast(message: result, isSuccess: true);
     } catch (e) {
