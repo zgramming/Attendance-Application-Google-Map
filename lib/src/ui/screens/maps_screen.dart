@@ -190,40 +190,50 @@ class _MapScreenState extends State<MapScreen> {
     final userProvider = context.read<UserProvider>();
     final absenProvider = context.read<AbsenProvider>();
     final globalProvider = context.read<GlobalProvider>();
+    final mapsProvider = context.read<MapsProvider>();
     final isInsideRadius = commonF.isInsideRadiusCircle(distanceTwoLocation, radius);
-    if (isInsideRadius) {
-      try {
-        globalProvider.setLoading(true);
-        final trueTime = await commonF.getTrueTime();
-        final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
-        print('PROSES INPUT ABSENSI MASUK');
-        String result;
-        if (isAbsentIn) {
-          result = await absenProvider.absensiMasuk(
-            idUser: userProvider.user.idUser,
-            tanggalAbsen: trueTime,
-            tanggalAbsenMasuk: trueTime,
-            jamAbsenMasuk: timeFormat,
-            createdDate: trueTime,
-          );
-        } else {
-          result = await absenProvider.absensiPulang(
-            idUser: userProvider.user.idUser,
-            tanggalAbsenPulang: trueTime,
-            jamAbsenPulang: timeFormat,
-            updateDate: trueTime,
-          );
+
+    if (!mapsProvider.currentPosition.mocked) {
+      if (isInsideRadius) {
+        try {
+          globalProvider.setLoading(true);
+          final trueTime = await commonF.getTrueTime();
+          final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
+          print('PROSES INPUT ABSENSI MASUK');
+          String result;
+          if (isAbsentIn) {
+            result = await absenProvider.absensiMasuk(
+              idUser: userProvider.user.idUser,
+              tanggalAbsen: trueTime,
+              tanggalAbsenMasuk: trueTime,
+              jamAbsenMasuk: timeFormat,
+              createdDate: trueTime,
+            );
+          } else {
+            result = await absenProvider.absensiPulang(
+              idUser: userProvider.user.idUser,
+              tanggalAbsenPulang: trueTime,
+              jamAbsenPulang: timeFormat,
+              updateDate: trueTime,
+            );
+          }
+          globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
+          globalProvider.setLoading(false);
+          print('SELESAI INPUT ABSENSI MASUK');
+          Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
+        } catch (e) {
+          globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+          globalProvider.setLoading(false);
         }
-        globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
-        globalProvider.setLoading(false);
-        print('SELESAI INPUT ABSENSI MASUK');
-        Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
-      } catch (e) {
-        globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
-        globalProvider.setLoading(false);
+      } else {
+        globalF.showToast(message: "Anda Diluar Jangkauan Absensi", isError: true);
       }
     } else {
-      globalF.showToast(message: "Anda Diluar Jangkauan Absensi", isError: true);
+      globalF.showToast(
+        message: "Anda Terdeteksi Menggunakan Mock Location",
+        isError: true,
+        isLongDuration: true,
+      );
     }
   }
 }
