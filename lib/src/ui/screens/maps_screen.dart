@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:tuple/tuple.dart';
 import 'package:network/network.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,7 +15,6 @@ import './widgets/welcome_screen/button_attendance.dart';
 import '../screens/welcome_screen.dart';
 
 import '../../function/common_function.dart';
-
 import '../../providers/absen_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/maps_provider.dart';
@@ -158,8 +157,8 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   trackingLocation() {
-    const LocationOptions locationOptions = LocationOptions();
-    final Stream<Position> positionStream = Geolocator().getPositionStream(locationOptions);
+    var locationOptions = LocationOptions();
+    Stream<Position> positionStream = Geolocator().getPositionStream(locationOptions);
     _positionStream = positionStream.listen((Position position) {
       context.read<MapsProvider>().setTrackingLocation(position);
       print(
@@ -199,7 +198,6 @@ class _MapScreenState extends State<MapScreen> {
           globalProvider.setLoading(true);
           final trueTime = await commonF.getTrueTime();
           final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
-          print('PROSES INPUT ABSENSI MASUK');
           String result;
           if (isAbsentIn) {
             result = await absenProvider.absensiMasuk(
@@ -219,7 +217,6 @@ class _MapScreenState extends State<MapScreen> {
           }
           globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
           globalProvider.setLoading(false);
-          print('SELESAI INPUT ABSENSI MASUK');
           Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
         } catch (e) {
           globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);

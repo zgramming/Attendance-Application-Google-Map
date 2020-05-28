@@ -9,6 +9,7 @@ class UserProvider extends ChangeNotifier {
   UserProvider() {
     _getSessionUser();
   }
+
   final String userKey = 'userKey';
   UserModel _user = UserModel();
   UserModel get user => _user;
@@ -40,10 +41,9 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> removeSessionUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    final result = await pref.remove(userKey);
+    await pref.remove(userKey);
     await _getSessionUser();
     notifyListeners();
-    return result;
   }
 
   Future<List<UserModel>> userUpdateImage(String idUser, File image) async {

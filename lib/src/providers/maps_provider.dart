@@ -35,9 +35,8 @@ class MapsProvider extends ChangeNotifier {
   CameraPosition _cameraPosition;
   CameraPosition get cameraPosition => _cameraPosition;
 
-  void setCameraPosition(CameraPosition value) {
+  void setTrackingCameraPosition(CameraPosition value) {
     _cameraPosition = value;
-    print("${_cameraPosition.target.latitude} || ${_cameraPosition.target.longitude}");
     notifyListeners();
   }
 }

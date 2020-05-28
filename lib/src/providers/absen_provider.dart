@@ -96,7 +96,7 @@ class AbsenProvider extends ChangeNotifier {
   Future<void> fetchDestinationUser(String idUser, {String isSelected}) async {
     try {
       final result = await destinasiAPI.getDestinationById(idUser: idUser, isSelected: isSelected);
-      final List<DestinasiModel> tempList = [...?result];
+      final List<DestinasiModel> tempList = result;
       _listDestinasi = tempList;
 
       print("List Destinasi Length ${_listDestinasi.length} ");
@@ -106,9 +106,15 @@ class AbsenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> destinationUpdateStatus(String idDestinasi) async {
+  Future<String> destinationUpdateStatus({
+    @required String idDestinasi,
+    @required String idUser,
+  }) async {
     try {
-      final result = await destinasiAPI.destinationUpdateStatus(idDestinasi);
+      final result = await destinasiAPI.destinationUpdateStatus(
+        idDestinasi: idDestinasi,
+        idUser: idUser,
+      );
       setSelectedDestination(idDestinasi);
       return result;
     } catch (e) {
@@ -174,7 +180,6 @@ class AbsenProvider extends ChangeNotifier {
       if (item.idDestinasi == idDestinasi) {
         item.status = "t";
       }
-
       tempList.add(item);
     }
 

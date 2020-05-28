@@ -14,8 +14,6 @@ class CommonFunction {
   void initPermission(BuildContext context) async {
     final geolocationStatus = await getGeolocationPermission();
     final gpsStatus = await getGPSService();
-    // print("Init Permission GeolocationStatus $geolocationStatus");
-    // print("Init Permission GeolocationGPS $gpsStatus");
     if (geolocationStatus != GeolocationStatus.granted) {
       showDialog(
         context: context,
@@ -66,6 +64,7 @@ class CommonFunction {
     }
     return result;
   }
+
   //! Batas Geolocator Permission
   //* Rumus Untuk Mendapatkan Jarak Antara Dua Lokasi
   //* Rumus ini yang akan digunakan untuk memperkirakan user sudah didalam radius absen / belum
@@ -209,16 +208,6 @@ class CommonFunction {
         );
       }
     } else {
-      //* Jika Tanggal Absen Lebih Dari Hari Ini , Tidak Memunculkan Circle dan Iconnya
-      // if (result.tanggalAbsen.day >= DateTime.now().day) {
-      //   icon = SizedBox();
-      // } else {
-      //   icon = CircleAvatar(
-      //     child: Icon(FontAwesomeIcons.question, size: 8),
-      //     radius: 8,
-      //     foregroundColor: Colors.white,
-      //   );
-      // }
       icon = SizedBox();
     }
     return icon;
@@ -244,7 +233,6 @@ class CommonFunction {
   Future<void> openGoogleMap(double latitude, double longitude) async {
     final String googleMapUrl =
         "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
-
     try {
       if (await canLaunch(googleMapUrl)) {
         await launch(googleMapUrl);
