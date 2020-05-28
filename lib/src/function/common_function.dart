@@ -8,7 +8,7 @@ import 'package:android_intent/android_intent.dart';
 import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
-import 'package:location_permissions/location_permissions.dart' as lc;
+import 'package:location_permissions/location_permissions.dart';
 
 class CommonFunction {
   void initPermission(BuildContext context) async {
@@ -23,7 +23,7 @@ class CommonFunction {
           typePermission: "Lokasi",
           iconPermission: FontAwesomeIcons.locationArrow,
           showCloseButton: false,
-          onAccept: () async => await lc.LocationPermissions().openAppSettings(),
+          onAccept: () async => await LocationPermissions().openAppSettings(),
         ),
       );
     } else if (!gpsStatus) {
@@ -47,8 +47,9 @@ class CommonFunction {
   Future<GeolocationStatus> getGeolocationPermission() async {
     GeolocationStatus result;
     try {
-      result = await reusableRequestServer
-          .requestServer(() async => await Geolocator().checkGeolocationPermissionStatus());
+      result = await reusableRequestServer.requestServer(() async => await Geolocator()
+          .checkGeolocationPermissionStatus(
+              locationPermission: GeolocationPermission.locationAlways));
     } catch (e) {
       throw e;
     }

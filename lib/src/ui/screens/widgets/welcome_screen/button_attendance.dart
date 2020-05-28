@@ -125,16 +125,15 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
   }
 
   void goToMaps() async {
-    //! Membuat Button Menjadi Disable , Untuk Prevent Double Click
     final globalProvider = context.read<GlobalProvider>();
     final absenProvider = context.read<AbsenProvider>();
     final userProvider = context.read<UserProvider>();
     final mapsProvider = context.read<MapsProvider>();
     try {
       globalProvider.setLoading(true);
-      print('Proses Mendapatkan Initial Position');
+      print('Get Location User');
       await mapsProvider.getCurrentPosition();
-      print('Proses Menyimpan Destinasi User');
+      print('Success Get location User');
       await absenProvider.saveSelectedDestinationUser(userProvider.user.idUser, isSelected: "t");
       print("Nonaktif Loading");
       globalProvider.setLoading(false);

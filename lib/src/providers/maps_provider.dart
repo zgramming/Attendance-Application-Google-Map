@@ -7,19 +7,18 @@ class MapsProvider extends ChangeNotifier {
   Position get currentPosition => _currentPosition;
 
   Future<void> getCurrentPosition() async {
-    Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     try {
-      final lastPosition = await geolocator.getLastKnownPosition();
+      Position lastPosition = await Geolocator().getLastKnownPosition();
       if (lastPosition != null) {
-        print("Berhasil Mendapatkan Last Position Kamu...");
+        print("Success Get Last Position...");
         _currentPosition = lastPosition;
       } else {
-        final currentPosition = await geolocator.getCurrentPosition();
+        final currentPosition = await Geolocator().getCurrentPosition();
         if (currentPosition != null) {
-          print("Berhasil Mendapatkan Current Position Kamu");
+          print("Success Get Your Current Position...");
           _currentPosition = currentPosition;
         } else {
-          throw "Tidak Dapat Menemukan Lokasi Kamu";
+          throw "Can't Get Your Position";
         }
       }
     } catch (e) {
