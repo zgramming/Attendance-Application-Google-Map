@@ -16,9 +16,8 @@ class TableAttendance extends StatefulWidget {
 
 class _TableAttendanceState extends State<TableAttendance> {
   Future<List<AbsensiModel>> getAbsenMonthly(DateTime now) async {
-    final result = context
-        .read<AbsenProvider>()
-        .fetchAbsenMonthly(context.read<UserProvider>().user.idUser, now);
+    final globalProvider = context.read<UserProvider>();
+    final result = context.read<AbsenProvider>().fetchAbsenMonthly(globalProvider.user.idUser, now);
     return result;
   }
 
@@ -76,15 +75,19 @@ class _TableAttendanceState extends State<TableAttendance> {
                 builder: (_, dateTime, __) => FutureBuilder(
                   future: getAbsenMonthly(dateTime),
                   builder: (BuildContext context, AsyncSnapshot<List<AbsensiModel>> snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done)
+                    if (snapshot.connectionState != ConnectionState.done) {
                       return LoadingFutureBuilder(isLinearProgressIndicator: true);
-                    if (snapshot.hasError)
-                      return RaisedButton(
-                        onPressed: () => setState(() => ''),
-                        child: Text(snapshot.error.toString()),
+                    }
+                    if (snapshot.hasError) {
+                      return InkWell(
+                        onTap: _refreshMenu,
+                        child: Text(
+                          "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+                          textAlign: TextAlign.center,
+                        ),
                       );
+                    }
                     if (snapshot.hasData) {
-                      print("From Table Attendance Snapshot.data ${snapshot.data.length}");
                       return Container(
                         child: ListView.builder(
                           itemCount: snapshot.data.length,
@@ -122,5 +125,9 @@ class _TableAttendanceState extends State<TableAttendance> {
       style: TextStyle(color: colorPallete.white, fontWeight: FontWeight.bold),
     );
     return Flexible(child: text, fit: FlexFit.tight, flex: flex);
+  }
+
+  void _refreshMenu() {
+    setState(() {});
   }
 }

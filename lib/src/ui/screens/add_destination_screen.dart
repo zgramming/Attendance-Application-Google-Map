@@ -38,7 +38,7 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tambah Destinasi'),
+        title: const Text('Tambah Lokasi'),
         actions: [
           InkWell(
             onTap: () => showModalBottomSheet(
@@ -48,7 +48,7 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
               ),
             ),
             child: const Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: const EdgeInsets.only(right: 16.0),
               child: Icon(
                 FontAwesomeIcons.check,
                 size: 18.0,
@@ -92,17 +92,23 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
                 controller: _searchAddressController,
                 onSaved: (value) => print(value),
                 onFieldSubmitted: (value) => _moveCameraByAddress(value),
+                onChanged: _onChangedSearcAddress,
                 prefixIcon: Icon(
                   FontAwesomeIcons.searchLocation,
                   size: 18,
                 ),
-                suffixIcon: IconButton(
-                  icon: Icon(FontAwesomeIcons.times),
-                  onPressed: () => _searchAddressController.clear(),
-                  iconSize: 18,
+                suffixIcon: Selector<GlobalProvider, bool>(
+                  selector: (_, provider) => provider.isShowClearTextField,
+                  builder: (_, showClearTextField, __) => showClearTextField
+                      ? IconButton(
+                          icon: Icon(FontAwesomeIcons.times),
+                          onPressed: _clearSearchAddress,
+                          iconSize: 18,
+                        )
+                      : SizedBox(),
                 ),
                 textInputAction: TextInputAction.search,
-                hintText: "Ayo Cari Destinasimu...",
+                hintText: "Cari Lokasi Absen...",
                 disableOutlineBorder: false,
                 hintStyle: appTheme.caption(context),
               ),
@@ -151,5 +157,19 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
     } catch (e) {
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
     }
+  }
+
+  void _onChangedSearcAddress(String value) {
+    final globalProvider = context.read<GlobalProvider>();
+    if (value.isEmpty) {
+      globalProvider.setShowClearTextField(false);
+    } else {
+      globalProvider.setShowClearTextField(true);
+    }
+  }
+
+  void _clearSearchAddress() {
+    _searchAddressController.clear();
+    context.read<GlobalProvider>().setShowClearTextField(false);
   }
 }

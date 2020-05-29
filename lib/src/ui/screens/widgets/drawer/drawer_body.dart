@@ -32,13 +32,13 @@ class DrawerBody extends StatelessWidget {
           selector: (_, provider) => provider.isLoading,
           builder: (_, isLoading, __) => DrawerBodyMenu(
             icon: FontAwesomeIcons.fortAwesome,
-            subtitle: isLoading ? "Loading..." : "Tambah Destinasi",
+            subtitle: isLoading ? "Loading..." : "Tambah Lokasi Absen",
             onTap: isLoading ? null : () => goToAddDestination(context),
           ),
         ),
         DrawerBodyMenu(
           icon: FontAwesomeIcons.mapMarkerAlt,
-          subtitle: "Pilih Destinasi ",
+          subtitle: "Pilih Lokasi Absen ",
           onTap: () => Navigator.of(context).pushNamed(PickDestinationScreen.routeNamed),
         ),
         DrawerBodyTitle(title: "Akun"),

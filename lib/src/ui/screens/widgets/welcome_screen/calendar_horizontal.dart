@@ -58,7 +58,13 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                       return LoadingFutureBuilder(isLinearProgressIndicator: true);
                     }
                     if (snapshot.hasError) {
-                      return RaisedButton(onPressed: () => setState(() => ''));
+                      return InkWell(
+                        onTap: _refreshMenu,
+                        child: Text(
+                          "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+                          textAlign: TextAlign.center,
+                        ),
+                      );
                     }
                     if (snapshot.hasData) {
                       return Container(
@@ -124,5 +130,9 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
         )
       ],
     );
+  }
+
+  void _refreshMenu() {
+    setState(() {});
   }
 }

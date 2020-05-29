@@ -27,11 +27,10 @@ class CardCalendar extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
               side: now.day == index + 1
-                  ? BorderSide(color: colorPallete.primaryColor2, width: 3)
+                  ? BorderSide(color: colorPallete.accentColor, width: 3)
                   : BorderSide(color: Colors.transparent),
             ),
             child: InkWell(
-              //TODO Kalau Card horizontal di click ...
               onTap: () => '',
               borderRadius: BorderRadius.circular(15),
               child: Column(
@@ -63,6 +62,7 @@ class CardCalendar extends StatelessWidget {
                           now.month,
                           index + 1,
                         ),
+                        type: 1,
                       ),
                       textAlign: TextAlign.center,
                       style: appTheme.caption(context).copyWith(

@@ -28,7 +28,7 @@ class PickedDestination extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Destinasi Pilihan',
+            'Lokasi Absen',
             style: appTheme.headline6(context).copyWith(fontFamily: "Righteous", fontSize: 18),
           ),
           Consumer<AbsenProvider>(builder: (_, listDestinasi, __) {

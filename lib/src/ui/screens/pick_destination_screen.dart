@@ -33,7 +33,7 @@ class PickDestinationScreen extends StatelessWidget {
                 onSaved: (value) => '',
                 disableOutlineBorder: false,
                 prefixIcon: Icon(FontAwesomeIcons.searchLocation),
-                hintText: "Cari Destinasi ...",
+                hintText: "Cari Lokasi Absen...",
                 controller: _filterController,
                 onChanged: (query) => context.read<AbsenProvider>().filterListDestination(query),
                 suffixIcon: IconButton(
@@ -56,8 +56,7 @@ class PickDestinationScreen extends StatelessWidget {
                 }
                 if (snapshot.hasError) {
                   return Center(child: Text(snapshot.error.toString()));
-                }
-                if (snapshot.hasData) {
+                } else {
                   return Selector3<AbsenProvider, AbsenProvider, GlobalProvider,
                       Tuple3<List<DestinasiModel>, List<DestinasiModel>, bool>>(
                     selector: (_, fullList, filteredList, isLoading) => Tuple3(
@@ -83,7 +82,6 @@ class PickDestinationScreen extends StatelessWidget {
                     },
                   );
                 }
-                return Center(child: Text('No Data'));
               },
             ),
           ),

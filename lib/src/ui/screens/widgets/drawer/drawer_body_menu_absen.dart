@@ -27,12 +27,12 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
   void initState() {
     super.initState();
     now = DateTime.now();
-    alreadyAbsen = checkAlreadyAbsent(context.read<UserProvider>().user.idUser);
+    alreadyAbsen = checkAlreadyAbsent();
   }
 
-  Future<int> checkAlreadyAbsent(String idUser) async {
+  Future<int> checkAlreadyAbsent() async {
     final result = absensiAPI.checkAbsenMasukDanPulang(
-      idUser: idUser,
+      idUser: context.read<UserProvider>().user.idUser,
       tanggalAbsenMasuk: DateTime(
         now.year,
         now.month,
@@ -55,10 +55,7 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
         }
         if (snapshot.hasError) {
           return InkWell(
-            onTap: () {
-              alreadyAbsen = checkAlreadyAbsent(context.read<UserProvider>().user.idUser);
-              setState(() {});
-            },
+            onTap: _refreshMenuAbsen,
             child: Text(
               "${snapshot.error.toString()} , Tap Untuk Refresh Data",
               textAlign: TextAlign.center,
@@ -129,5 +126,10 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
       globalF.showToast(message: e, isError: true);
       context.read<GlobalProvider>().setLoading(false);
     }
+  }
+
+  void _refreshMenuAbsen() {
+    alreadyAbsen = checkAlreadyAbsent();
+    setState(() {});
   }
 }

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import 'subtitle_performance.dart';
+import './subtitle_performance.dart';
 
 import '../../../../providers/user_provider.dart';
 
@@ -21,16 +21,14 @@ class _ContentPerformanceState extends State<ContentPerformance> {
   Future<List<PerformanceModel>> performanceMonthly;
   @override
   void initState() {
-    performanceMonthly = getPerformanceMonthly(context.read<UserProvider>().user.idUser);
-    print("Content Performance User ${context.read<UserProvider>().user.idUser}");
-
+    performanceMonthly = getPerformanceMonthly();
     super.initState();
   }
 
-  Future<List<PerformanceModel>> getPerformanceMonthly(String idUser) async {
+  Future<List<PerformanceModel>> getPerformanceMonthly() async {
     final now = DateTime.now();
     final result = absensiAPI.getPerformanceBulanan(
-      idUser: idUser,
+      idUser: context.read<UserProvider>().user.idUser,
       dateTime: DateTime.now(),
       totalDayOfMonth: globalF.totalDaysOfMonth(now.year, now.month),
       totalWeekDayOfMonth: globalF.totalWeekDayOfMonth(now.year, now.month),
@@ -46,17 +44,18 @@ class _ContentPerformanceState extends State<ContentPerformance> {
       child: FutureBuilder<List<PerformanceModel>>(
         future: performanceMonthly,
         builder: (BuildContext context, AsyncSnapshot<List<PerformanceModel>> snapshot) {
-          if (snapshot.connectionState != ConnectionState.done)
+          if (snapshot.connectionState != ConnectionState.done) {
             return LoadingFutureBuilder(isLinearProgressIndicator: true);
-          if (snapshot.hasError)
+          }
+          if (snapshot.hasError) {
             return InkWell(
-              onTap: () {
-                performanceMonthly =
-                    getPerformanceMonthly(context.read<UserProvider>().user.idUser);
-                setState(() {});
-              },
-              child: Text(snapshot.error.toString()),
+              onTap: _refrehsMenu,
+              child: Text(
+                "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+                textAlign: TextAlign.center,
+              ),
             );
+          }
           if (snapshot.hasData) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,5 +129,10 @@ class _ContentPerformanceState extends State<ContentPerformance> {
         },
       ),
     );
+  }
+
+  void _refrehsMenu() {
+    performanceMonthly = getPerformanceMonthly();
+    setState(() {});
   }
 }
