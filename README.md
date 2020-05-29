@@ -4,6 +4,7 @@ Implement How To Use Flutter Google Maps With Real Project
 
 # Configuration Project 
 
+### Android 
 Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with yours.
 
 ```
@@ -12,14 +13,44 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
     <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="YOUR KEY HERE"/>
 ```
-## Download Application
+### IOS
+Specify your API key in the application delegate `ios/Runner/AppDelegate.m`:
 
-|app-arm64-v8a|app-armeabi-v7a|app-x86_64|
-|:-----------:|:-------------:|:--------:|
-|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-arm64-v8a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-armeabi-v7a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-x86_64-release.apk)|
-|7,8 MB|7,4 MB|8 MB|
+```
+#include "AppDelegate.h"
+#include "GeneratedPluginRegistrant.h"
+#import "GoogleMaps/GoogleMaps.h"
 
-## How Application Will Look
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [GMSServices provideAPIKey:@"YOUR KEY HERE"];
+  [GeneratedPluginRegistrant registerWithRegistry:self];
+  return [super application:application didFinishLaunchingWithOptions:launchOptions];
+}
+@end
+```
+Or in your swift code, specify your API key in the application delegate `ios/Runner/AppDelegate.swift`:
+
+```
+import UIKit
+import Flutter
+import GoogleMaps
+
+@UIApplicationMain
+@objc class AppDelegate: FlutterAppDelegate {
+  override func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    GMSServices.provideAPIKey("YOUR KEY HERE")
+    GeneratedPluginRegistrant.register(with: self)
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+}
+```
+# Application Overview
 
 |Splash Screen|Home Screen|Profil Screen|Maps Screen|
 |:-----------:|:--------:|:------------:|:---------:|
@@ -29,16 +60,27 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
 |:-------------:|:--------------:|
 |<img src="http://www.zimprov.id/readme/absensi_online/add_destination.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/pick_destination.gif" height="400" width="200">|
 
-## How To Use Application
 
-## Improvement Waiting List
+# Application Feature
 
-- [x] Adding Feature Check Mockup Location While Attendance
-- [x] Adding Feature Add Destination based on user choose in maps
-- [x] Adding Feature Update & Delete User Profile
-- [x] Adding Feature Pick Destination
-- [x] Adding Drawer => Absensi , Destinasi , Akun
+- [x] Tracking user location
+- [x] Absent only at certain radius [radius color will be green if user inside radius otherwise radius color will be purple]
+- [x] Detecting mockup location
+- [x] Add destination based on user choose in maps
+- [x] Pick Destination [this will be used as your absence location]
+- [x] Recap user absence monthly, has 2 view [Card & Table look]
+- [x] Recap user performance monthly
+- [x] User Profil
+- [x] Drawer Menu
 - [ ] Unimaginable Improvements 
 
-## Contributing
+# Download Application
+
+|app-arm64-v8a|app-armeabi-v7a|app-x86_64|
+|:-----------:|:-------------:|:--------:|
+|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-arm64-v8a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-armeabi-v7a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-x86_64-release.apk)|
+|7,8 MB|7,4 MB|8 MB|
+
+
+# Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
