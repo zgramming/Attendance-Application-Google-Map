@@ -31,13 +31,13 @@ class DrawerBody extends StatelessWidget {
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isLoading,
           builder: (_, isLoading, __) => DrawerBodyMenu(
-            icon: FontAwesomeIcons.fortAwesome,
+            icon: Icons.add_location,
             subtitle: isLoading ? "Loading..." : "Tambah Lokasi Absen",
             onTap: isLoading ? null : () => goToAddDestination(context),
           ),
         ),
         DrawerBodyMenu(
-          icon: FontAwesomeIcons.mapMarkerAlt,
+          icon: FontAwesomeIcons.searchLocation,
           subtitle: "Pilih Lokasi Absen ",
           onTap: () => Navigator.of(context).pushNamed(PickDestinationScreen.routeNamed),
         ),
