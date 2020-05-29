@@ -65,7 +65,11 @@ class GlobalProvider extends ChangeNotifier {
     return result;
   }
 
-  bool _isChangeMode = false, _isLoading = false, _isImageLoading = false, _isRegister = false;
+  bool _isChangeMode = false,
+      _isLoading = false,
+      _isImageLoading = false,
+      _isRegister = false,
+      _isShowClearTextField = false;
 
   bool get isChangeMode => _isChangeMode;
   void setChangeMode(bool value) {
@@ -88,6 +92,12 @@ class GlobalProvider extends ChangeNotifier {
   bool get isRegister => _isRegister;
   void setRegister(bool value) {
     _isRegister = value;
+    notifyListeners();
+  }
+
+  bool get isShowClearTextField => _isShowClearTextField;
+  void setShowClearTextField(bool value) {
+    _isShowClearTextField = value;
     notifyListeners();
   }
 
