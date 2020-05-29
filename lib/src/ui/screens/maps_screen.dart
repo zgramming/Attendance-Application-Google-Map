@@ -60,34 +60,18 @@ class _MapScreenState extends State<MapScreen> {
                     Tuple2(provider1.currentPosition, provider2.destinasiModel),
                 builder: (_, value, __) {
                   return GoogleMap(
+                    // mapType: MapType.hybrid,
                     myLocationEnabled: true,
+                    myLocationButtonEnabled: false,
                     initialCameraPosition: CameraPosition(
                       target: LatLng(value.item1.latitude, value.item1.longitude),
                       zoom: 14.4746,
                     ),
                     onMapCreated: (controller) {
                       _controller.complete(controller);
-                      _gotToCenterUser();
+                      _goToCenterUser();
                     },
-                    circles: Set.of(
-                      {
-                        Circle(
-                          circleId: CircleId('1'),
-                          strokeColor: Colors.transparent,
-                          fillColor: commonF
-                              .changeColorRadius(
-                                commonF.getDistanceLocation(value.item1, value.item2),
-                                radiusCircle,
-                              )
-                              .withOpacity(.6),
-                          center: LatLng(
-                            value.item2.latitude,
-                            value.item2.longitude,
-                          ),
-                          radius: radiusCircle,
-                        ),
-                      },
-                    ),
+                    circles: buildCircles(value),
                   );
                 },
               ),
@@ -127,32 +111,46 @@ class _MapScreenState extends State<MapScreen> {
                     child: Icon(FontAwesomeIcons.times),
                   ),
                 ),
-                top: 10,
+                top: sizes.statusBarHeight(context) + 10,
                 left: 10,
               ),
-              Selector2<MapsProvider, AbsenProvider, Tuple2<Position, DestinasiModel>>(
-                selector: (_, provider1, provider2) =>
-                    Tuple2(provider1.currentPosition, provider2.destinasiModel),
-                builder: (_, value, __) => Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    padding: const EdgeInsets.all(14.0),
-                    color: commonF.changeColorRadius(
-                        commonF.getDistanceLocation(value.item1, value.item2), radiusCircle),
-                    child: Text(
-                      "${value.item1.latitude} || ${value.item1.longitude} \n Jarak Ke Destinasi : ${commonF.getDistanceLocation(value.item1, value.item2).toStringAsFixed(1)} Meter",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: colorPallete.white,
-                      ),
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ),
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(top: sizes.statusBarHeight(context) * 4 + 10),
+          child: InkWell(
+            onTap: _goToCenterUser,
+            child: CircleAvatar(
+              backgroundColor: colorPallete.white,
+              child: Icon(Icons.my_location),
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       ),
+    );
+  }
+
+  Set<Circle> buildCircles(Tuple2<Position, DestinasiModel> value) {
+    return Set.of(
+      {
+        Circle(
+          circleId: CircleId('1'),
+          strokeColor: Colors.transparent,
+          fillColor: commonF
+              .changeColorRadius(
+                commonF.getDistanceLocation(value.item1, value.item2),
+                radiusCircle,
+              )
+              .withOpacity(.6),
+          center: LatLng(
+            value.item2.latitude,
+            value.item2.longitude,
+          ),
+          radius: radiusCircle,
+        ),
+      },
     );
   }
 
@@ -166,7 +164,7 @@ class _MapScreenState extends State<MapScreen> {
     }, onError: (error) => print("Error Handling Listen Stream ${error.toString()}"));
   }
 
-  Future<void> _gotToCenterUser() async {
+  Future<void> _goToCenterUser() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -234,3 +232,23 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 }
+//! Menampilkan Jarak Antara 2 Lokasi
+// Selector2<MapsProvider, AbsenProvider, Tuple2<Position, DestinasiModel>>(
+//   selector: (_, provider1, provider2) =>
+//       Tuple2(provider1.currentPosition, provider2.destinasiModel),
+//   builder: (_, value, __) => Align(
+//     alignment: Alignment.topCenter,
+//     child: Container(
+//       padding: const EdgeInsets.all(14.0),
+//       color: commonF.changeColorRadius(
+//           commonF.getDistanceLocation(value.item1, value.item2), radiusCircle),
+//       child: Text(
+//         "${value.item1.latitude} || ${value.item1.longitude} \n Jarak Ke Destinasi : ${commonF.getDistanceLocation(value.item1, value.item2).toStringAsFixed(1)} Meter",
+//         textAlign: TextAlign.center,
+//         style: TextStyle(
+//           color: colorPallete.white,
+//         ),
+//       ),
+//     ),
+//   ),
+// )
