@@ -12,7 +12,7 @@ class ColorPallete {
   Color weekEnd = const Color(0xFFf0134d);
 
   /// Grey
-  Color grey = const Color(0xFFeaeaea);
+  Color grey = const Color(0xFFEAEAEA);
   Color greyTransparent = const Color(0xFFBDBDBD);
 
   ///Primary Color

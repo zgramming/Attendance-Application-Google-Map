@@ -98,8 +98,6 @@ class AbsenProvider extends ChangeNotifier {
       final result = await destinasiAPI.getDestinationById(idUser: idUser, isSelected: isSelected);
       final List<DestinasiModel> tempList = result;
       _listDestinasi = tempList;
-
-      print("List Destinasi Length ${_listDestinasi.length} ");
     } catch (e) {
       throw e;
     }

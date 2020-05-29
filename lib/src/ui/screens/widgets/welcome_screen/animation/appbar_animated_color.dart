@@ -3,22 +3,27 @@ import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AppBarAnimatedColor extends StatefulWidget {
-  final Widget title;
+  final Widget leading;
   final AnimationController controller;
-  AppBarAnimatedColor({@required this.controller, this.title});
+  AppBarAnimatedColor({@required this.controller, this.leading});
   @override
   _AppBarAnimatedColorState createState() => _AppBarAnimatedColorState();
 }
 
 class _AppBarAnimatedColorState extends State<AppBarAnimatedColor> {
-  Animation<Color> appBarColor, iconColor;
+  Animation<Color> appBarColor, iconColor, logoColor;
 
   @override
   void initState() {
     appBarColor = ColorTween(begin: Colors.transparent, end: colorPallete.primaryColor)
         .animate(CurvedAnimation(parent: widget.controller, curve: Curves.decelerate));
+
     iconColor = ColorTween(begin: colorPallete.accentColor, end: colorPallete.white)
         .animate(CurvedAnimation(parent: widget.controller, curve: Curves.decelerate));
+
+    logoColor = ColorTween(begin: colorPallete.transparent, end: colorPallete.white)
+        .animate(CurvedAnimation(parent: widget.controller, curve: Curves.decelerate));
+
     super.initState();
   }
 
@@ -33,15 +38,10 @@ class _AppBarAnimatedColorState extends State<AppBarAnimatedColor> {
         right: 0,
         child: AppBar(
           leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FlutterLogo(),
+            padding: const EdgeInsets.all(10.0),
+            child: widget.leading,
           ),
           elevation: 0,
-          title: widget.title ??
-              Text(
-                '',
-                style: appTheme.subtitle1(context).copyWith(color: iconColor.value),
-              ),
           backgroundColor: appBarColor.value,
           actions: [
             Padding(

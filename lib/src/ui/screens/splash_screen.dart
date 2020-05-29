@@ -13,10 +13,8 @@ class SplashScreen extends StatelessWidget {
     final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       body: SplashScreenTemplate(
-        duration: 5,
         image: GRotateAnimation(
-          duration: Duration(seconds: 2),
-          widget: FlutterLogo(
+          child: FlutterLogo(
             size: sizes.height(context) / 4,
           ),
         ),

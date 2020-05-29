@@ -20,7 +20,7 @@ class PickDestinationScreen extends StatelessWidget {
     final absenProvider = Provider.of<AbsenProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(title: Text('Pilih Destinasi')),
+      appBar: AppBar(title: const Text('Pilih Destinasi')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -55,29 +55,35 @@ class PickDestinationScreen extends StatelessWidget {
                   return LoadingFutureBuilder();
                 }
                 if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
+                  return Center(child: Text(snapshot.error.toString()));
                 }
-                return Selector3<AbsenProvider, AbsenProvider, GlobalProvider,
-                    Tuple3<List<DestinasiModel>, List<DestinasiModel>, bool>>(
-                  selector: (_, fullList, filteredList, isLoading) => Tuple3(fullList.listDestinasi,
-                      filteredList.filteredListDestinasi, isLoading.isLoading),
-                  builder: (_, value, __) {
-                    print("Rebuild Selector Pick Destination Screen");
-                    final resultList =
-                        (value.item2.length != 0 || _filterController.text.isNotEmpty)
-                            ? value.item2
-                            : value.item1.where((element) => element.status != "t").toList();
-                    return value.item3
-                        ? LoadingFutureBuilder(isLinearProgressIndicator: false)
-                        : ListView.builder(
-                            itemCount: resultList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final result = resultList[index];
-                              return ListDestination(result: result);
-                            },
-                          );
-                  },
-                );
+                if (snapshot.hasData) {
+                  return Selector3<AbsenProvider, AbsenProvider, GlobalProvider,
+                      Tuple3<List<DestinasiModel>, List<DestinasiModel>, bool>>(
+                    selector: (_, fullList, filteredList, isLoading) => Tuple3(
+                      fullList.listDestinasi,
+                      filteredList.filteredListDestinasi,
+                      isLoading.isLoading,
+                    ),
+                    builder: (_, value, __) {
+                      print("Rebuild Selector Pick Destination Screen");
+                      final resultList =
+                          (value.item2.length != 0 || _filterController.text.isNotEmpty)
+                              ? value.item2
+                              : value.item1.where((element) => element.status != "t").toList();
+                      return (value.item3)
+                          ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                          : ListView.builder(
+                              itemCount: resultList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final result = resultList[index];
+                                return ListDestination(result: result);
+                              },
+                            );
+                    },
+                  );
+                }
+                return Center(child: Text('No Data'));
               },
             ),
           ),

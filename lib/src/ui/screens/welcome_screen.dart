@@ -97,7 +97,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 child: ButtonAttendance(),
               ),
             ),
-            AppBarAnimatedColor(controller: _appbarController),
+            AppBarAnimatedColor(
+                controller: _appbarController,
+                leading: FlutterLogo(
+                  size: kToolbarHeight / 1.5,
+                )),
           ],
         ),
         floatingActionButton: FabChangeMode(),
