@@ -85,6 +85,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   UserProfile(),
                   CardOverallMonthly(),
                   AnimatedCalendarAndTable(),
+                  const SizedBox(height: kToolbarHeight * 2),
                 ],
               ),
             ),
