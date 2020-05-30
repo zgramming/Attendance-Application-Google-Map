@@ -74,13 +74,15 @@ class TextFormFieldCustom extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final globalProvider = Provider.of<GlobalProvider>(context);
-
+    print("Rebuild TextFormFieldCustom");
     return TextFormField(
       autofocus: autoFocus,
       controller: controller,
       textAlign: centerText ? TextAlign.center : TextAlign.left,
-      obscureText: (isPassword && globalProvider.obsecurePassword) ? true : false,
+      obscureText:
+          (isPassword && context.select((GlobalProvider provider) => provider.obsecurePassword))
+              ? true
+              : false,
       enabled: isEnabled,
       initialValue: initialValue,
       minLines: minLines,
@@ -92,11 +94,16 @@ class TextFormFieldCustom extends StatelessWidget {
         prefixIcon: isPassword ? Icon(Icons.lock) : prefixIcon,
         suffixIcon: isPassword
             ? IconButton(
-                icon: Icon(
-                  globalProvider.obsecurePassword ? Icons.visibility_off : Icons.visibility,
+                icon: Selector<GlobalProvider, bool>(
+                  selector: (_, provider) => provider.obsecurePassword,
+                  builder: (_, obsecurePassword, __) => Icon(
+                    obsecurePassword ? Icons.visibility_off : Icons.visibility,
+                  ),
                 ),
-                onPressed: () =>
-                    globalProvider.setObsecurePassword(globalProvider.obsecurePassword),
+                onPressed: () {
+                  final globalProvider = context.read<GlobalProvider>();
+                  return globalProvider.setObsecurePassword(globalProvider.obsecurePassword);
+                },
               )
             : suffixIcon,
         hintText: hintText,
