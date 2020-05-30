@@ -26,7 +26,7 @@ class CardCalendar extends StatelessWidget {
             color: commonF.isWeekend(now, index),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
-              side: now.day == index + 1
+              side: DateTime.now().day == index + 1
                   ? BorderSide(color: colorPallete.accentColor, width: 3)
                   : BorderSide(color: Colors.transparent),
             ),
