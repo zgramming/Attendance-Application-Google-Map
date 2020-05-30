@@ -15,30 +15,38 @@ class CommonFunction {
     final geolocationStatus = await getGeolocationPermission();
     final gpsStatus = await getGPSService();
     if (geolocationStatus != GeolocationStatus.granted) {
-      showDialog(
-        context: context,
-        child: PopupPermission(
-          typePermission: "Lokasi",
-          iconPermission: FontAwesomeIcons.locationArrow,
-          showCloseButton: false,
-          onAccept: () async => await LocationPermissions().openAppSettings(),
-        ),
-      );
+      showPermissionLocation(context);
     } else if (!gpsStatus) {
-      showDialog(
-        context: context,
-        child: PopupPermission(
-          typePermission: "GPS",
-          iconPermission: FontAwesomeIcons.mapMarkedAlt,
-          showCloseButton: false,
-          onAccept: () async {
-            final AndroidIntent intent =
-                const AndroidIntent(action: 'action_location_source_settings');
-            intent.launch();
-          },
-        ),
-      );
+      showPermissionGPS(context);
     }
+  }
+
+  void showPermissionGPS(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => PopupPermission(
+        typePermission: "GPS",
+        iconPermission: FontAwesomeIcons.mapMarkedAlt,
+        showCloseButton: false,
+        onAccept: () async {
+          final AndroidIntent intent =
+              const AndroidIntent(action: 'action_location_source_settings');
+          intent.launch();
+        },
+      ),
+    );
+  }
+
+  void showPermissionLocation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => PopupPermission(
+        typePermission: "Lokasi",
+        iconPermission: FontAwesomeIcons.locationArrow,
+        showCloseButton: false,
+        onAccept: () async => await LocationPermissions().openAppSettings(),
+      ),
+    );
   }
 
   //! Geolocator Permission

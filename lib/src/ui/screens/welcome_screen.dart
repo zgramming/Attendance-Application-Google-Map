@@ -23,7 +23,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   AnimationController _buttonAbsentController;
   AnimationController _appbarController;
-  bool isChange = false;
   @override
   void initState() {
     super.initState();
@@ -36,22 +35,24 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
+    final geolocationStatus = await commonF.getGeolocationPermission();
+    final gpsStatus = await commonF.getGPSService();
     if (state == AppLifecycleState.paused) {
-      if (!await commonF.getGPSService()) {
+      print("Paused Depedencies");
+
+      if (geolocationStatus != GeolocationStatus.granted) {
         Navigator.of(context).pop();
-      } else if (await commonF.getGeolocationPermission() != GeolocationStatus.granted) {
+      } else if (!gpsStatus) {
         Navigator.of(context).pop();
       }
-      print("Trigger Paused");
-    }
-    if (state == AppLifecycleState.resumed) {
-      // commonF.initPermission(context);
-      if (!await commonF.getGPSService()) {
-        commonF.initPermission(context);
-      } else if (await commonF.getGeolocationPermission() != GeolocationStatus.granted) {
-        commonF.initPermission(context);
+    } else if (state == AppLifecycleState.resumed) {
+      print("Resumed Depedencies");
+
+      if (geolocationStatus != GeolocationStatus.granted) {
+        commonF.showPermissionLocation(context);
+      } else if (!gpsStatus) {
+        commonF.showPermissionGPS(context);
       }
-      print("Trigger Resumed");
     }
 
     super.didChangeAppLifecycleState(state);
