@@ -69,7 +69,8 @@ class GlobalProvider extends ChangeNotifier {
       _isLoading = false,
       _isImageLoading = false,
       _isRegister = false,
-      _isShowClearTextField = false;
+      _isShowClearTextField = false,
+      _obsecurePassword = true;
 
   bool get isChangeMode => _isChangeMode;
   void setChangeMode(bool value) {
@@ -101,7 +102,6 @@ class GlobalProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _obsecurePassword = true;
   bool get obsecurePassword => _obsecurePassword;
   setObsecurePassword(bool value) {
     _obsecurePassword = !value;
