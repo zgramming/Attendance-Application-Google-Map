@@ -135,10 +135,10 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
       maxHeight: 500,
       maxWidth: 600,
     );
-    final imageFile = File(imagePicker.path);
-    if (imageFile == null) {
+    if (imagePicker == null) {
       return null;
     } else {
+      final imageFile = File(imagePicker.path);
       try {
         globalProvider.setImageLoading(true);
         final result = await userProvider.userUpdateImage(userProvider.user.idUser, imageFile);

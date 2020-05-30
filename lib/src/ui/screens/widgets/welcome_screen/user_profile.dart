@@ -101,18 +101,13 @@ class UserProfile extends StatelessWidget {
       maxHeight: 500,
       maxWidth: 600,
     );
-    final imageFile = File(imagePicker.path);
-    if (imageFile == null) {
-      print("Tidak Jadi Mengambil Gambar");
+    if (imagePicker == null) {
       return null;
     } else {
+      final imageFile = File(imagePicker.path);
       try {
         globalProvider.setImageLoading(true);
-        print("Proses Upload & Update Image ");
         final result = await userProvider.userUpdateImage(userProvider.user.idUser, imageFile);
-
-        print("Proses Update Session User ");
-        print("Image Size ${await imageFile.length()}");
         await userProvider.saveSessionUser(list: result);
         globalF.showToast(message: "Berhasil Update Gambar Profile ", isSuccess: true);
         globalProvider.setImageLoading(false);
