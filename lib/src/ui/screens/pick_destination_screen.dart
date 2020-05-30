@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import './shimmer/shimmer_pick_location.dart';
+
 import './widgets/pick_destination_screen/picked_destination.dart';
 import './widgets/pick_destination_screen/list_destination.dart';
 
@@ -32,7 +34,7 @@ class _PickDestinationScreenState extends State<PickDestinationScreen> {
     final absenProvider = Provider.of<AbsenProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(title: const Text('Pilih Destinasi')),
+      appBar: AppBar(title: const Text('Pilih Lokasi')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -68,7 +70,7 @@ class _PickDestinationScreenState extends State<PickDestinationScreen> {
               future: absenProvider.fetchDestinationUser(userProvider.user.idUser),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
-                  return LoadingFutureBuilder();
+                  return ShimmerPickLocatation();
                 }
                 if (snapshot.hasError) {
                   return Center(child: Text(snapshot.error.toString()));

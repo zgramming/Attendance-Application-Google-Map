@@ -6,6 +6,8 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 import './subtitle_performance.dart';
 
+import '../../shimmer/shimmer_performance_monthly.dart';
+
 import '../../../../providers/user_provider.dart';
 
 class ContentPerformance extends StatefulWidget {
@@ -18,20 +20,12 @@ class ContentPerformance extends StatefulWidget {
 }
 
 class _ContentPerformanceState extends State<ContentPerformance> {
-  Future<List<PerformanceModel>> performanceMonthly;
-  @override
-  void initState() {
-    performanceMonthly = getPerformanceMonthly();
-    super.initState();
-  }
-
-  Future<List<PerformanceModel>> getPerformanceMonthly() async {
-    final now = DateTime.now();
+  Future<List<PerformanceModel>> getPerformanceMonthly(DateTime dateTime) async {
     final result = absensiAPI.getPerformanceBulanan(
       idUser: context.read<UserProvider>().user.idUser,
-      dateTime: DateTime.now(),
-      totalDayOfMonth: globalF.totalDaysOfMonth(now.year, now.month),
-      totalWeekDayOfMonth: globalF.totalWeekDayOfMonth(now.year, now.month),
+      dateTime: dateTime,
+      totalDayOfMonth: globalF.totalDaysOfMonth(dateTime.year, dateTime.month),
+      totalWeekDayOfMonth: globalF.totalWeekDayOfMonth(dateTime.year, dateTime.month),
     );
     return result;
   }
@@ -40,98 +34,103 @@ class _ContentPerformanceState extends State<ContentPerformance> {
   Widget build(BuildContext context) {
     return Flexible(
       flex: 2,
-      child: FutureBuilder<List<PerformanceModel>>(
-        future: performanceMonthly,
-        builder: (BuildContext context, AsyncSnapshot<List<PerformanceModel>> snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return LoadingFutureBuilder(isLinearProgressIndicator: true);
-          }
-          if (snapshot.hasError) {
-            return InkWell(
-              onTap: _refrehsMenu,
-              child: Text(
-                "${snapshot.error.toString()} , Tap Untuk Refresh Data",
-                textAlign: TextAlign.center,
-              ),
-            );
-          }
-          if (snapshot.hasData) {
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: CircularPercentIndicator(
-                    radius: sizes.width(context) / 4,
-                    circularStrokeCap: CircularStrokeCap.round,
-                    lineWidth: 8,
-                    center: Text(
-                      "${snapshot.data[0].percentace}%",
-                      style: appTheme.headline5(context).copyWith(
-                            color: colorPallete.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    progressColor: colorPallete.accentColor,
-                    backgroundColor: colorPallete.white,
-                    percent: snapshot.data[0].percentace / 100,
-                  ),
+      child: Selector<GlobalProvider, DateTime>(
+        selector: (_, provider) => provider.dateAddSubstract,
+        builder: (_, dateTime, __) => FutureBuilder<List<PerformanceModel>>(
+          future: getPerformanceMonthly(dateTime),
+          builder: (BuildContext context, AsyncSnapshot<List<PerformanceModel>> snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return ShimmerPerformanceMonthly();
+            }
+            if (snapshot.hasError) {
+              return InkWell(
+                onTap: _refrehsMenu,
+                child: Text(
+                  "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+                  textAlign: TextAlign.center,
                 ),
-                Flexible(
-                  fit: FlexFit.tight,
-                  flex: 2,
-                  child: DefaultTextStyle(
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'VarelaRound',
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SubtitlePerformance(),
-                        Flexible(
-                          flex: 2,
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  '${globalF.totalWeekDayOfMonth(DateTime.now().year, DateTime.now().month)}',
-                                  textAlign: TextAlign.center,
-                                  style: appTheme.headline3(context).copyWith(
-                                        color: colorPallete.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                                fit: FlexFit.tight,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  '${snapshot.data[0].ot}',
-                                  textAlign: TextAlign.center,
-                                  style: appTheme.headline4(context).copyWith(
-                                        color: colorPallete.white,
-                                      ),
-                                ),
-                                fit: FlexFit.tight,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+              );
+            }
+            if (snapshot.hasData) {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: CircularPercentIndicator(
+                      radius: sizes.width(context) / 4,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      lineWidth: 8,
+                      center: Text(
+                        "${snapshot.data[0].percentace}%",
+                        style: appTheme.headline5(context).copyWith(
+                              color: colorPallete.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      progressColor: colorPallete.accentColor,
+                      backgroundColor: colorPallete.white,
+                      percent: snapshot.data[0].percentace / 100,
                     ),
                   ),
-                ),
-              ],
-            );
-          }
-          return Text('No Data');
-        },
+                  Flexible(
+                    fit: FlexFit.tight,
+                    flex: 2,
+                    child: DefaultTextStyle(
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'VarelaRound',
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SubtitlePerformance(),
+                          Flexible(
+                            flex: 2,
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Selector<GlobalProvider, DateTime>(
+                                    selector: (_, provider) => provider.dateAddSubstract,
+                                    builder: (_, dateTime, __) => Text(
+                                      '${globalF.totalWeekDayOfMonth(dateTime.year, dateTime.month)}',
+                                      textAlign: TextAlign.center,
+                                      style: appTheme.headline3(context).copyWith(
+                                            color: colorPallete.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                  ),
+                                  fit: FlexFit.tight,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    '${snapshot.data[0].ot}',
+                                    textAlign: TextAlign.center,
+                                    style: appTheme.headline4(context).copyWith(
+                                          color: colorPallete.white,
+                                        ),
+                                  ),
+                                  fit: FlexFit.tight,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+            return Text('No Data');
+          },
+        ),
       ),
     );
   }
 
   void _refrehsMenu() {
-    performanceMonthly = getPerformanceMonthly();
     setState(() {});
   }
 }

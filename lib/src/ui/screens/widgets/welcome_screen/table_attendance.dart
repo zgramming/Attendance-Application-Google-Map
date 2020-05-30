@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 import './table_attendance_body.dart';
 
+import '../../shimmer/shimmer_table_attendance.dart';
+
 import '../../../../providers/absen_provider.dart';
 import '../../../../providers/user_provider.dart';
 
@@ -78,7 +80,7 @@ class _TableAttendanceState extends State<TableAttendance> {
                     future: getAbsenMonthly(dateTime),
                     builder: (BuildContext context, AsyncSnapshot<List<AbsensiModel>> snapshot) {
                       if (snapshot.connectionState != ConnectionState.done) {
-                        return LoadingFutureBuilder(isLinearProgressIndicator: true);
+                        return ShimmerTableAttendance();
                       }
                       if (snapshot.hasError) {
                         return InkWell(
@@ -90,21 +92,19 @@ class _TableAttendanceState extends State<TableAttendance> {
                         );
                       }
                       if (snapshot.hasData) {
-                        return Container(
-                          child: ListView.builder(
-                            itemCount: snapshot.data.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(0),
-                            itemBuilder: (BuildContext context, int index) {
-                              final result = snapshot.data[index];
-                              return TableAttendanceBody(
-                                index: index,
-                                now: dateTime,
-                                result: result,
-                              );
-                            },
-                          ),
+                        return ListView.builder(
+                          itemCount: snapshot.data.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(0),
+                          itemBuilder: (BuildContext context, int index) {
+                            final result = snapshot.data[index];
+                            return TableAttendanceBody(
+                              index: index,
+                              now: dateTime,
+                              result: result,
+                            );
+                          },
                         );
                       }
                       return Text('no data');

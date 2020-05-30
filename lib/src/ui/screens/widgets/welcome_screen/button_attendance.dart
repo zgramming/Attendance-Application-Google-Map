@@ -6,6 +6,7 @@ import 'package:global_template/global_template.dart';
 import '../live_clock.dart';
 
 import '../../maps_screen.dart';
+import '../../shimmer/shimmer_button_absent.dart';
 
 import '../../../../providers/user_provider.dart';
 import '../../../../providers/absen_provider.dart';
@@ -31,12 +32,14 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
   void initState() {
     super.initState();
     now = DateTime.now();
-    alreadyAbsen = checkAlreadyAbsent(context.read<UserProvider>().user.idUser);
+    alreadyAbsen = checkAlreadyAbsent();
   }
 
-  Future<int> checkAlreadyAbsent(String idUser) async {
+  Future<int> checkAlreadyAbsent() async {
     final result = absensiAPI.checkAbsenMasukDanPulang(
-        idUser: idUser, tanggalAbsenMasuk: DateTime(now.year, now.month, now.day));
+      idUser: context.read<UserProvider>().user.idUser,
+      tanggalAbsenMasuk: DateTime(now.year, now.month, now.day),
+    );
     return result;
   }
 
@@ -46,12 +49,12 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
       future: alreadyAbsen,
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return LinearProgressIndicator();
+          return ShimmerButtonAttendance();
         }
         if (snapshot.hasError) {
           return InkWell(
             onTap: () {
-              alreadyAbsen = checkAlreadyAbsent(context.read<UserProvider>().user.idUser);
+              alreadyAbsen = checkAlreadyAbsent();
               setState(() {});
             },
             child: Text(

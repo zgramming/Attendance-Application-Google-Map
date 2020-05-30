@@ -39,19 +39,19 @@ class ListDestination extends StatelessWidget {
             InkWell(
               onTap: () => _destinationUpdateStatus(context, result.idDestinasi),
               child: CircleAvatar(
-                radius: ListDestination.sizeIcon,
+                radius: sizeIcon,
                 backgroundColor: colorPallete.green,
                 foregroundColor: colorPallete.white,
-                child: Icon(FontAwesomeIcons.check, size: ListDestination.sizeIcon),
+                child: Icon(FontAwesomeIcons.check, size: sizeIcon),
               ),
             ),
             InkWell(
               onTap: () => _destinationDelete(context, result.idDestinasi),
               child: CircleAvatar(
-                radius: ListDestination.sizeIcon,
+                radius: sizeIcon,
                 foregroundColor: colorPallete.white,
                 backgroundColor: colorPallete.red,
-                child: Icon(FontAwesomeIcons.trash, size: ListDestination.sizeIcon),
+                child: Icon(FontAwesomeIcons.trash, size: sizeIcon),
               ),
             ),
           ],

@@ -7,6 +7,8 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import './card_calendar.dart';
 
+import '../../shimmer/shimmer_calendar_horizontal.dart';
+
 import '../../../../providers/user_provider.dart';
 
 class CalendarHorizontal extends StatefulWidget {
@@ -57,7 +59,7 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                     builder:
                         (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
                       if (snapshot.connectionState != ConnectionState.done) {
-                        return LoadingFutureBuilder(isLinearProgressIndicator: true);
+                        return ShimmerCalendarHorizontal();
                       }
                       if (snapshot.hasError) {
                         return InkWell(
