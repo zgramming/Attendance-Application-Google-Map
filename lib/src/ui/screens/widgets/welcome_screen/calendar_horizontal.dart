@@ -123,7 +123,7 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                     onTap: () => itemScrollController.scrollTo(
                       index: dateTime.day,
                       alignment: .6,
-                      duration: Duration(seconds: 2),
+                      duration: Duration(seconds: 1),
                     ),
                   );
                 },

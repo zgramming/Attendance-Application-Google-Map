@@ -22,6 +22,12 @@ class _PickDestinationScreenState extends State<PickDestinationScreen> {
   final TextEditingController _searchLocationController = TextEditingController();
 
   @override
+  void dispose() {
+    _searchLocationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final absenProvider = Provider.of<AbsenProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
