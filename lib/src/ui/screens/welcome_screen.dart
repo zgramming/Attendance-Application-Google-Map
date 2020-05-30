@@ -21,12 +21,13 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   AnimationController _buttonAbsentController;
   AnimationController _appbarController;
   @override
   void initState() {
     super.initState();
-    commonF.initPermission(context);
+    initPermission(context);
     _buttonAbsentController = AnimationController(vsync: this, duration: kThemeAnimationDuration);
     _appbarController = AnimationController(vsync: this, duration: kThemeChangeDuration);
     _buttonAbsentController.forward();
@@ -38,21 +39,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     final geolocationStatus = await commonF.getGeolocationPermission();
     final gpsStatus = await commonF.getGPSService();
     if (state == AppLifecycleState.paused) {
-      print("Paused Depedencies");
-
       if (geolocationStatus != GeolocationStatus.granted) {
         Navigator.of(context).pop();
       } else if (!gpsStatus) {
         Navigator.of(context).pop();
       }
     } else if (state == AppLifecycleState.resumed) {
-      print("Resumed Depedencies");
-
-      if (geolocationStatus != GeolocationStatus.granted) {
-        commonF.showPermissionLocation(context);
-      } else if (!gpsStatus) {
-        commonF.showPermissionGPS(context);
-      }
+      initPermission(context);
     }
 
     super.didChangeAppLifecycleState(state);
@@ -75,6 +68,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         appBarController: _appbarController,
       ),
       child: Scaffold(
+        key: _scaffoldKey,
         drawer: DrawerCustom(),
         body: Stack(
           fit: StackFit.expand,
@@ -110,5 +104,25 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         floatingActionButton: FabChangeMode(),
       ),
     );
+  }
+
+  void initPermission(BuildContext context) async {
+    final geolocationStatus = await commonF.getGeolocationPermission();
+    final gpsStatus = await commonF.getGPSService();
+    if (geolocationStatus != GeolocationStatus.granted) {
+      showDialog(
+        context: context,
+        builder: (ctx) {
+          return commonF.showPermissionLocation(ctx);
+        },
+      );
+    } else if (!gpsStatus) {
+      showDialog(
+        context: context,
+        builder: (ctx) {
+          return commonF.showPermissionGPS(ctx);
+        },
+      );
+    }
   }
 }
