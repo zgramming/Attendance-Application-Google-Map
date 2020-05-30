@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:network/network.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,8 @@ import '../../../../providers/user_provider.dart';
 class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Rebuild User Profile");
+    print("Widget : WelcomeScreen/UserProfil.dart    | Rebuild !");
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Container(
@@ -27,51 +30,59 @@ class UserProfile extends StatelessWidget {
             const SizedBox(height: 10),
             Selector<UserProvider, UserModel>(
               selector: (_, provider) => provider.user,
-              builder: (_, value, __) => Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      value.fullName,
-                      style: appTheme.subtitle2(context),
+              builder: (_, value, __) {
+                print("Widget : WelcomeScreen/UserProfil.dart | Selector    | Rebuild !");
+
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        value.fullName,
+                        style: appTheme.subtitle2(context),
+                      ),
                     ),
-                  ),
-                  Selector<GlobalProvider, bool>(
-                    selector: (_, globalProvider) => globalProvider.isImageLoading,
-                    builder: (_, isImageLoading, __) => isImageLoading
-                        ? LoadingFutureBuilder(isLinearProgressIndicator: false)
-                        : Stack(
-                            children: [
-                              InkWell(
-                                onTap: () => _userUpdateImage(context),
-                                borderRadius: BorderRadius.circular(20),
-                                child: ShowImageNetwork(
-                                  imageUrl: value.image.isEmpty
-                                      ? "https://flutter.io/images/catalog-widget-placeholder.png"
-                                      : "${appConfig.baseImageApiUrl}/user/${value.image}",
-                                  isCircle: true,
-                                  padding: const EdgeInsets.all(20),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: CircleAvatar(
-                                  backgroundColor: colorPallete.accentColor,
-                                  foregroundColor: colorPallete.white,
-                                  radius: 10,
-                                  child: Icon(
-                                    FontAwesomeIcons.cameraRetro,
-                                    size: 10,
+                    Selector<GlobalProvider, bool>(
+                      selector: (_, globalProvider) => globalProvider.isImageLoading,
+                      builder: (_, isImageLoading, __) {
+                        print("Widget : WelcomeScreen/UserProfil.dart | Selector  2  | Rebuild !");
+
+                        return isImageLoading
+                            ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                            : Stack(
+                                children: [
+                                  InkWell(
+                                    onTap: () => _userUpdateImage(context),
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: ShowImageNetwork(
+                                      imageUrl: value.image.isEmpty
+                                          ? "https://flutter.io/images/catalog-widget-placeholder.png"
+                                          : "${appConfig.baseImageApiUrl}/user/${value.image}",
+                                      isCircle: true,
+                                      padding: const EdgeInsets.all(20),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                  ),
-                ],
-              ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: CircleAvatar(
+                                      backgroundColor: colorPallete.accentColor,
+                                      foregroundColor: colorPallete.white,
+                                      radius: 10,
+                                      child: Icon(
+                                        FontAwesomeIcons.cameraRetro,
+                                        size: 10,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                      },
+                    ),
+                  ],
+                );
+              },
             )
           ],
         ),
@@ -80,14 +91,17 @@ class UserProfile extends StatelessWidget {
   }
 
   void _userUpdateImage(BuildContext context) async {
+    final _picker = ImagePicker();
+
     final globalProvider = context.read<GlobalProvider>();
     final userProvider = context.read<UserProvider>();
-    final imageFile = await ImagePicker.pickImage(
+    final imagePicker = await _picker.getImage(
       source: ImageSource.camera,
       preferredCameraDevice: CameraDevice.front,
       maxHeight: 500,
       maxWidth: 600,
     );
+    final imageFile = File(imagePicker.path);
     if (imageFile == null) {
       print("Tidak Jadi Mengambil Gambar");
       return null;
