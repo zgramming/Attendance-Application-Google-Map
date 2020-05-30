@@ -74,7 +74,6 @@ class TextFormFieldCustom extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    print("Rebuild TextFormFieldCustom");
     return TextFormField(
       autofocus: autoFocus,
       controller: controller,
