@@ -29,7 +29,6 @@ class _AppBarAnimatedColorState extends State<AppBarAnimatedColor> {
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuild AppBarAnimatedColor ");
     return AnimatedBuilder(
       animation: widget.controller,
       builder: (_, __) => Positioned(

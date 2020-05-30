@@ -19,8 +19,6 @@ class _FormUserState extends State<FormUser> {
   String username, password, fullName;
   @override
   Widget build(BuildContext context) {
-    print("Widget : LoginScreen/Form.dart  | Rebuild !");
-
     return Column(
       children: [
         TextFormFieldCustom(
@@ -43,8 +41,6 @@ class _FormUserState extends State<FormUser> {
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isRegister,
           builder: (_, isRegister, __) {
-            print("Widget : LoginScreen/Form.dart | Selector | Rebuild !");
-
             return Visibility(
               visible: isRegister ? true : false,
               child: TextFormFieldCustom(
@@ -62,8 +58,6 @@ class _FormUserState extends State<FormUser> {
         Selector2<GlobalProvider, GlobalProvider, Tuple2<bool, bool>>(
           selector: (_, loading, register) => Tuple2(loading.isLoading, register.isRegister),
           builder: (_, value, __) {
-            print("Widget : LoginScreen/Form.dart | Selector 2 | Rebuild !");
-
             return value.item1
                 ? LoadingFutureBuilder(isLinearProgressIndicator: false)
                 : ButtonCustom(
@@ -76,8 +70,6 @@ class _FormUserState extends State<FormUser> {
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isRegister,
           builder: (_, isRegister, __) {
-            print("Widget : LoginScreen/Form.dart | Selector 3 | Rebuild !");
-
             return OutlineButton(
               child: Text(isRegister ? "Ayo Login" : "Belum Punya Akun ?"),
               onPressed: () => context.read<GlobalProvider>().setRegister(!isRegister),
@@ -119,7 +111,6 @@ class _FormUserState extends State<FormUser> {
         return null;
       }
     } catch (e) {
-      print(e.toString());
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
       context.read<GlobalProvider>().setLoading(false);
     }

@@ -6,8 +6,6 @@ import './content_performance.dart';
 class CardOverallMonthly extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Widget : WelcomeScreen/CardOveralMonthly.dart   | Rebuild !");
-
     return Container(
       height: sizes.height(context) / 3,
       child: Container(
@@ -50,8 +48,6 @@ class TitlePerformance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Widget : WelcomeScreen/TitlePerformance.dart   | Rebuild !");
-
     return Flexible(
       fit: FlexFit.tight,
       child: SizedBox(

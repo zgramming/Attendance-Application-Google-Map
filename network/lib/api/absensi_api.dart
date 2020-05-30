@@ -84,10 +84,6 @@ class AbsensiApi {
         ).timeout(Duration(minutes: 1));
         final Map<String, dynamic> responseJson = json.decode(response.body);
         final String message = responseJson['message'];
-        print(response.body);
-        print("Absensi Pulang $responseJson");
-
-        print(response.statusCode);
         if (response.statusCode == 200) {
           return message;
         } else {
@@ -114,7 +110,6 @@ class AbsensiApi {
       final Map<String, dynamic> responseJson = json.decode(response.body);
       final String message = responseJson['message'];
       final List data = responseJson['data'];
-      print(data);
       if (response.statusCode == 200) {
         List<PerformanceModel> result = data.map((e) => PerformanceModel.fromJson(e)).toList();
         return result;
@@ -136,7 +131,6 @@ class AbsensiApi {
       final Map<String, dynamic> responseJson = json.decode(response.body);
       final String message = responseJson['message'];
       final List data = responseJson['data'];
-      print(data);
       if (response.statusCode == 200) {
         List<AbsensiStatusModel> result = data.map((e) => AbsensiStatusModel.fromJson(e)).toList();
         return result;
@@ -158,7 +152,6 @@ class AbsensiApi {
       final Map<String, dynamic> responseJson = json.decode(response.body);
       final String message = responseJson['message'];
       final List data = responseJson['data'];
-      print(data);
       if (response.statusCode == 200) {
         List<AbsensiModel> result = data.map((e) => AbsensiModel.fromJson(e)).toList();
         return result;

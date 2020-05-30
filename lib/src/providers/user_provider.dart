@@ -19,9 +19,7 @@ class UserProvider extends ChangeNotifier {
   }) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     final encodeSession = jsonEncode(list.map((e) => e.toJson()).toList());
-    final result = await pref.setString(userKey, encodeSession);
-    print('Encode Session : $encodeSession');
-    print('Result Encode $result');
+    await pref.setString(userKey, encodeSession);
     _getSessionUser();
     notifyListeners();
   }

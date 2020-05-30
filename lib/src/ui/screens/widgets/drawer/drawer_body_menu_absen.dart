@@ -47,8 +47,6 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
   //* 2 == Anda Sudah Selesai Bekerja
   @override
   Widget build(BuildContext context) {
-    print("Widget : Drawer Body Menu Absen.dart  | Rebuild !");
-
     return FutureBuilder<int>(
       future: alreadyAbsen,
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -70,8 +68,6 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
               Selector<GlobalProvider, bool>(
                 selector: (_, provider) => provider.isLoading,
                 builder: (_, isLoading, __) {
-                  print("Widget : Drawer Body Menu Absen.dart | Selector | Rebuild !");
-
                   return DrawerBodyMenu(
                     wordUppercase: "M",
                     singleWordUppercase: true,
@@ -85,8 +81,6 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
               Selector<GlobalProvider, bool>(
                 selector: (_, provider) => provider.isLoading,
                 builder: (_, isLoading, __) {
-                  print("Widget : Drawer Body Menu Absen.dart | Selector 2 | Rebuild !");
-
                   return DrawerBodyMenu(
                     wordUppercase: "P",
                     singleWordUppercase: true,
@@ -109,9 +103,7 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
     //! Membuat Button Menjadi Disable , Untuk Prevent Double Click
     context.read<GlobalProvider>().setLoading(true);
     try {
-      print('Proses Mendapatkan Initial Position');
       await context.read<MapsProvider>().getCurrentPosition();
-      print('Proses Menyimpan Destinasi User');
       await context
           .read<AbsenProvider>()
           .saveSelectedDestinationUser(context.read<UserProvider>().user.idUser)

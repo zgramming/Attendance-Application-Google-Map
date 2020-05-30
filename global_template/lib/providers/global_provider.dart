@@ -38,7 +38,7 @@ class GlobalProvider extends ChangeNotifier {
         identifier = buildIos.identifierForVendor;
       }
     } on PlatformException {
-      print('Failed to get platform Version');
+      throw 'Failed to get platform Version';
     }
     _setDeviceId(identifier);
     notifyListeners();

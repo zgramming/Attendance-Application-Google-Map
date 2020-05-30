@@ -23,8 +23,6 @@ class _TableAttendanceState extends State<TableAttendance> {
 
   @override
   Widget build(BuildContext context) {
-    print("Widget : WelcomeScreen/TableAttendance.dart   | Rebuild !");
-
     return Column(
       children: [
         Card(
@@ -38,8 +36,6 @@ class _TableAttendanceState extends State<TableAttendance> {
               Selector<GlobalProvider, DateTime>(
                 selector: (_, provider) => provider.dateAddSubstract,
                 builder: (_, dateTime, __) {
-                  print("Widget : WelcomeScreen/TableAttendance.dart | Selector   | Rebuild !");
-
                   return Text(
                     globalF.formatYearMonth(dateTime, type: 3),
                     style: appTheme.subtitle1(context),
@@ -78,8 +74,6 @@ class _TableAttendanceState extends State<TableAttendance> {
               Selector<GlobalProvider, DateTime>(
                 selector: (_, provider) => provider.dateAddSubstract,
                 builder: (_, dateTime, __) {
-                  print("Widget : WelcomeScreen/TableAttendance.dart | Selector  2 | Rebuild !");
-
                   return FutureBuilder(
                     future: getAbsenMonthly(dateTime),
                     builder: (BuildContext context, AsyncSnapshot<List<AbsensiModel>> snapshot) {
@@ -105,7 +99,10 @@ class _TableAttendanceState extends State<TableAttendance> {
                             itemBuilder: (BuildContext context, int index) {
                               final result = snapshot.data[index];
                               return TableAttendanceBody(
-                                  index: index, now: dateTime, result: result);
+                                index: index,
+                                now: dateTime,
+                                result: result,
+                              );
                             },
                           ),
                         );

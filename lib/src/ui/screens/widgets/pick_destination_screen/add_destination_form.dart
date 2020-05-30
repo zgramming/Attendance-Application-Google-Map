@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../providers/user_provider.dart';
 import '../../../../providers/maps_provider.dart';
@@ -18,8 +17,6 @@ class AddDestinationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Widget : PickDestinationScreen/AddDestinationForm.dart  | Rebuild !");
-
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Column(
@@ -28,8 +25,8 @@ class AddDestinationForm extends StatelessWidget {
           TextFormFieldCustom(
             controller: _nameDestinationController,
             onSaved: (value) => '',
-            prefixIcon: Icon(FontAwesomeIcons.fortAwesome),
-            hintText: "Nama Destinasi",
+            prefixIcon: Icon(Icons.add_location),
+            hintText: "Nama Lokasi Absen",
             autoFocus: true,
           ),
           Row(
@@ -39,9 +36,6 @@ class AddDestinationForm extends StatelessWidget {
               Selector<GlobalProvider, bool>(
                 selector: (_, provider) => provider.isLoading,
                 builder: (_, isLoading, __) {
-                  print(
-                      "Widget : PickDestinationScreen/AddDestinationForm.dart |Selector  | Rebuild !");
-
                   return Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: isLoading
@@ -74,14 +68,12 @@ class AddDestinationForm extends StatelessWidget {
     } else {
       try {
         globalProvider.setLoading(true);
-        print("Proses Add Destination");
         final result = await absenProvider.destinationRegister(
           idUser: userProvider.user.idUser,
           nameDestination: _nameDestinationController.text,
           latitude: mapsProvider.cameraPosition.target.latitude,
           longitude: mapsProvider.cameraPosition.target.longitude,
         );
-        print("Selesai Add Destination");
         globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
         _nameDestinationController.clear();
         globalProvider.setLoading(false);

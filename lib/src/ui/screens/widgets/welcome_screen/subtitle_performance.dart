@@ -7,8 +7,6 @@ class SubtitlePerformance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Widget : WelcomeScreen/SubtitlePerformance.dart   | Rebuild !");
-
     return Flexible(
       fit: FlexFit.tight,
       child: Row(

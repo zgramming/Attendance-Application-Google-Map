@@ -21,16 +21,6 @@ class DrawerBodyMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Widget : Drawer Body Menu.dart | Selector | Rebuild !");
-
-    var text = Text(
-      wordUppercase,
-      style: appTheme.headline6(context).copyWith(
-            color: colorPallete.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-    );
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Row(
@@ -42,7 +32,14 @@ class DrawerBodyMenu extends StatelessWidget {
               radius: 15,
               backgroundColor: avatarColor ?? colorPallete.primaryColor,
               child: singleWordUppercase
-                  ? text
+                  ? Text(
+                      wordUppercase,
+                      style: appTheme.headline6(context).copyWith(
+                            color: colorPallete.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                    )
                   : Icon(
                       icon,
                       color: iconColor ?? colorPallete.white,

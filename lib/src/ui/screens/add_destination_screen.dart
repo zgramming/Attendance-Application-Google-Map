@@ -21,7 +21,7 @@ class AddDestinationScreen extends StatefulWidget {
 class _AddDestinationScreenState extends State<AddDestinationScreen> {
   Completer<GoogleMapController> _controller = Completer();
 
-  TextEditingController _searchAddressController = TextEditingController();
+  TextEditingController _searchLocationController = TextEditingController();
   TextEditingController _nameDestinationController = TextEditingController();
 
   double iconSize = 40;
@@ -29,14 +29,13 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   @override
   void dispose() {
-    _searchAddressController.dispose();
+    _searchLocationController.dispose();
     _nameDestinationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Screen : Add Destination Screen.dart | Rebuild !");
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tambah Lokasi'),
@@ -63,7 +62,6 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
           Selector<MapsProvider, Position>(
             selector: (_, provider) => provider.currentPosition,
             builder: (_, position, __) {
-              print("Screen : Add Destination Screen.dart | SELECTOR | Rebuild !");
               return GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: LatLng(position.latitude, position.longitude),
@@ -93,23 +91,25 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
             child: Padding(
               padding: EdgeInsets.only(top: kToolbarHeight, right: 40, left: 40),
               child: TextFormFieldCustom(
-                controller: _searchAddressController,
+                controller: _searchLocationController,
                 onSaved: (value) => print(value),
                 onFieldSubmitted: (value) => _moveCameraByAddress(value),
-                onChanged: _onChangedSearcAddress,
+                onChanged: _onChangedSearcLocation,
                 prefixIcon: Icon(
                   FontAwesomeIcons.searchLocation,
                   size: 18,
                 ),
                 suffixIcon: Selector<GlobalProvider, bool>(
                   selector: (_, provider) => provider.isShowClearTextField,
-                  builder: (_, showClearTextField, __) => showClearTextField
-                      ? IconButton(
-                          icon: Icon(FontAwesomeIcons.times),
-                          onPressed: _clearSearchAddress,
-                          iconSize: 18,
-                        )
-                      : SizedBox(),
+                  builder: (_, showClearTextField, __) {
+                    return showClearTextField
+                        ? IconButton(
+                            icon: Icon(FontAwesomeIcons.times),
+                            onPressed: _clearSearchLocation,
+                            iconSize: 18,
+                          )
+                        : SizedBox();
+                  },
                 ),
                 textInputAction: TextInputAction.search,
                 hintText: "Cari Lokasi Absen...",
@@ -157,13 +157,12 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
       } else {
         globalF.showToast(message: err.code, isError: true, isLongDuration: true);
       }
-      print(err);
     } catch (e) {
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
     }
   }
 
-  void _onChangedSearcAddress(String value) {
+  void _onChangedSearcLocation(String value) {
     final globalProvider = context.read<GlobalProvider>();
     if (value.isEmpty) {
       globalProvider.setShowClearTextField(false);
@@ -172,8 +171,8 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
     }
   }
 
-  void _clearSearchAddress() {
-    _searchAddressController.clear();
+  void _clearSearchLocation() {
+    _searchLocationController.clear();
     context.read<GlobalProvider>().setShowClearTextField(false);
   }
 }

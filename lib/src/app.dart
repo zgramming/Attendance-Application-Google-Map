@@ -13,7 +13,6 @@ import './ui/screens/pick_destination_screen.dart';
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Screen : App.dart | Rebuild !");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Absen OnlineKu",

@@ -17,7 +17,6 @@ class DestinasiApi {
           "${appConfig.baseApiUrl}/${appConfig.destinasiController}/destinationById?id_user=$idUser&is_selected=$isSelected",
         );
         final Map<String, dynamic> responseJson = json.decode(response.body);
-        print(responseJson);
         if (response.statusCode == 200) {
           final List list = responseJson['data'];
           final List<DestinasiModel> destinasiModel =

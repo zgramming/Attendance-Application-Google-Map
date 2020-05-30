@@ -17,15 +17,13 @@ class ListDestination extends StatelessWidget {
   static const sizeIcon = 14.0;
   @override
   Widget build(BuildContext context) {
-    print("Widget : PickDestinationScreen/ListDestination.dart  | Rebuild !");
-
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         leading: ShowImageNetwork(
           imageUrl: result.image == null
-              ? "https://flutter.io/images/catalog-widget-placeholder.png"
+              ? AppConfig.defaultImageNetwork
               : "${appConfig.baseImageApiUrl}/destinasi/${result.image}",
           fit: BoxFit.cover,
           isCircle: true,
@@ -85,9 +83,7 @@ class ListDestination extends StatelessWidget {
     final globalProvider = context.read<GlobalProvider>();
     try {
       globalProvider.setLoading(true);
-      print("Proses Hapus");
       final result = await absenProvider.destinationDelete(idDestinasi);
-      print("Selesai Hapus");
       globalProvider.setLoading(false);
       globalF.showToast(message: result, isSuccess: true);
     } catch (e) {

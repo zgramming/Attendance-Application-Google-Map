@@ -13,6 +13,7 @@ class AppConfig {
   final String absensiController = "absensi_controller";
   final String destinasiController = "absensi_controller";
 
+  static const defaultImageNetwork = "https://flutter.io/images/catalog-widget-placeholder.png";
   static const imageLogoAsset = "assets/images/logo.png";
   static const emptyDestination = "assets/images/empty_destination.png";
 }

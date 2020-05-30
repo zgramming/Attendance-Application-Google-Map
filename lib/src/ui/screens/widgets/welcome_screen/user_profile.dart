@@ -12,8 +12,6 @@ import '../../../../providers/user_provider.dart';
 class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Widget : WelcomeScreen/UserProfil.dart    | Rebuild !");
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Container(
@@ -31,8 +29,6 @@ class UserProfile extends StatelessWidget {
             Selector<UserProvider, UserModel>(
               selector: (_, provider) => provider.user,
               builder: (_, value, __) {
-                print("Widget : WelcomeScreen/UserProfil.dart | Selector    | Rebuild !");
-
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -45,8 +41,6 @@ class UserProfile extends StatelessWidget {
                     Selector<GlobalProvider, bool>(
                       selector: (_, globalProvider) => globalProvider.isImageLoading,
                       builder: (_, isImageLoading, __) {
-                        print("Widget : WelcomeScreen/UserProfil.dart | Selector  2  | Rebuild !");
-
                         return isImageLoading
                             ? LoadingFutureBuilder(isLinearProgressIndicator: false)
                             : Stack(
@@ -56,7 +50,7 @@ class UserProfile extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20),
                                     child: ShowImageNetwork(
                                       imageUrl: value.image.isEmpty
-                                          ? "https://flutter.io/images/catalog-widget-placeholder.png"
+                                          ? AppConfig.defaultImageNetwork
                                           : "${appConfig.baseImageApiUrl}/user/${value.image}",
                                       isCircle: true,
                                       padding: const EdgeInsets.all(20),

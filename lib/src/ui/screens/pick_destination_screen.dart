@@ -11,12 +11,18 @@ import './widgets/pick_destination_screen/list_destination.dart';
 import '../../providers/absen_provider.dart';
 import '../../providers/user_provider.dart';
 
-class PickDestinationScreen extends StatelessWidget {
+class PickDestinationScreen extends StatefulWidget {
   static const routeNamed = "/pick-destination-screen";
+
+  @override
+  _PickDestinationScreenState createState() => _PickDestinationScreenState();
+}
+
+class _PickDestinationScreenState extends State<PickDestinationScreen> {
+  final TextEditingController _searchLocationController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    print("Screen : Pick Destination.dart  | Rebuild !");
-    final TextEditingController _filterController = TextEditingController();
     final absenProvider = Provider.of<AbsenProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
@@ -34,15 +40,19 @@ class PickDestinationScreen extends StatelessWidget {
                 disableOutlineBorder: false,
                 prefixIcon: Icon(FontAwesomeIcons.searchLocation),
                 hintText: "Cari Lokasi Absen...",
-                controller: _filterController,
-                onChanged: (query) => context.read<AbsenProvider>().filterListDestination(query),
-                suffixIcon: IconButton(
-                  icon: Icon(FontAwesomeIcons.times),
-                  onPressed: () {
-                    _filterController.clear();
-                    context.read<AbsenProvider>().resetFilterListDestination();
+                controller: _searchLocationController,
+                onChanged: _onChangedSearcLocation,
+                suffixIcon: Selector<GlobalProvider, bool>(
+                  selector: (_, provider) => provider.isShowClearTextField,
+                  builder: (_, isShowClearTextField, __) {
+                    return isShowClearTextField
+                        ? IconButton(
+                            icon: Icon(FontAwesomeIcons.times),
+                            onPressed: _clearSearchLocation,
+                            iconSize: 18,
+                          )
+                        : SizedBox();
                   },
-                  iconSize: 18,
                 ),
               ),
             ),
@@ -65,10 +75,8 @@ class PickDestinationScreen extends StatelessWidget {
                       isLoading.isLoading,
                     ),
                     builder: (_, value, __) {
-                      print("Screen :Pick Destination Screen.dart | SELECTOR | Rebuild !");
-
                       final resultList =
-                          (value.item2.length != 0 || _filterController.text.isNotEmpty)
+                          (value.item2.length != 0 || _searchLocationController.text.isNotEmpty)
                               ? value.item2
                               : value.item1.where((element) => element.status != "t").toList();
                       return (value.item3)
@@ -90,5 +98,22 @@ class PickDestinationScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _clearSearchLocation() {
+    _searchLocationController.clear();
+    context.read<GlobalProvider>().setShowClearTextField(false);
+    context.read<AbsenProvider>().resetFilterListDestination();
+  }
+
+  void _onChangedSearcLocation(String value) {
+    final globalProvider = context.read<GlobalProvider>();
+    final absenProvider = context.read<AbsenProvider>();
+    absenProvider.filterListDestination(value);
+    if (value.isEmpty) {
+      globalProvider.setShowClearTextField(false);
+    } else {
+      globalProvider.setShowClearTextField(true);
+    }
   }
 }

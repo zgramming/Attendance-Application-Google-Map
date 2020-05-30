@@ -16,8 +16,6 @@ class TableAttendanceBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Widget : WelcomeScreen/TableAttendanceBody.dart   | Rebuild !");
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: SizedBox(
@@ -26,12 +24,13 @@ class TableAttendanceBody extends StatelessWidget {
           style: appTheme.caption(context).copyWith(fontWeight: FontWeight.bold),
           child: Row(
             children: [
-              rowContent(context,
-                  globalF.formatYearMonthDaySpecific(DateTime(now.year, now.month, index + 1)),
-                  flex: 2,
-                  textAlign: TextAlign.left,
-                  fittedText: true,
-                  padding: EdgeInsets.symmetric(horizontal: 10.0)),
+              rowContent(
+                context,
+                globalF.formatYearMonthDaySpecific(DateTime(now.year, now.month, index + 1)),
+                flex: 2,
+                textAlign: TextAlign.left,
+                fittedText: true,
+              ),
               rowContent(context, result.jamAbsenMasuk),
               rowContent(context, result.jamAbsenPulang),
               rowContent(
@@ -53,18 +52,25 @@ class TableAttendanceBody extends StatelessWidget {
     TextAlign textAlign = TextAlign.center,
     bool fittedText = false,
     EdgeInsetsGeometry padding,
+    double fontSize = 11,
+    FontWeight fontWeight = FontWeight.w600,
   }) {
-    var text = Padding(
-      padding: padding ?? EdgeInsets.all(0),
-      child: Text(
-        result ?? "-",
-        style: appTheme.caption(context).copyWith(fontWeight: FontWeight.w600, fontSize: 11),
-        textAlign: textAlign,
-      ),
+    var text = Text(
+      result ?? "-",
+      style: appTheme.caption(context).copyWith(fontWeight: fontWeight, fontSize: fontSize),
+      textAlign: textAlign,
     );
     return Flexible(
       flex: flex,
-      child: fittedText ? FittedBox(child: text) : text,
+      child: fittedText
+          ? Padding(
+              padding: padding ?? EdgeInsets.all(0),
+              child: FittedBox(child: text),
+            )
+          : Padding(
+              padding: padding ?? EdgeInsets.all(0),
+              child: text,
+            ),
       fit: FlexFit.tight,
     );
   }

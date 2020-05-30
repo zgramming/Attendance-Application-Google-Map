@@ -28,7 +28,6 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
 
   @override
   Widget build(BuildContext context) {
-    print("Widget : WelcomeScreen/CalendarHorizontal.dart | Selector  | Rebuild !");
     return Stack(
       children: [
         Card(
@@ -41,8 +40,6 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                 child: Selector<GlobalProvider, DateTime>(
                   selector: (_, provider) => provider.dateAddSubstract,
                   builder: (_, dateTime, __) {
-                    print("Widget : WelcomeScreen/CalendarHorizontal.dart | Selector  | Rebuild !");
-
                     return Text(
                       globalF.formatYearMonth(dateTime),
                       style: appTheme.headline6(context),
@@ -55,8 +52,6 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
               Selector<GlobalProvider, DateTime>(
                 selector: (_, provider) => provider.dateAddSubstract,
                 builder: (_, dateTime, __) {
-                  print("Widget : WelcomeScreen/CalendarHorizontal.dart | Selector 2 | Rebuild !");
-
                   return FutureBuilder(
                     future: getStatusAbsensi(dateTime),
                     builder:
@@ -123,8 +118,6 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
               Selector<GlobalProvider, DateTime>(
                 selector: (_, provider) => provider.dateAddSubstract,
                 builder: (_, dateTime, __) {
-                  print("Widget : WelcomeScreen/CalendarHorizontal.dart | Selector 3 | Rebuild !");
-
                   return InkWell(
                     child: const Icon(FontAwesomeIcons.calendar, size: 18),
                     onTap: () => itemScrollController.scrollTo(

@@ -11,15 +11,11 @@ class DrawerHeaderCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Widget : Drawer Header.dart  | Rebuild !");
-
     return Container(
       height: sizes.height(context) / 4,
       child: Selector<UserProvider, UserModel>(
         selector: (_, provider) => provider.user,
         builder: (_, value, __) {
-          print("Widget : Drawer Body Header.dart | Selector | Rebuild !");
-
           return Stack(
             children: [
               ShowImageNetwork(

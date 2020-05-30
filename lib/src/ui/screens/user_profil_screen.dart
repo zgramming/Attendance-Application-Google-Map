@@ -21,8 +21,6 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    print("Screen : User Profil Screen.dart  | Rebuild !");
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Profil'),
@@ -32,8 +30,6 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
             child: Selector<GlobalProvider, bool>(
               selector: (_, provider) => provider.isLoading,
               builder: (_, isLoading, __) {
-                print("Screen : User Profil Screen.dart | SELECTOR | Rebuild !");
-
                 return isLoading
                     ? LoadingFutureBuilder(isLinearProgressIndicator: false)
                     : InkWell(
@@ -49,8 +45,6 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
         child: Selector<UserProvider, UserModel>(
           selector: (_, provider) => provider.user,
           builder: (_, user, __) {
-            print("Screen : User Profil Screen.dart | SELECTOR 2 | Rebuild !");
-
             return Form(
               key: _formKey,
               child: Column(

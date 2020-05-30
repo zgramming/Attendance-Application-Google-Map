@@ -6,8 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class FabChangeMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Widget : WelcomeScreen/FAB.dart   | Rebuild !");
-
     return FloatingActionButton(
       onPressed: () =>
           context.read<GlobalProvider>().setChangeMode(context.read<GlobalProvider>().isChangeMode),
@@ -15,8 +13,6 @@ class FabChangeMode extends StatelessWidget {
       child: Selector<GlobalProvider, bool>(
         selector: (_, provider) => provider.isChangeMode,
         builder: (_, value, __) {
-          print("Widget : WelcomeScreen/FAB.dart | Selector   | Rebuild !");
-
           return AnimatedSwitcher(
             duration: Duration(seconds: 1),
             switchInCurve: Curves.decelerate,

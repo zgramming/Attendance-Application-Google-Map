@@ -67,8 +67,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    print("Screen : Welcome Screen.dart  | Rebuild !");
-
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) => commonF.handleScrollNotification(
         notification,

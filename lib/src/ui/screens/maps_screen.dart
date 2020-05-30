@@ -47,8 +47,6 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Screen : Maps Screen.dart  | Rebuild !");
-
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -60,8 +58,6 @@ class _MapScreenState extends State<MapScreen> {
                 selector: (_, provider1, provider2) =>
                     Tuple2(provider1.currentPosition, provider2.destinasiModel),
                 builder: (_, value, __) {
-                  print("Screen : Maps Screen.dart | SELECTOR 1 | Rebuild !");
-
                   return GoogleMap(
                     // mapType: MapType.hybrid,
                     myLocationEnabled: true,
@@ -86,7 +82,6 @@ class _MapScreenState extends State<MapScreen> {
                   selector: (_, provider1, provider2) =>
                       Tuple2(provider1.currentPosition, provider2.destinasiModel),
                   builder: (_, value, __) {
-                    print("Screen : Maps Screen.dart | SELECTOR 2 | Rebuild !");
                     return ButtonAttendance(
                       onTapAbsen: () => _validateAbsen(
                         distanceTwoLocation: commonF.getDistanceLocation(
@@ -166,7 +161,7 @@ class _MapScreenState extends State<MapScreen> {
     _positionStream = positionStream.listen((Position position) {
       context.read<MapsProvider>().setTrackingLocation(position);
       print(
-          "Berhasil Tracking Dengan Hasil Lat=${position.latitude} Long=${position.longitude} Accuracy=${position.accuracy} Speed=${position.speed} Mocked=${position.mocked}");
+          " Tracking :Lat=${position.latitude} Long=${position.longitude} Accuracy=${position.accuracy} Speed=${position.speed} Mocked=${position.mocked}");
     }, onError: (error) => print("Error Handling Listen Stream ${error.toString()}"));
   }
 

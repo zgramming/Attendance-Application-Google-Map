@@ -42,8 +42,6 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
 
   @override
   Widget build(BuildContext context) {
-    print("Widget : WelcomeScreen/ButtonAttendance.dart | Selector  | Rebuild !");
-
     return FutureBuilder<int>(
       future: alreadyAbsen,
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -89,9 +87,6 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                       child: Selector<GlobalProvider, bool>(
                         selector: (_, provider) => provider.isLoading,
                         builder: (_, isLoading, __) {
-                          print(
-                              "Widget : WelcomeScreen/ButtonAttendance.dart | Selector  | Rebuild !");
-
                           return ButtonCustom(
                             onPressed: isLoading
                                 ? null
@@ -108,8 +103,6 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                       child: Selector<GlobalProvider, bool>(
                         selector: (_, provider) => provider.isLoading,
                         builder: (_, isLoading, __) {
-                          print(
-                              "Widget : WelcomeScreen/ButtonAttendance.dart | Selector 2 | Rebuild !");
                           return ButtonCustom(
                             padding: const EdgeInsets.symmetric(horizontal: 6.0),
                             child: isLoading ? Text("Loading...") : LiveClock(),
@@ -140,13 +133,9 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
     final mapsProvider = context.read<MapsProvider>();
     try {
       globalProvider.setLoading(true);
-      print('Get Location User');
       await mapsProvider.getCurrentPosition();
-      print('Success Get location User');
       await absenProvider.saveSelectedDestinationUser(userProvider.user.idUser, isSelected: "t");
-      print("Nonaktif Loading");
       globalProvider.setLoading(false);
-      print("Pindah Ke Halaman Maps");
       Navigator.of(context).pushNamed(MapScreen.routeNamed);
     } catch (e) {
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
