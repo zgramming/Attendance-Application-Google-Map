@@ -21,6 +21,8 @@ class DrawerBodyMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Widget : Drawer Body Menu.dart | Selector | Rebuild !");
+
     var text = Text(
       wordUppercase,
       style: appTheme.headline6(context).copyWith(

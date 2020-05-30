@@ -11,38 +11,44 @@ class DrawerHeaderCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Widget : Drawer Header.dart  | Rebuild !");
+
     return Container(
       height: sizes.height(context) / 4,
       child: Selector<UserProvider, UserModel>(
         selector: (_, provider) => provider.user,
-        builder: (_, value, __) => Stack(
-          children: [
-            ShowImageNetwork(
-              imageUrl: value.image.isEmpty
-                  ? "https://flutter.io/images/catalog-widget-placeholder.png"
-                  : "${appConfig.baseImageApiUrl}/user/${value.image}",
-              fit: BoxFit.cover,
-              imageRadius: 0,
-            ),
-            Positioned(
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(color: Colors.black54),
-                child: Text(
-                  value.username,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: appTheme
-                      .subtitle2(context)
-                      .copyWith(color: colorPallete.white, fontWeight: FontWeight.bold),
-                ),
+        builder: (_, value, __) {
+          print("Widget : Drawer Body Header.dart | Selector | Rebuild !");
+
+          return Stack(
+            children: [
+              ShowImageNetwork(
+                imageUrl: value.image.isEmpty
+                    ? "https://flutter.io/images/catalog-widget-placeholder.png"
+                    : "${appConfig.baseImageApiUrl}/user/${value.image}",
+                fit: BoxFit.cover,
+                imageRadius: 0,
               ),
-              bottom: 0,
-              left: 0,
-              right: 0,
-            ),
-          ],
-        ),
+              Positioned(
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(color: Colors.black54),
+                  child: Text(
+                    value.username,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: appTheme
+                        .subtitle2(context)
+                        .copyWith(color: colorPallete.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                bottom: 0,
+                left: 0,
+                right: 0,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -6,7 +6,7 @@ import './drawer_body.dart';
 class DrawerCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Rebuild Drawer");
+    print("Widget : Drawer Custom.dart  | Rebuild !");
 
     return Drawer(
       child: SingleChildScrollView(

@@ -47,7 +47,8 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuild Maps Screen");
+    print("Screen : Maps Screen.dart  | Rebuild !");
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -59,6 +60,8 @@ class _MapScreenState extends State<MapScreen> {
                 selector: (_, provider1, provider2) =>
                     Tuple2(provider1.currentPosition, provider2.destinasiModel),
                 builder: (_, value, __) {
+                  print("Screen : Maps Screen.dart | SELECTOR 1 | Rebuild !");
+
                   return GoogleMap(
                     // mapType: MapType.hybrid,
                     myLocationEnabled: true,
@@ -82,25 +85,28 @@ class _MapScreenState extends State<MapScreen> {
                 child: Selector2<MapsProvider, AbsenProvider, Tuple2<Position, DestinasiModel>>(
                   selector: (_, provider1, provider2) =>
                       Tuple2(provider1.currentPosition, provider2.destinasiModel),
-                  builder: (_, value, __) => ButtonAttendance(
-                    onTapAbsen: () => _validateAbsen(
-                      distanceTwoLocation: commonF.getDistanceLocation(
-                        value.item1,
-                        value.item2,
+                  builder: (_, value, __) {
+                    print("Screen : Maps Screen.dart | SELECTOR 2 | Rebuild !");
+                    return ButtonAttendance(
+                      onTapAbsen: () => _validateAbsen(
+                        distanceTwoLocation: commonF.getDistanceLocation(
+                          value.item1,
+                          value.item2,
+                        ),
+                        radius: radiusCircle,
+                        isAbsentIn: true,
                       ),
-                      radius: radiusCircle,
-                      isAbsentIn: true,
-                    ),
-                    backgroundColor: Colors.transparent,
-                    onTapPulang: () => _validateAbsen(
-                      distanceTwoLocation: commonF.getDistanceLocation(
-                        value.item1,
-                        value.item2,
+                      backgroundColor: Colors.transparent,
+                      onTapPulang: () => _validateAbsen(
+                        distanceTwoLocation: commonF.getDistanceLocation(
+                          value.item1,
+                          value.item2,
+                        ),
+                        radius: radiusCircle,
+                        isAbsentIn: false,
                       ),
-                      radius: radiusCircle,
-                      isAbsentIn: false,
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
               Positioned(

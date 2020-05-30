@@ -18,6 +18,8 @@ class CardCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Widget : WelcomeScreen/CardCalendar.dart   | Rebuild !");
+
     return SizedBox(
       width: sizes.width(context) / 5.5,
       child: Stack(

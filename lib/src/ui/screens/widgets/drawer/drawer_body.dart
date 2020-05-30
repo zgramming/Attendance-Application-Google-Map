@@ -22,6 +22,8 @@ class DrawerBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Widget : Drawer Body.dart  | Rebuild !");
+
     return Column(
       children: [
         const SizedBox(height: 12),
@@ -30,11 +32,15 @@ class DrawerBody extends StatelessWidget {
         DrawerBodyTitle(title: "Destinasi"),
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isLoading,
-          builder: (_, isLoading, __) => DrawerBodyMenu(
-            icon: Icons.add_location,
-            subtitle: isLoading ? "Loading..." : "Tambah Lokasi Absen",
-            onTap: isLoading ? null : () => goToAddDestination(context),
-          ),
+          builder: (_, isLoading, __) {
+            print("Widget : Drawer Body.dart | Selector | Rebuild !");
+
+            return DrawerBodyMenu(
+              icon: Icons.add_location,
+              subtitle: isLoading ? "Loading..." : "Tambah Lokasi Absen",
+              onTap: isLoading ? null : () => goToAddDestination(context),
+            );
+          },
         ),
         DrawerBodyMenu(
           icon: FontAwesomeIcons.searchLocation,

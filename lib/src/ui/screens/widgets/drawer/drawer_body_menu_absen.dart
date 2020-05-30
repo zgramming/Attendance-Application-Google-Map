@@ -47,6 +47,8 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
   //* 2 == Anda Sudah Selesai Bekerja
   @override
   Widget build(BuildContext context) {
+    print("Widget : Drawer Body Menu Absen.dart  | Rebuild !");
+
     return FutureBuilder<int>(
       future: alreadyAbsen,
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -67,25 +69,33 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
             children: [
               Selector<GlobalProvider, bool>(
                 selector: (_, provider) => provider.isLoading,
-                builder: (_, isLoading, __) => DrawerBodyMenu(
-                  wordUppercase: "M",
-                  singleWordUppercase: true,
-                  subtitle: isLoading ? "Loading..." : "Absen Masuk",
-                  onTap: isLoading
-                      ? null
-                      : (snapshot.data == 2) ? null : (snapshot.data == 1) ? null : onTapAbsen,
-                ),
+                builder: (_, isLoading, __) {
+                  print("Widget : Drawer Body Menu Absen.dart | Selector | Rebuild !");
+
+                  return DrawerBodyMenu(
+                    wordUppercase: "M",
+                    singleWordUppercase: true,
+                    subtitle: isLoading ? "Loading..." : "Absen Masuk",
+                    onTap: isLoading
+                        ? null
+                        : (snapshot.data == 2) ? null : (snapshot.data == 1) ? null : onTapAbsen,
+                  );
+                },
               ),
               Selector<GlobalProvider, bool>(
                 selector: (_, provider) => provider.isLoading,
-                builder: (_, isLoading, __) => DrawerBodyMenu(
-                  wordUppercase: "P",
-                  singleWordUppercase: true,
-                  subtitle: isLoading ? "Loading..." : "Absen Pulang",
-                  onTap: isLoading
-                      ? null
-                      : (snapshot.data == 2) ? null : (snapshot.data != 1) ? null : onTapPulang,
-                ),
+                builder: (_, isLoading, __) {
+                  print("Widget : Drawer Body Menu Absen.dart | Selector 2 | Rebuild !");
+
+                  return DrawerBodyMenu(
+                    wordUppercase: "P",
+                    singleWordUppercase: true,
+                    subtitle: isLoading ? "Loading..." : "Absen Pulang",
+                    onTap: isLoading
+                        ? null
+                        : (snapshot.data == 2) ? null : (snapshot.data != 1) ? null : onTapPulang,
+                  );
+                },
               ),
             ],
           );

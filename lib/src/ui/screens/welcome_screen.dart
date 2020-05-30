@@ -21,15 +21,16 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
-  AnimationController _hideFloatingButton;
+  AnimationController _buttonAbsentController;
   AnimationController _appbarController;
   bool isChange = false;
   @override
   void initState() {
     super.initState();
     commonF.initPermission(context);
-    _hideFloatingButton = AnimationController(vsync: this, duration: kThemeAnimationDuration);
+    _buttonAbsentController = AnimationController(vsync: this, duration: kThemeAnimationDuration);
     _appbarController = AnimationController(vsync: this, duration: kThemeChangeDuration);
+    _buttonAbsentController.forward();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -58,7 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   void dispose() {
-    _hideFloatingButton.dispose();
+    _buttonAbsentController.dispose();
     _appbarController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -66,10 +67,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    print("Screen : Welcome Screen.dart  | Rebuild !");
+
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) => commonF.handleScrollNotification(
         notification,
-        controllerButton: _hideFloatingButton,
+        controllerButton: _buttonAbsentController,
         appBarController: _appbarController,
       ),
       child: Scaffold(
@@ -84,7 +87,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   UserProfile(),
                   CardOverallMonthly(),
                   AnimatedCalendarAndTable(),
-                  const SizedBox(height: 50),
                 ],
               ),
             ),
@@ -93,15 +95,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               right: 60,
               bottom: 10,
               child: ScaleTransition(
-                scale: _hideFloatingButton,
+                scale: _buttonAbsentController,
                 child: ButtonAttendance(),
               ),
             ),
             AppBarAnimatedColor(
-                controller: _appbarController,
-                leading: FlutterLogo(
-                  size: kToolbarHeight / 1.5,
-                )),
+              controller: _appbarController,
+              leading: FlutterLogo(
+                size: kToolbarHeight / 1.5,
+              ),
+            ),
           ],
         ),
         floatingActionButton: FabChangeMode(),

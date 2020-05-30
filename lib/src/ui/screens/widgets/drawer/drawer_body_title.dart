@@ -8,6 +8,8 @@ class DrawerBodyTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Widget : Drawer Body Title.dart  | Rebuild !");
+
     return Padding(
       padding: const EdgeInsets.only(left: 12.0, bottom: 16.0),
       child: Text(

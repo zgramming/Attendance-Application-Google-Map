@@ -142,15 +142,6 @@ class CommonFunction {
     if (notification.depth == 0) {
       if (notification is UserScrollNotification) {
         final UserScrollNotification userScroll = notification;
-        if (userScroll.metrics.pixels == userScroll.metrics.minScrollExtent) {
-          if (appBarController.status == AnimationStatus.completed) {
-            Future.delayed(Duration(seconds: 0), () => appBarController.reverse());
-          }
-        } else {
-          if (appBarController.status != AnimationStatus.completed) {
-            Future.delayed(Duration(seconds: 0), () => appBarController.forward());
-          }
-        }
         switch (userScroll.direction) {
           case ScrollDirection.forward:
             if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
@@ -167,7 +158,17 @@ class CommonFunction {
             break;
         }
       }
+      if (notification.metrics.pixels <= 0) {
+        if (appBarController.status == AnimationStatus.completed) {
+          Future.delayed(Duration(seconds: 0), () => appBarController.reverse());
+        }
+      } else {
+        if (appBarController.status != AnimationStatus.completed) {
+          Future.delayed(Duration(seconds: 0), () => appBarController.forward());
+        }
+      }
     }
+
     return false;
   }
 

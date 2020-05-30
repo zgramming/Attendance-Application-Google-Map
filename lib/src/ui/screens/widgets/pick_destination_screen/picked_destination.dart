@@ -13,7 +13,8 @@ class PickedDestination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuild Picked Destination Screen");
+    print("Widget : PickDestinationScreen/PickedDestination.dart  | Rebuild !");
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
       decoration: BoxDecoration(
@@ -32,7 +33,8 @@ class PickedDestination extends StatelessWidget {
             style: appTheme.headline6(context).copyWith(fontFamily: "Righteous", fontSize: 18),
           ),
           Consumer<AbsenProvider>(builder: (_, listDestinasi, __) {
-            print("Rebuild Picked Destinasi");
+            print("Widget : PickDestinationScreen/PickedDestination.dart | Consumer | Rebuild !");
+
             final selectedDestinasi =
                 listDestinasi.listDestinasi.where((element) => element.status == "t").toList();
             return ListView.builder(

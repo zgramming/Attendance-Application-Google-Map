@@ -36,6 +36,7 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Screen : Add Destination Screen.dart | Rebuild !");
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tambah Lokasi'),
@@ -61,19 +62,22 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
         children: [
           Selector<MapsProvider, Position>(
             selector: (_, provider) => provider.currentPosition,
-            builder: (_, position, __) => GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(position.latitude, position.longitude),
-                zoom: 20,
-              ),
-              onMapCreated: (controller) async {
-                _controller.complete(controller);
-                await _gotToCenterUser();
-              },
-              onCameraMove: (position) =>
-                  context.read<MapsProvider>().setTrackingCameraPosition(position),
-              onCameraIdle: () => print("Stop Camera"),
-            ),
+            builder: (_, position, __) {
+              print("Screen : Add Destination Screen.dart | SELECTOR | Rebuild !");
+              return GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(position.latitude, position.longitude),
+                  zoom: 20,
+                ),
+                onMapCreated: (controller) async {
+                  _controller.complete(controller);
+                  await _gotToCenterUser();
+                },
+                onCameraMove: (position) =>
+                    context.read<MapsProvider>().setTrackingCameraPosition(position),
+                onCameraIdle: () => print("Stop Camera"),
+              );
+            },
           ),
           Positioned(
             child: Icon(

@@ -23,7 +23,8 @@ class _TableAttendanceState extends State<TableAttendance> {
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuild Table Attendance");
+    print("Widget : WelcomeScreen/TableAttendance.dart   | Rebuild !");
+
     return Column(
       children: [
         Card(
@@ -36,10 +37,14 @@ class _TableAttendanceState extends State<TableAttendance> {
               ),
               Selector<GlobalProvider, DateTime>(
                 selector: (_, provider) => provider.dateAddSubstract,
-                builder: (_, dateTime, __) => Text(
-                  globalF.formatYearMonth(dateTime, type: 3),
-                  style: appTheme.subtitle1(context),
-                ),
+                builder: (_, dateTime, __) {
+                  print("Widget : WelcomeScreen/TableAttendance.dart | Selector   | Rebuild !");
+
+                  return Text(
+                    globalF.formatYearMonth(dateTime, type: 3),
+                    style: appTheme.subtitle1(context),
+                  );
+                },
               ),
               IconButton(
                 icon: const Icon(FontAwesomeIcons.angleRight),
@@ -72,38 +77,43 @@ class _TableAttendanceState extends State<TableAttendance> {
               ),
               Selector<GlobalProvider, DateTime>(
                 selector: (_, provider) => provider.dateAddSubstract,
-                builder: (_, dateTime, __) => FutureBuilder(
-                  future: getAbsenMonthly(dateTime),
-                  builder: (BuildContext context, AsyncSnapshot<List<AbsensiModel>> snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return LoadingFutureBuilder(isLinearProgressIndicator: true);
-                    }
-                    if (snapshot.hasError) {
-                      return InkWell(
-                        onTap: _refreshMenu,
-                        child: Text(
-                          "${snapshot.error.toString()} , Tap Untuk Refresh Data",
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      return Container(
-                        child: ListView.builder(
-                          itemCount: snapshot.data.length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.all(0),
-                          itemBuilder: (BuildContext context, int index) {
-                            final result = snapshot.data[index];
-                            return TableAttendanceBody(index: index, now: dateTime, result: result);
-                          },
-                        ),
-                      );
-                    }
-                    return Text('no data');
-                  },
-                ),
+                builder: (_, dateTime, __) {
+                  print("Widget : WelcomeScreen/TableAttendance.dart | Selector  2 | Rebuild !");
+
+                  return FutureBuilder(
+                    future: getAbsenMonthly(dateTime),
+                    builder: (BuildContext context, AsyncSnapshot<List<AbsensiModel>> snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return LoadingFutureBuilder(isLinearProgressIndicator: true);
+                      }
+                      if (snapshot.hasError) {
+                        return InkWell(
+                          onTap: _refreshMenu,
+                          child: Text(
+                            "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        return Container(
+                          child: ListView.builder(
+                            itemCount: snapshot.data.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.all(0),
+                            itemBuilder: (BuildContext context, int index) {
+                              final result = snapshot.data[index];
+                              return TableAttendanceBody(
+                                  index: index, now: dateTime, result: result);
+                            },
+                          ),
+                        );
+                      }
+                      return Text('no data');
+                    },
+                  );
+                },
               ),
             ],
           ),

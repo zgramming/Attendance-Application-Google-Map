@@ -38,7 +38,8 @@ class _ContentPerformanceState extends State<ContentPerformance> {
 
   @override
   Widget build(BuildContext context) {
-    print("Content Performance Rebuild");
+    print("Widget : WelcomeScreen/ContentPerformance.dart   | Rebuild !");
+
     return Flexible(
       flex: 2,
       child: FutureBuilder<List<PerformanceModel>>(

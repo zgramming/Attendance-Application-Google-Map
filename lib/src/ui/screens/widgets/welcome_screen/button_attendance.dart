@@ -42,7 +42,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuild Button Attendance Screen");
+    print("Widget : WelcomeScreen/ButtonAttendance.dart | Selector  | Rebuild !");
 
     return FutureBuilder<int>(
       future: alreadyAbsen,
@@ -88,29 +88,38 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                     Flexible(
                       child: Selector<GlobalProvider, bool>(
                         selector: (_, provider) => provider.isLoading,
-                        builder: (_, isLoading, __) => ButtonCustom(
-                          onPressed: isLoading
-                              ? null
-                              : (snapshot.data == 2)
-                                  ? null
-                                  : (snapshot.data == 1) ? null : widget.onTapAbsen ?? goToMaps,
-                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                          child: isLoading ? Text("Loading...") : LiveClock(),
-                        ),
+                        builder: (_, isLoading, __) {
+                          print(
+                              "Widget : WelcomeScreen/ButtonAttendance.dart | Selector  | Rebuild !");
+
+                          return ButtonCustom(
+                            onPressed: isLoading
+                                ? null
+                                : (snapshot.data == 2)
+                                    ? null
+                                    : (snapshot.data == 1) ? null : widget.onTapAbsen ?? goToMaps,
+                            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                            child: isLoading ? Text("Loading...") : LiveClock(),
+                          );
+                        },
                       ),
                     ),
                     Flexible(
                       child: Selector<GlobalProvider, bool>(
                         selector: (_, provider) => provider.isLoading,
-                        builder: (_, isLoading, __) => ButtonCustom(
-                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                          child: isLoading ? Text("Loading...") : LiveClock(),
-                          onPressed: isLoading
-                              ? null
-                              : (snapshot.data == 2)
-                                  ? null
-                                  : (snapshot.data != 1) ? null : widget.onTapPulang ?? goToMaps,
-                        ),
+                        builder: (_, isLoading, __) {
+                          print(
+                              "Widget : WelcomeScreen/ButtonAttendance.dart | Selector 2 | Rebuild !");
+                          return ButtonCustom(
+                            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                            child: isLoading ? Text("Loading...") : LiveClock(),
+                            onPressed: isLoading
+                                ? null
+                                : (snapshot.data == 2)
+                                    ? null
+                                    : (snapshot.data != 1) ? null : widget.onTapPulang ?? goToMaps,
+                          );
+                        },
                       ),
                     ),
                   ],

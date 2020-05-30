@@ -10,6 +10,8 @@ import '../../providers/user_provider.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("Screen : Splash Screen.dart  | Rebuild !");
+
     final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       body: SplashScreenTemplate(

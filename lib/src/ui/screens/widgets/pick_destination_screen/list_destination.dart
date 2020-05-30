@@ -17,6 +17,8 @@ class ListDestination extends StatelessWidget {
   static const sizeIcon = 14.0;
   @override
   Widget build(BuildContext context) {
+    print("Widget : PickDestinationScreen/ListDestination.dart  | Rebuild !");
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
       child: ListTile(

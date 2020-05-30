@@ -14,6 +14,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    print("Screen : Login Screen.dart | Rebuild !");
+
     return Scaffold(
       body: LoginScreenTemplate(
         formKey: _formKey,

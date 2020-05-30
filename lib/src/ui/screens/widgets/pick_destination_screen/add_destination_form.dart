@@ -18,6 +18,8 @@ class AddDestinationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Widget : PickDestinationScreen/AddDestinationForm.dart  | Rebuild !");
+
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Column(
@@ -36,17 +38,22 @@ class AddDestinationForm extends StatelessWidget {
               FlatButton(onPressed: () => Navigator.of(context).pop(), child: Text('Batal')),
               Selector<GlobalProvider, bool>(
                 selector: (_, provider) => provider.isLoading,
-                builder: (_, isLoading, __) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: isLoading
-                      ? LoadingFutureBuilder(isLinearProgressIndicator: false)
-                      : FlatButton(
-                          onPressed: () => _destinationRegister(context),
-                          child: Text('Simpan'),
-                          color: colorPallete.primaryColor,
-                          textTheme: ButtonTextTheme.primary,
-                        ),
-                ),
+                builder: (_, isLoading, __) {
+                  print(
+                      "Widget : PickDestinationScreen/AddDestinationForm.dart |Selector  | Rebuild !");
+
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: isLoading
+                        ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                        : FlatButton(
+                            onPressed: () => _destinationRegister(context),
+                            child: Text('Simpan'),
+                            color: colorPallete.primaryColor,
+                            textTheme: ButtonTextTheme.primary,
+                          ),
+                  );
+                },
               ),
             ],
           )

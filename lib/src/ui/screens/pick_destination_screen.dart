@@ -15,8 +15,8 @@ class PickDestinationScreen extends StatelessWidget {
   static const routeNamed = "/pick-destination-screen";
   @override
   Widget build(BuildContext context) {
+    print("Screen : Pick Destination.dart  | Rebuild !");
     final TextEditingController _filterController = TextEditingController();
-    print('Rebuild Pick Destination Screen');
     final absenProvider = Provider.of<AbsenProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
@@ -65,7 +65,8 @@ class PickDestinationScreen extends StatelessWidget {
                       isLoading.isLoading,
                     ),
                     builder: (_, value, __) {
-                      print("Rebuild Selector Pick Destination Screen");
+                      print("Screen :Pick Destination Screen.dart | SELECTOR | Rebuild !");
+
                       final resultList =
                           (value.item2.length != 0 || _filterController.text.isNotEmpty)
                               ? value.item2

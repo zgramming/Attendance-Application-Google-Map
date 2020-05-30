@@ -16,6 +16,8 @@ class TableAttendanceBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Widget : WelcomeScreen/TableAttendanceBody.dart   | Rebuild !");
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: SizedBox(

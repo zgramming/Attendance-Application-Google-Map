@@ -8,19 +8,24 @@ import './calendar_horizontal.dart';
 class AnimatedCalendarAndTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Rebuild AnimatedCalendarAndTable");
+    print("Widget : WelcomeScreen/AnimatedTableCalendar.dart  | Rebuild !");
+
     return Selector<GlobalProvider, bool>(
       selector: (_, provider) => provider.isChangeMode,
-      builder: (_, value, __) => AnimatedCrossFade(
-        firstChild: TableAttendance(),
-        secondChild: Container(
-          child: CalendarHorizontal(),
-        ),
-        duration: Duration(seconds: 1),
-        crossFadeState: value ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-        firstCurve: Curves.decelerate,
-        secondCurve: Curves.fastOutSlowIn,
-      ),
+      builder: (_, value, __) {
+        print("Widget : WelcomeScreen/AnimatedTableCalendar.dart | Selector  | Rebuild !");
+
+        return AnimatedCrossFade(
+          firstChild: TableAttendance(),
+          secondChild: Container(
+            child: CalendarHorizontal(),
+          ),
+          duration: Duration(seconds: 1),
+          crossFadeState: value ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          firstCurve: Curves.decelerate,
+          secondCurve: Curves.fastOutSlowIn,
+        );
+      },
     );
   }
 }

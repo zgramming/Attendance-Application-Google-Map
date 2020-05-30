@@ -8,10 +8,10 @@ class LiveClock extends StatefulWidget {
 }
 
 class _LiveClockState extends State<LiveClock> {
-  Stream<DateTime> clock;
+  Stream<DateTime> liveClock;
   @override
   void initState() {
-    clock = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
+    liveClock = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
       return DateTime.now();
     });
     super.initState();
@@ -19,8 +19,10 @@ class _LiveClockState extends State<LiveClock> {
 
   @override
   Widget build(BuildContext context) {
+    print("Widget : LiveClock.dart  | Rebuild !");
+
     return StreamBuilder<DateTime>(
-      stream: clock,
+      stream: liveClock,
       initialData: DateTime.now(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {

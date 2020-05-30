@@ -19,6 +19,8 @@ class _FormUserState extends State<FormUser> {
   String username, password, fullName;
   @override
   Widget build(BuildContext context) {
+    print("Widget : LoginScreen/Form.dart  | Rebuild !");
+
     return Column(
       children: [
         TextFormFieldCustom(
@@ -40,22 +42,28 @@ class _FormUserState extends State<FormUser> {
         SizedBox(height: 20),
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isRegister,
-          builder: (_, isRegister, __) => Visibility(
-            visible: isRegister ? true : false,
-            child: TextFormFieldCustom(
-              onSaved: (value) => fullName = value,
-              prefixIcon: Icon(FontAwesomeIcons.user),
-              labelText: 'Nama Lengkap',
-              disableOutlineBorder: false,
-              radius: 50,
-              textInputAction: TextInputAction.done,
-            ),
-          ),
+          builder: (_, isRegister, __) {
+            print("Widget : LoginScreen/Form.dart | Selector | Rebuild !");
+
+            return Visibility(
+              visible: isRegister ? true : false,
+              child: TextFormFieldCustom(
+                onSaved: (value) => fullName = value,
+                prefixIcon: Icon(FontAwesomeIcons.user),
+                labelText: 'Nama Lengkap',
+                disableOutlineBorder: false,
+                radius: 50,
+                textInputAction: TextInputAction.done,
+              ),
+            );
+          },
         ),
         SizedBox(height: 20),
         Selector2<GlobalProvider, GlobalProvider, Tuple2<bool, bool>>(
           selector: (_, loading, register) => Tuple2(loading.isLoading, register.isRegister),
           builder: (_, value, __) {
+            print("Widget : LoginScreen/Form.dart | Selector 2 | Rebuild !");
+
             return value.item1
                 ? LoadingFutureBuilder(isLinearProgressIndicator: false)
                 : ButtonCustom(
@@ -67,10 +75,14 @@ class _FormUserState extends State<FormUser> {
         SizedBox(height: 20),
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isRegister,
-          builder: (_, isRegister, __) => OutlineButton(
-            child: Text(isRegister ? "Ayo Login" : "Belum Punya Akun ?"),
-            onPressed: () => context.read<GlobalProvider>().setRegister(!isRegister),
-          ),
+          builder: (_, isRegister, __) {
+            print("Widget : LoginScreen/Form.dart | Selector 3 | Rebuild !");
+
+            return OutlineButton(
+              child: Text(isRegister ? "Ayo Login" : "Belum Punya Akun ?"),
+              onPressed: () => context.read<GlobalProvider>().setRegister(!isRegister),
+            );
+          },
         )
       ],
       mainAxisSize: MainAxisSize.min,

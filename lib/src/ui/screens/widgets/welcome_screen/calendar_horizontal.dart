@@ -28,7 +28,7 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuild Calendar Horizontal");
+    print("Widget : WelcomeScreen/CalendarHorizontal.dart | Selector  | Rebuild !");
     return Stack(
       children: [
         Card(
@@ -40,59 +40,67 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Selector<GlobalProvider, DateTime>(
                   selector: (_, provider) => provider.dateAddSubstract,
-                  builder: (_, dateTime, __) => Text(
-                    globalF.formatYearMonth(dateTime),
-                    style: appTheme.headline6(context),
-                    textAlign: TextAlign.left,
-                  ),
+                  builder: (_, dateTime, __) {
+                    print("Widget : WelcomeScreen/CalendarHorizontal.dart | Selector  | Rebuild !");
+
+                    return Text(
+                      globalF.formatYearMonth(dateTime),
+                      style: appTheme.headline6(context),
+                      textAlign: TextAlign.left,
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 10),
               Selector<GlobalProvider, DateTime>(
                 selector: (_, provider) => provider.dateAddSubstract,
-                builder: (_, dateTime, __) => FutureBuilder(
-                  future: getStatusAbsensi(dateTime),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return LoadingFutureBuilder(isLinearProgressIndicator: true);
-                    }
-                    if (snapshot.hasError) {
-                      return InkWell(
-                        onTap: _refreshMenu,
-                        child: Text(
-                          "${snapshot.error.toString()} , Tap Untuk Refresh Data",
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      return Container(
-                        height: sizes.height(context) / 8,
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        child: ScrollablePositionedList.builder(
-                          initialScrollIndex: dateTime.day,
-                          initialAlignment: .6,
-                          itemCount: globalF.totalDaysOfMonth(
-                            dateTime.year,
-                            dateTime.month,
+                builder: (_, dateTime, __) {
+                  print("Widget : WelcomeScreen/CalendarHorizontal.dart | Selector 2 | Rebuild !");
+
+                  return FutureBuilder(
+                    future: getStatusAbsensi(dateTime),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return LoadingFutureBuilder(isLinearProgressIndicator: true);
+                      }
+                      if (snapshot.hasError) {
+                        return InkWell(
+                          onTap: _refreshMenu,
+                          child: Text(
+                            "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+                            textAlign: TextAlign.center,
                           ),
-                          itemScrollController: itemScrollController,
-                          itemPositionsListener: itemPositionsListener,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (BuildContext context, int index) {
-                            return CardCalendar(
-                              now: dateTime,
-                              index: index,
-                              list: snapshot.data,
-                            );
-                          },
-                        ),
-                      );
-                    }
-                    return Text('No Data');
-                  },
-                ),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        return Container(
+                          height: sizes.height(context) / 8,
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          child: ScrollablePositionedList.builder(
+                            initialScrollIndex: dateTime.day,
+                            initialAlignment: .6,
+                            itemCount: globalF.totalDaysOfMonth(
+                              dateTime.year,
+                              dateTime.month,
+                            ),
+                            itemScrollController: itemScrollController,
+                            itemPositionsListener: itemPositionsListener,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CardCalendar(
+                                now: dateTime,
+                                index: index,
+                                list: snapshot.data,
+                              );
+                            },
+                          ),
+                        );
+                      }
+                      return Text('No Data');
+                    },
+                  );
+                },
               ),
               SizedBox(height: 10),
             ],
@@ -114,14 +122,18 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
               const SizedBox(width: 20),
               Selector<GlobalProvider, DateTime>(
                 selector: (_, provider) => provider.dateAddSubstract,
-                builder: (_, dateTime, __) => InkWell(
-                  child: const Icon(FontAwesomeIcons.calendar, size: 18),
-                  onTap: () => itemScrollController.scrollTo(
-                    index: dateTime.day,
-                    alignment: .6,
-                    duration: Duration(seconds: 2),
-                  ),
-                ),
+                builder: (_, dateTime, __) {
+                  print("Widget : WelcomeScreen/CalendarHorizontal.dart | Selector 3 | Rebuild !");
+
+                  return InkWell(
+                    child: const Icon(FontAwesomeIcons.calendar, size: 18),
+                    onTap: () => itemScrollController.scrollTo(
+                      index: dateTime.day,
+                      alignment: .6,
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                },
               ),
             ],
           ),
