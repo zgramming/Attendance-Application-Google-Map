@@ -1,3 +1,9 @@
+
+<p align="center">
+  <img src="http://www.zimprov.id/readme/absensi_online/banner_github.png"  height="300" width="600" style="">
+
+</p>
+
 # Attendance Application [Google Maps Version]
 
 Implement How To Use Flutter Google Maps With Real Project
@@ -54,11 +60,11 @@ import GoogleMaps
 
 |Splash Screen|Home Screen|Profil Screen|Maps Screen|
 |:-----------:|:--------:|:------------:|:---------:|
-|<img src="http://www.zimprov.id/readme/absensi_online/splash_screen.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/welcome_screen.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/profil_screen.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/maps_screen.gif" height="400" width="200">|
+|<img src="http://www.zimprov.id/readme/absensi_online/splash_screen(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/welcome_screen(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/profil_screen(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/maps_screen(1).gif" height="400" width="200">|
 
-|Add Destination|Pick Destination|
-|:-------------:|:--------------:|
-|<img src="http://www.zimprov.id/readme/absensi_online/add_destination.gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/pick_destination.gif" height="400" width="200">|
+|Add Destination|Pick Destination|Login Screen|
+|:-------------:|:--------------:|:----------:|
+|<img src="http://www.zimprov.id/readme/absensi_online/add_destination(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/pick_destination(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/login_screen(1).gif" height="400" width="200">|
 
 
 # Application Feature
