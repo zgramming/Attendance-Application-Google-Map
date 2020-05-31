@@ -1,7 +1,6 @@
 
 <p align="center">
   <img src="http://www.zimprov.id/readme/absensi_online/banner_github.png"  height="300" width="600" style="">
-
 </p>
 
 # Attendance Application [Google Maps Version]
