@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
 
 import './widgets/welcome_screen/fab.dart';
@@ -27,28 +28,33 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void initState() {
     super.initState();
-    initPermission(context);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      commonF.getGeolocationPermission().then((locationPermission) {
+        if (locationPermission != GeolocationStatus.granted) {
+          showDialog(context: context, child: commonF.showPermissionLocation());
+        } else {
+          commonF.getGPSService().then((gpsPermission) {
+            if (!gpsPermission) {
+              showDialog(context: context, child: commonF.showPermissionGPS());
+            } else {
+              print("Permission Success");
+            }
+          });
+        }
+      });
+    });
     _buttonAbsentController = AnimationController(vsync: this, duration: kThemeAnimationDuration);
     _appbarController = AnimationController(vsync: this, duration: kThemeChangeDuration);
     _buttonAbsentController.forward();
     WidgetsBinding.instance.addObserver(this);
   }
 
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    final geolocationStatus = await commonF.getGeolocationPermission();
-    final gpsStatus = await commonF.getGPSService();
     if (state == AppLifecycleState.paused) {
-      if (geolocationStatus != GeolocationStatus.granted) {
-        Navigator.of(context).pop();
-      } else if (!gpsStatus) {
-        Navigator.of(context).pop();
-      }
+      commonF.initClosePermission(context);
     } else if (state == AppLifecycleState.resumed) {
-      initPermission(context);
+      commonF.initPermission(context);
     }
-
-    super.didChangeAppLifecycleState(state);
   }
 
   @override
@@ -104,25 +110,5 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         floatingActionButton: FabChangeMode(),
       ),
     );
-  }
-
-  void initPermission(BuildContext context) async {
-    final geolocationStatus = await commonF.getGeolocationPermission();
-    final gpsStatus = await commonF.getGPSService();
-    if (geolocationStatus != GeolocationStatus.granted) {
-      showDialog(
-        context: context,
-        builder: (ctx) {
-          return commonF.showPermissionLocation(ctx);
-        },
-      );
-    } else if (!gpsStatus) {
-      showDialog(
-        context: context,
-        builder: (ctx) {
-          return commonF.showPermissionGPS(ctx);
-        },
-      );
-    }
   }
 }
