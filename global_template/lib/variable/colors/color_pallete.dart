@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class ColorPallete {
@@ -17,11 +15,9 @@ class ColorPallete {
 
   ///Primary Color
   Color primaryColor = const Color(0xff7c73e6);
-  Color primaryColor2 = const Color(0xff5448DE);
 
   ///Accent Color
   Color accentColor = const Color(0xff73A4E6);
-  Color accentColor2 = const Color(0xfff67280);
 
   /// Scaffold Color
   Color scaffoldColor = const Color(0xFFf9f9f9);
