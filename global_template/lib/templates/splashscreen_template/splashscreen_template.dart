@@ -26,8 +26,10 @@ class _SplashScreenTemplateState extends State<SplashScreenTemplate> {
   }
 
   navigationPage() {
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => widget.navigateAfterSplashScreen));
+    Future.delayed(
+        Duration(milliseconds: 500),
+        () => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => widget.navigateAfterSplashScreen)));
   }
 
   @override
