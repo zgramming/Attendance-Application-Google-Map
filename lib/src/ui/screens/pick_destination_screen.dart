@@ -58,6 +58,7 @@ class _PickDestinationScreenState extends State<PickDestinationScreen> {
                             icon: Icon(FontAwesomeIcons.times),
                             onPressed: _clearSearchLocation,
                             iconSize: 18,
+                            color: colorPallete.weekEnd,
                           )
                         : SizedBox();
                   },
