@@ -32,9 +32,10 @@ class PopupPermission extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
-                Consumer<GlobalProvider>(
+                Selector<GlobalProvider, String>(
+                  selector: (_, provider) => provider.appNamePackageInfo,
                   builder: (_, value, __) => Text(
-                    value.appNamePackageInfo.toUpperCase(),
+                    value.toUpperCase(),
                     style: appTheme.headline6(context).copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -73,7 +74,12 @@ class PopupPermission extends StatelessWidget {
               SizedBox(height: 10),
             ],
           ),
-          actions: [ButtonCustom(onPressed: onAccept, buttonTitle: buttonTitleAccept)],
+          actions: [
+            ButtonCustom(
+              onPressed: onAccept,
+              buttonTitle: buttonTitleAccept,
+            ),
+          ],
         ),
       ),
     );

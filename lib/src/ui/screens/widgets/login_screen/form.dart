@@ -83,36 +83,39 @@ class _FormUserState extends State<FormUser> {
   }
 
   void _validate() async {
+    final globalProvider = context.read<GlobalProvider>();
+    final userProvider = context.read<UserProvider>();
     try {
       if (widget.formKey.currentState.validate()) {
-        context.read<GlobalProvider>().setLoading(true);
+        globalProvider.setLoading(true);
         widget.formKey.currentState.save();
-        if (context.read<GlobalProvider>().isRegister) {
+        if (globalProvider.isRegister) {
           final result = await userAPI.userRegister(
             username: username,
             password: password,
             fullName: fullName,
           );
 
+          globalProvider.setRegister(false);
+          globalProvider.setLoading(false);
           globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
-
-          context.read<GlobalProvider>().setRegister(false);
-          context.read<GlobalProvider>().setLoading(false);
+          print("SUccess Register");
         } else {
           final result = await userAPI.userLogin(
             username: username,
             password: password,
           );
-          await context.read<UserProvider>().saveSessionUser(list: result);
+          await userProvider.saveSessionUser(list: result);
+          Future.delayed(Duration(milliseconds: 500));
+          globalProvider.setLoading(false);
           Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
-          context.read<GlobalProvider>().setLoading(false);
         }
       } else {
         return null;
       }
     } catch (e) {
       globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
-      context.read<GlobalProvider>().setLoading(false);
+      globalProvider.setLoading(false);
     }
   }
 }

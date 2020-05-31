@@ -11,29 +11,41 @@ import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:location_permissions/location_permissions.dart';
 
 class CommonFunction {
-  void initPermission(BuildContext context) async {
+  void initPermission(BuildContext ctx) async {
     final geolocationStatus = await getGeolocationPermission();
     final gpsStatus = await getGPSService();
     if (geolocationStatus != GeolocationStatus.granted) {
-      showPermissionLocation(context);
+      showDialog(context: ctx, child: showPermissionLocation());
     } else if (!gpsStatus) {
-      showPermissionGPS(context);
+      showDialog(context: ctx, child: showPermissionGPS());
     }
   }
 
-  Widget showPermissionGPS(BuildContext context) {
+  void initClosePermission(BuildContext context) async {
+    final geolocationStatus = await getGeolocationPermission();
+    final gpsStatus = await getGPSService();
+    if (geolocationStatus != GeolocationStatus.granted) {
+      Navigator.of(context).pop();
+      print("Tutup Popup Lokasi");
+    } else if (!gpsStatus) {
+      Navigator.of(context).pop();
+      print("Tutup Popup GPS");
+    }
+  }
+
+  showPermissionGPS() {
     return PopupPermission(
       typePermission: "GPS",
       iconPermission: FontAwesomeIcons.mapMarkedAlt,
       showCloseButton: false,
       onAccept: () async {
         final AndroidIntent intent = const AndroidIntent(action: 'action_location_source_settings');
-        intent.launch();
+        await intent.launch();
       },
     );
   }
 
-  Widget showPermissionLocation(BuildContext context) {
+  showPermissionLocation() {
     return PopupPermission(
       typePermission: "Lokasi",
       iconPermission: FontAwesomeIcons.locationArrow,
