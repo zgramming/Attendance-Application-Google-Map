@@ -74,76 +74,84 @@ class TextFormFieldCustom extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      autofocus: autoFocus,
-      controller: controller,
-      textAlign: centerText ? TextAlign.center : TextAlign.left,
-      obscureText:
-          (isPassword && context.select((GlobalProvider provider) => provider.obsecurePassword))
-              ? true
-              : false,
-      enabled: isEnabled,
-      initialValue: initialValue,
-      minLines: minLines,
-      maxLines: isPassword ? 1 : maxLines,
-      decoration: InputDecoration(
-        fillColor: backgroundColor,
-        filled: true,
-        hintStyle: hintStyle,
-        prefixIcon: isPassword ? Icon(Icons.lock) : prefixIcon,
-        suffixIcon: isPassword
-            ? IconButton(
-                icon: Selector<GlobalProvider, bool>(
-                  selector: (_, provider) => provider.obsecurePassword,
-                  builder: (_, obsecurePassword, __) => Icon(
-                    obsecurePassword ? Icons.visibility_off : Icons.visibility,
+    return Stack(
+      alignment: Alignment.centerRight,
+      children: [
+        TextFormField(
+          autofocus: autoFocus,
+          controller: controller,
+          textAlign: centerText ? TextAlign.center : TextAlign.left,
+          obscureText:
+              (isPassword && context.select((GlobalProvider provider) => provider.obsecurePassword))
+                  ? true
+                  : false,
+          enabled: isEnabled,
+          initialValue: initialValue,
+          minLines: minLines,
+          maxLines: isPassword ? 1 : maxLines,
+          decoration: InputDecoration(
+            fillColor: backgroundColor,
+            filled: true,
+            hintStyle: hintStyle,
+            prefixIcon: isPassword ? Icon(Icons.lock) : prefixIcon,
+            hintText: hintText,
+            labelText: labelText,
+            border: disableOutlineBorder
+                ? null
+                : OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(radius),
                   ),
-                ),
-                onPressed: () {
-                  final globalProvider = context.read<GlobalProvider>();
-                  return globalProvider.setObsecurePassword(globalProvider.obsecurePassword);
-                },
-              )
-            : suffixIcon,
-        hintText: hintText,
-        labelText: labelText,
-        border: disableOutlineBorder
-            ? null
-            : OutlineInputBorder(
-                borderRadius: BorderRadius.circular(radius),
+            enabledBorder: disableOutlineBorder
+                ? null
+                : OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(radius),
+                    borderSide: BorderSide(
+                      color: borderColor ?? Colors.grey[400],
+                    ),
+                  ),
+            focusedBorder: disableOutlineBorder
+                ? null
+                : OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: borderFocusColor ?? Theme.of(context).primaryColor,
+                    ),
+                  ),
+            contentPadding: const EdgeInsets.all(8.0),
+          ),
+          textInputAction: isDone ? TextInputAction.done : textInputAction,
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatter,
+          focusNode: focusNode,
+          onFieldSubmitted: onFieldSubmitted,
+          onChanged: onChanged,
+          validator: isValidatorEnable
+              ? (value) {
+                  if (value.isEmpty || value == null) {
+                    return "$labelText tidak boleh kosong ";
+                  }
+                  return null;
+                }
+              : null,
+          onSaved: onSaved,
+        ),
+        if (isPassword) ...[
+          IconButton(
+            icon: Selector<GlobalProvider, bool>(
+              selector: (_, provider) => provider.obsecurePassword,
+              builder: (_, obsecurePassword, __) => Icon(
+                obsecurePassword ? Icons.visibility_off : Icons.visibility,
+                color: Colors.grey[600],
               ),
-        enabledBorder: disableOutlineBorder
-            ? null
-            : OutlineInputBorder(
-                borderRadius: BorderRadius.circular(radius),
-                borderSide: BorderSide(
-                  color: borderColor ?? Colors.grey[400],
-                ),
-              ),
-        focusedBorder: disableOutlineBorder
-            ? null
-            : OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: borderFocusColor ?? Theme.of(context).primaryColor,
-                ),
-              ),
-        contentPadding: const EdgeInsets.all(8.0),
-      ),
-      textInputAction: isDone ? TextInputAction.done : textInputAction,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatter,
-      focusNode: focusNode,
-      onFieldSubmitted: onFieldSubmitted,
-      onChanged: onChanged,
-      validator: isValidatorEnable
-          ? (value) {
-              if (value.isEmpty || value == null) {
-                return "$labelText tidak boleh kosong ";
-              }
-              return null;
-            }
-          : null,
-      onSaved: onSaved,
+            ),
+            onPressed: () {
+              final globalProvider = context.read<GlobalProvider>();
+              return globalProvider.setObsecurePassword(globalProvider.obsecurePassword);
+            },
+          )
+        ] else ...[
+          suffixIcon ?? SizedBox()
+        ]
+      ],
     );
   }
 }
