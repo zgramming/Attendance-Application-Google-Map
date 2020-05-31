@@ -1,3 +1,5 @@
+<img src="http://www.zimprov.id/readme/absensi_online/banner_github.png" height="250" width="600">
+
 # Attendance Application [Google Maps Version]
 
 Implement How To Use Flutter Google Maps With Real Project
