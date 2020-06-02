@@ -3,9 +3,8 @@ class AppConfig {
 
   final Map<String, String> headersApi = {'Content-Type': 'application/x-www-form-urlencoded'};
 
-  final String baseImageApiUrl = 'http://www.zimprov.id/images';
-  final String baseFilesApiUrl = 'http://www.zimprov.id/files/';
-  final String baseApiUrl = 'http://www.zimprov.id/api/';
+  final String baseImageApiUrl = 'http://www.zimprov.id/absensi_online/images';
+  final String baseApiUrl = 'http://www.zimprov.id/absensi_online/api/';
 
   final String indonesiaLocale = 'id_ID';
 
