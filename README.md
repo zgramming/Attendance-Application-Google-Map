@@ -55,6 +55,12 @@ import GoogleMaps
   }
 }
 ```
+# Installing
+
+1. Git clone **https://github.com/zgramming/Attendance-Application-Google-Map**
+2. cd `Attendance-Application-Google-Map`
+3. in terminal `flutter packages get`. After that `flutter run`
+
 # Application Overview
 
 |Splash Screen|Home Screen|Profil Screen|Maps Screen|
