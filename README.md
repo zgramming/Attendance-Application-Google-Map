@@ -1,12 +1,11 @@
 
 <p align="center">
   <img src="http://www.zimprov.id/readme/absensi_online/banner_github.png"  height="300" width="600" style="">
-
 </p>
 
 # Attendance Application [Google Maps Version]
 
-Implement How To Use Flutter Google Maps With Real Project
+Attendance Tracking Application , implementation using Flutter Google Map and Geolocator packages for tracking user location. Backend used is Codeigniter 3.
 
 # Configuration Project 
 
