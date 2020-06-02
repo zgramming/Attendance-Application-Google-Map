@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="http://www.zimprov.id/readme/absensi_online/banner_github.png"  height="300" width="600" style="">
+  <img src="http://www.zimprov.id/absensi_online/readme/absensi_online/banner_github.png"  height="300" width="600" style="">
 </p>
 
 # Attendance Application [Google Maps Version]
@@ -59,11 +59,11 @@ import GoogleMaps
 
 |Splash Screen|Home Screen|Profil Screen|Maps Screen|
 |:-----------:|:--------:|:------------:|:---------:|
-|<img src="http://www.zimprov.id/readme/absensi_online/splash_screen(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/welcome_screen(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/profil_screen(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/maps_screen(1).gif" height="400" width="200">|
+|<img src="http://www.zimprov.id/absensi_online/readme/absensi_online/splash_screen(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/absensi_online/readme/absensi_online/welcome_screen(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/absensi_online/readme/absensi_online/profil_screen(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/absensi_online/readme/absensi_online/maps_screen(1).gif" height="400" width="200">|
 
 |Add Destination|Pick Destination|Login Screen|
 |:-------------:|:--------------:|:----------:|
-|<img src="http://www.zimprov.id/readme/absensi_online/add_destination(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/pick_destination(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/readme/absensi_online/login_screen(1).gif" height="400" width="200">|
+|<img src="http://www.zimprov.id/absensi_online/readme/absensi_online/add_destination(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/absensi_online/readme/absensi_online/pick_destination(1).gif" height="400" width="200">|<img src="http://www.zimprov.id/absensi_online/readme/absensi_online/login_screen(1).gif" height="400" width="200">|
 
 
 # Application Feature
@@ -83,7 +83,7 @@ import GoogleMaps
 
 |app-arm64-v8a|app-armeabi-v7a|app-x86_64|
 |:-----------:|:-------------:|:--------:|
-|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-arm64-v8a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-armeabi-v7a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/apk/absensi_online/app-x86_64-release.apk)|
+|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/absensi_online/apk/absensi_online/app-arm64-v8a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/absensi_online/apk/absensi_online/app-armeabi-v7a-release.apk)|[<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/APK_format_icon.png" width="50px">](http://www.zimprov.id/absensi_online/apk/absensi_online/app-x86_64-release.apk)|
 |7,8 MB|7,4 MB|8 MB|
 
 
