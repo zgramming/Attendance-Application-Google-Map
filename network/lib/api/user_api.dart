@@ -12,19 +12,19 @@ class UserApi {
     @required String username,
     @required String password,
   }) async {
-    var result = await reusableRequestServer.requestServer(() async {
+    final result = await reusableRequestServer.requestServer(() async {
       final response = await http.post(
         '${appConfig.baseApiUrl}/${appConfig.userController}/userLogin',
         headers: appConfig.headersApi,
         body: {
-          "username": username,
-          "password": password,
+          'username': username,
+          'password': password,
         },
       );
       final Map<String, dynamic> responseJson = json.decode(response.body);
-      if (responseJson["status"] == 1) {
-        List userList = responseJson['data'];
-        List<UserModel> result = userList.map((e) => UserModel.fromJson(e)).toList();
+      if (responseJson['status'] == 1) {
+        final List userList = responseJson['data'];
+        final List<UserModel> result = userList.map((e) => UserModel.fromJson(e)).toList();
         return result;
       } else {
         throw responseJson['message'];
@@ -38,15 +38,14 @@ class UserApi {
     @required String password,
     @required String fullName,
   }) async {
-    var result;
-    result = await reusableRequestServer.requestServer(() async {
+    final result = await reusableRequestServer.requestServer(() async {
       final response = await http.post(
           '${appConfig.baseApiUrl}/${appConfig.userController}/userRegister',
           headers: appConfig.headersApi,
           body: {
-            "username": username,
-            "password": password,
-            "full_name": fullName,
+            'username': username,
+            'password': password,
+            'full_name': fullName,
           });
       final Map<String, dynamic> responseJson = json.decode(response.body);
 
@@ -62,13 +61,13 @@ class UserApi {
     List<UserModel> result;
     try {
       result = await reusableRequestServer.requestServer(() async {
-        final String _nameFileFromAPI = "file";
-        var stream = http.ByteStream(Stream.castFrom(imageFile.openRead()));
+        const String _nameFileFromAPI = 'file';
+        final stream = http.ByteStream(Stream.castFrom(imageFile.openRead()));
         final length = await imageFile.length();
         final uri = Uri.parse(
-          "${appConfig.baseApiUrl}/${appConfig.userController}/userUpdateImage",
+          '${appConfig.baseApiUrl}/${appConfig.userController}/userUpdateImage',
         );
-        final request = http.MultipartRequest("POST", uri);
+        final request = http.MultipartRequest('POST', uri);
         final multipartFile = http.MultipartFile(
           _nameFileFromAPI, //! Nama field yang ada di API
           stream,
@@ -79,12 +78,12 @@ class UserApi {
         request.files.add(multipartFile);
         final response = await request.send();
         final responseString = await response.stream.bytesToString();
-        Map<String, dynamic> responseJson = json.decode(responseString);
+        final Map<String, dynamic> responseJson = json.decode(responseString);
 
-        int statusCode = response.statusCode;
+        final int statusCode = response.statusCode;
         if (statusCode == 200) {
-          List userList = responseJson['data'];
-          List<UserModel> result = userList.map((e) => UserModel.fromJson(e)).toList();
+          final List userList = responseJson['data'];
+          final List<UserModel> result = userList.map((e) => UserModel.fromJson(e)).toList();
           return result;
         } else {
           throw responseJson['message'];
@@ -100,19 +99,18 @@ class UserApi {
     @required String idUser,
     @required String fullName,
   }) async {
-    var result;
-    result = await reusableRequestServer.requestServer(() async {
+    final result = await reusableRequestServer.requestServer(() async {
       final response = await http.post(
           '${appConfig.baseApiUrl}/${appConfig.userController}/userUpdateFullName',
           headers: appConfig.headersApi,
           body: {
-            "id_user": "$idUser",
-            "full_name": "$fullName",
+            'id_user': idUser,
+            'full_name': fullName,
           });
       final Map<String, dynamic> responseJson = json.decode(response.body);
       if (response.statusCode == 200) {
-        List userList = responseJson['data'];
-        List<UserModel> result = userList.map((e) => UserModel.fromJson(e)).toList();
+        final List userList = responseJson['data'];
+        final List<UserModel> result = userList.map((e) => UserModel.fromJson(e)).toList();
         return result;
       } else {
         throw responseJson['message'];
@@ -126,8 +124,8 @@ class UserApi {
     try {
       result = await reusableRequestServer.requestServer(() async {
         final response = await http
-            .post("${appConfig.baseApiUrl}/${appConfig.userController}/userDelete", body: {
-          "id_user": "$idUser",
+            .post('${appConfig.baseApiUrl}/${appConfig.userController}/userDelete', body: {
+          'id_user': idUser,
         });
         final Map<String, dynamic> responseJson = json.decode(response.body);
         if (response.statusCode == 200) {

@@ -14,7 +14,7 @@ class DestinasiApi {
     try {
       result = await reusableRequestServer.requestServer(() async {
         final response = await http.get(
-          "${appConfig.baseApiUrl}/${appConfig.destinasiController}/destinationById?id_user=$idUser&is_selected=$isSelected",
+          '${appConfig.baseApiUrl}/${appConfig.destinasiController}/destinationById?id_user=$idUser&is_selected=$isSelected',
         );
         final Map<String, dynamic> responseJson = json.decode(response.body);
         if (response.statusCode == 200) {
@@ -38,16 +38,16 @@ class DestinasiApi {
     @required double latitude,
     @required double longitude,
   }) async {
-    var result;
+    dynamic result;
     try {
       result = await reusableRequestServer.requestServer(() async {
         final response = await http.post(
-            "${appConfig.baseApiUrl}/${appConfig.destinasiController}/destinationRegister",
+            '${appConfig.baseApiUrl}/${appConfig.destinasiController}/destinationRegister',
             body: {
-              "id_user": "$idUser",
-              "nama_destinasi": "$nameDestination",
-              "latitude": "$latitude",
-              "longitude": "$longitude",
+              'id_user': idUser,
+              'nama_destinasi': nameDestination,
+              'latitude': '$latitude',
+              'longitude': '$longitude',
             });
         final Map<String, dynamic> responseJson = json.decode(response.body);
         if (response.statusCode == 201) {
@@ -66,12 +66,15 @@ class DestinasiApi {
     @required String idDestinasi,
     @required String idUser,
   }) async {
-    var result;
+    dynamic result;
     try {
       result = await reusableRequestServer.requestServer(() async {
         final response = await http.post(
-          "${appConfig.baseApiUrl}/${appConfig.absensiController}/destinationUpdateStatus",
-          body: {"id_destinasi": "$idDestinasi", "id_user": "$idUser"},
+          '${appConfig.baseApiUrl}/${appConfig.absensiController}/destinationUpdateStatus',
+          body: {
+            'id_destinasi': idDestinasi,
+            'id_user': idUser,
+          },
         );
         final Map<String, dynamic> responseJson = json.decode(response.body);
         if (response.statusCode == 200) {
@@ -87,12 +90,12 @@ class DestinasiApi {
   }
 
   Future<String> destinationDelete(String idDestinasi) async {
-    var result;
+    dynamic result;
     try {
       result = await reusableRequestServer.requestServer(() async {
         final response = await http.post(
-          "${appConfig.baseApiUrl}/${appConfig.absensiController}/destinationDelete",
-          body: {"id_destinasi": "$idDestinasi"},
+          '${appConfig.baseApiUrl}/${appConfig.absensiController}/destinationDelete',
+          body: {'id_destinasi': idDestinasi},
         );
         final Map<String, dynamic> responseJson = json.decode(response.body);
         if (response.statusCode == 200) {

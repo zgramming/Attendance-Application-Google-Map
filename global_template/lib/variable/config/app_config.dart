@@ -8,19 +8,13 @@ class AppConfig {
 
   final String indonesiaLocale = 'id_ID';
 
-  final String userController = "user_controller";
-  final String absensiController = "absensi_controller";
-  final String destinasiController = "absensi_controller";
+  final String userController = 'user_controller';
+  final String absensiController = 'absensi_controller';
+  final String destinasiController = 'absensi_controller';
 
-  static const defaultImageNetwork = "https://flutter.io/images/catalog-widget-placeholder.png";
-  static const imageLogoAsset = "assets/images/logo.png";
-  static const emptyDestination = "assets/images/empty_destination.png";
+  static const defaultImageNetwork = 'https://flutter.io/images/catalog-widget-placeholder.png';
+  static const imageLogoAsset = 'assets/images/logo.png';
+  static const emptyDestination = 'assets/images/empty_destination.png';
 }
 
 final appConfig = AppConfig();
-
-
-
-
-
-

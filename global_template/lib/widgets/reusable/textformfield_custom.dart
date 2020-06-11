@@ -4,6 +4,35 @@ import 'package:flutter/services.dart';
 import 'package:global_template/global_template.dart';
 
 class TextFormFieldCustom extends StatelessWidget {
+  const TextFormFieldCustom({
+    this.controller,
+    this.prefixIcon = const Icon(Icons.supervised_user_circle),
+    this.suffixIcon,
+    this.initialValue,
+    this.minLines,
+    this.maxLines,
+    this.focusNode,
+    this.borderColor,
+    this.borderFocusColor,
+    this.inputFormatter,
+    this.onFieldSubmitted,
+    this.onChanged,
+    this.radius = 8,
+    this.hintText,
+    this.labelText,
+    this.hintStyle,
+    this.autoFocus = false,
+    this.centerText = false,
+    this.isDone = false,
+    this.isPassword = false,
+    this.disableOutlineBorder = true,
+    this.isEnabled = true,
+    this.isValidatorEnable = true,
+    this.backgroundColor = Colors.white,
+    this.keyboardType = TextInputType.text,
+    this.textInputAction = TextInputAction.done,
+    @required this.onSaved,
+  });
   final Widget prefixIcon;
   final Widget suffixIcon;
 
@@ -43,35 +72,6 @@ class TextFormFieldCustom extends StatelessWidget {
   final Function(String) onChanged;
   final Function(String) onSaved;
 
-  TextFormFieldCustom({
-    this.controller,
-    this.prefixIcon = const Icon(Icons.supervised_user_circle),
-    this.suffixIcon,
-    this.initialValue,
-    this.minLines,
-    this.maxLines,
-    this.focusNode,
-    this.borderColor,
-    this.borderFocusColor,
-    this.inputFormatter,
-    this.onFieldSubmitted,
-    this.onChanged,
-    this.radius = 8,
-    this.hintText,
-    this.labelText,
-    this.hintStyle,
-    this.autoFocus = false,
-    this.centerText = false,
-    this.isDone = false,
-    this.isPassword = false,
-    this.disableOutlineBorder = true,
-    this.isEnabled = true,
-    this.isValidatorEnable = true,
-    this.backgroundColor = Colors.white,
-    this.keyboardType = TextInputType.text,
-    this.textInputAction = TextInputAction.done,
-    @required this.onSaved,
-  });
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -93,7 +93,7 @@ class TextFormFieldCustom extends StatelessWidget {
             fillColor: backgroundColor,
             filled: true,
             hintStyle: hintStyle,
-            prefixIcon: isPassword ? Icon(Icons.lock) : prefixIcon,
+            prefixIcon: isPassword ? const Icon(Icons.lock) : prefixIcon,
             hintText: hintText,
             labelText: labelText,
             border: disableOutlineBorder
@@ -127,7 +127,7 @@ class TextFormFieldCustom extends StatelessWidget {
           validator: isValidatorEnable
               ? (value) {
                   if (value.isEmpty || value == null) {
-                    return "$labelText tidak boleh kosong ";
+                    return '$labelText tidak boleh kosong ';
                   }
                   return null;
                 }
@@ -149,7 +149,7 @@ class TextFormFieldCustom extends StatelessWidget {
             },
           )
         ] else ...[
-          suffixIcon ?? SizedBox()
+          suffixIcon ?? const SizedBox()
         ]
       ],
     );

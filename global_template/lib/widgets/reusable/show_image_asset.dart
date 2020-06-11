@@ -2,7 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
 
 class ShowImageAsset extends StatelessWidget {
-  final Key key;
+  const ShowImageAsset({
+    @required this.imageUrl,
+    this.imageCircleRadius = 35,
+    this.imageWidth = 1,
+    this.imageHeight = 1,
+    this.isCircle = false,
+    this.padding = const EdgeInsets.all(0),
+    this.alignment = Alignment.center,
+    this.fit,
+  });
 
   final String imageUrl;
 
@@ -26,21 +35,10 @@ class ShowImageAsset extends StatelessWidget {
 
   ///! Settings fit Image
   final BoxFit fit;
-  ShowImageAsset({
-    @required this.imageUrl,
-    this.key,
-    this.imageCircleRadius = 35,
-    this.imageWidth = 1,
-    this.imageHeight = 1,
-    this.isCircle = false,
-    this.padding = const EdgeInsets.all(0),
-    this.alignment = Alignment.center,
-    this.fit,
-  });
 
   @override
   Widget build(BuildContext context) {
-    var image = Padding(
+    final image = Padding(
       padding: padding,
       child: Image.asset(
         imageUrl,
@@ -49,13 +47,13 @@ class ShowImageAsset extends StatelessWidget {
         fit: fit,
         alignment: alignment,
         errorBuilder: (context, error, stackTrace) {
-          print("Error $error || stackTrace $stackTrace");
+          print('Error $error || stackTrace $stackTrace');
           return Center(
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.error,
               ),
-              //TODO Kalau PopUp sudah jadi , implementasikan disini
+              // TODO(ErrorImageAsset): Kalau PopUp sudah jadi , implementasikan disini
               onPressed: () => '',
             ),
           );

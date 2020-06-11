@@ -4,6 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
 
 class ShowImageFile extends StatelessWidget {
+  const ShowImageFile({
+    @required this.file,
+    this.imageWidth = 2,
+    this.imageHeight = 4,
+    this.fit,
+    this.imageCircleRadius = 35,
+    this.isCircle = false,
+    this.padding = const EdgeInsets.all(0),
+    this.alignment = Alignment.center,
+  });
   final File file;
   final double imageHeight;
   final double imageWidth;
@@ -20,19 +30,10 @@ class ShowImageFile extends StatelessWidget {
 
   ///! Settings fit Image
   final BoxFit fit;
-  ShowImageFile({
-    @required this.file,
-    this.imageWidth = 2,
-    this.imageHeight = 4,
-    this.fit,
-    this.imageCircleRadius = 35,
-    this.isCircle = false,
-    this.padding = const EdgeInsets.all(0),
-    this.alignment = Alignment.center,
-  });
+
   @override
   Widget build(BuildContext context) {
-    var image = Padding(
+    final image = Padding(
       padding: padding,
       child: Image.file(
         file,
@@ -41,13 +42,13 @@ class ShowImageFile extends StatelessWidget {
         fit: fit,
         alignment: alignment,
         errorBuilder: (context, error, stackTrace) {
-          print("Error $error || stackTrace $stackTrace");
+          print('Error $error || stackTrace $stackTrace');
           return Center(
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.error,
               ),
-              //TODO Kalau PopUp sudah jadi , implementasikan disini
+              // TODO(ErrorImageFile): Kalau PopUp sudah jadi , implementasikan disini
               onPressed: () => '',
             ),
           );

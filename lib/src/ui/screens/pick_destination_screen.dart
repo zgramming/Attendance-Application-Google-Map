@@ -87,7 +87,7 @@ class _PickDestinationScreenState extends State<PickDestinationScreen> {
                               ? value.item2
                               : value.item1.where((element) => element.status != 't').toList();
                       return (value.item3)
-                          ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                          ? const LoadingFutureBuilder(isLinearProgressIndicator: false)
                           : ListView.builder(
                               itemCount: resultList.length,
                               itemBuilder: (BuildContext context, int index) {

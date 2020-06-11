@@ -42,7 +42,7 @@ class UserProfile extends StatelessWidget {
                       selector: (_, globalProvider) => globalProvider.isImageLoading,
                       builder: (_, isImageLoading, __) {
                         return isImageLoading
-                            ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                            ? const LoadingFutureBuilder(isLinearProgressIndicator: false)
                             : Stack(
                                 children: [
                                   InkWell(

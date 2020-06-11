@@ -21,7 +21,7 @@ class ListDestination extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        leading: ShowImageNetwork(
+        leading: const ShowImageNetwork(
           imageUrl: AppConfig.defaultImageNetwork,
           fit: BoxFit.cover,
           isCircle: true,

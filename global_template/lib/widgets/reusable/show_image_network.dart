@@ -3,7 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
 
 class ShowImageNetwork extends StatelessWidget {
-  final Key key;
+  const ShowImageNetwork({
+    @required this.imageUrl,
+    this.imageCircleRadius = 35,
+    this.imageRadius = 10,
+    this.imageWidth = 1,
+    this.imageHeight = 1,
+    this.isCircle = false,
+    this.padding = const EdgeInsets.all(0),
+    this.alignment = Alignment.center,
+    this.fit,
+  });
 
   final String imageUrl;
 
@@ -30,18 +40,7 @@ class ShowImageNetwork extends StatelessWidget {
 
   ///! Settings fit Image
   final BoxFit fit;
-  ShowImageNetwork({
-    @required this.imageUrl,
-    this.key,
-    this.imageCircleRadius = 35,
-    this.imageRadius = 10,
-    this.imageWidth = 1,
-    this.imageHeight = 1,
-    this.isCircle = false,
-    this.padding = const EdgeInsets.all(0),
-    this.alignment = Alignment.center,
-    this.fit,
-  });
+
   @override
   Widget build(BuildContext context) {
     final image = Padding(
@@ -49,8 +48,7 @@ class ShowImageNetwork extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(imageRadius),
         child: CachedNetworkImage(
-          key: key,
-          imageUrl: imageUrl ?? "https://flutter.dev/images/catalog-widget-placeholder.png",
+          imageUrl: imageUrl ?? 'https://flutter.dev/images/catalog-widget-placeholder.png',
           height: sizes.height(context) / imageHeight,
           width: sizes.width(context) / imageWidth,
           errorWidget: (BuildContext context, String url, dynamic error) {
@@ -58,15 +56,15 @@ class ShowImageNetwork extends StatelessWidget {
             print('From Cached Network Image ${url.toString()}');
             return Center(
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.error,
                 ),
-                //TODO Kalau PopUp sudah jadi , implementasikan disini
+                // TODO(ErrorImageNetwork): Kalau PopUp sudah jadi , implementasikan disini
                 onPressed: () => '',
               ),
             );
           },
-          placeholder: (context, url) => CircularProgressIndicator(),
+          placeholder: (context, url) => const CircularProgressIndicator(),
           fit: fit,
           alignment: alignment,
         ),
@@ -84,7 +82,7 @@ class ShowImageNetwork extends StatelessWidget {
                   BoxShadow(
                     color: colorPallete.black.withOpacity(.5),
                     blurRadius: 2,
-                    offset: Offset(2, 1),
+                    offset: const Offset(2, 1),
                   ),
                 ],
                 image: DecorationImage(

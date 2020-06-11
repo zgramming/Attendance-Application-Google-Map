@@ -1,7 +1,7 @@
 library global_template;
 
-export './functions/reusable_request_server.dart';
 export './functions/global_function.dart';
+export './functions/reusable_request_server.dart';
 
 export './providers/global_provider.dart';
 

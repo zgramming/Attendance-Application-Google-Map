@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../copyright_version_template/copyright_version_template.dart';
-import '../../variable/sizes/sizes.dart';
 import '../../variable/colors/color_pallete.dart';
+import '../../variable/sizes/sizes.dart';
+import '../copyright_version_template/copyright_version_template.dart';
 
 class LoginScreenTemplate extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final Widget imageBuilder;
-  final Widget form;
-  final Widget background;
-  final double formOpacity;
-  LoginScreenTemplate({
+  const LoginScreenTemplate({
     @required this.formKey,
     @required this.imageBuilder,
     @required this.form,
     @required this.background,
     this.formOpacity = .75,
   });
+  final GlobalKey<FormState> formKey;
+  final Widget imageBuilder;
+  final Widget form;
+  final Widget background;
+  final double formOpacity;
 
   @override
   Widget build(BuildContext context) {

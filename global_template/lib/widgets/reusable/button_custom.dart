@@ -40,14 +40,15 @@ class ButtonCustom extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) {
-    var defaultButton = RaisedButton(
+    final defaultButton = RaisedButton(
       onPressed: onPressed,
       disabledColor: disabledColor,
       disabledTextColor: disabledTextColor,
       disabledElevation: disabledElevation,
       shape: shape,
       textTheme: ButtonTextTheme.primary,
-      color: buttonColor == null ? colorPallete.primaryColor : buttonColor,
+      // color: buttonColor == null ? colorPallete.primaryColor : buttonColor,
+      color: buttonColor ?? colorPallete.primaryColor,
       child: child ??
           Text(
             buttonTitle,
@@ -58,15 +59,15 @@ class ButtonCustom extends StatelessWidget {
                     ),
           ),
     );
-    var buttonIcon = RaisedButton.icon(
+    final buttonIcon = RaisedButton.icon(
       onPressed: onPressed,
       disabledColor: disabledColor,
       disabledTextColor: disabledTextColor,
       disabledElevation: disabledElevation,
       shape: shape,
       textTheme: ButtonTextTheme.primary,
-      color: buttonColor == null ? Theme.of(context).primaryColor : buttonColor,
-      icon: icon ?? SizedBox(),
+      color: buttonColor ?? Theme.of(context).primaryColor,
+      icon: icon ?? const SizedBox(),
       label: child ??
           Text(
             buttonTitle,

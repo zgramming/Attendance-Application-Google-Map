@@ -30,7 +30,7 @@ class GlobalFunction {
   /// Format : Jam:Menit:Detik
   String formatHoursMinutesSeconds(DateTime date) {
     final result = DateFormat.Hms(appConfig.indonesiaLocale).format(date);
-    return result.replaceAll(".", ":");
+    return result.replaceAll('.', ':');
   }
 
   /// Format : Tahun
@@ -83,23 +83,23 @@ class GlobalFunction {
     TimeFormat timeFormat,
   }) {
     if (time == null) {
-      return "-";
+      return '-';
     } else {
-      String hour = time.replaceAll(":", "").substring(0, 2);
-      String minute = time.replaceAll(":", "").substring(2, 4);
-      String second = time.replaceAll(":", "").substring(4, 6);
+      final String hour = time.replaceAll(':', '').substring(0, 2);
+      final String minute = time.replaceAll(':', '').substring(2, 4);
+      final String second = time.replaceAll(':', '').substring(4, 6);
       String resultHour, resultMinute, resultSecond;
-      if (hour.startsWith("0")) {
+      if (hour.startsWith('0')) {
         resultHour = hour.substring(1);
       } else {
         resultHour = hour;
       }
-      if (minute.startsWith("0")) {
+      if (minute.startsWith('0')) {
         resultMinute = minute.substring(1);
       } else {
         resultMinute = minute;
       }
-      if (second.startsWith("0")) {
+      if (second.startsWith('0')) {
         resultSecond = second.substring(1);
       } else {
         resultSecond = second;
@@ -107,25 +107,25 @@ class GlobalFunction {
 
       switch (timeFormat) {
         case TimeFormat.Jam:
-          return "$resultHour Jam ";
+          return '$resultHour Jam ';
           break;
         case TimeFormat.JamMenit:
-          return "$resultHour Jam $resultMinute Menit";
+          return '$resultHour Jam $resultMinute Menit';
           break;
         case TimeFormat.JamMenitDetik:
-          return "$resultHour Jam $resultMinute Menit $resultSecond Detik";
+          return '$resultHour Jam $resultMinute Menit $resultSecond Detik';
           break;
         case TimeFormat.Menit:
-          return "$resultMinute Menit";
+          return '$resultMinute Menit';
           break;
         case TimeFormat.MenitDetik:
-          return "$resultMinute Menit $resultSecond Detik";
+          return '$resultMinute Menit $resultSecond Detik';
           break;
         case TimeFormat.Detik:
-          return "$resultSecond Detik";
+          return '$resultSecond Detik';
           break;
         default:
-          return "$resultHour Jam $resultMinute Menit $resultSecond Detik";
+          return '$resultHour Jam $resultMinute Menit $resultSecond Detik';
       }
     }
   }
@@ -138,7 +138,7 @@ class GlobalFunction {
 
   ///! Mendapatkan Total Jumlah Kerja yang sudah dikurangi weekend (Sabtu,Minggu).
   int totalWeekDayOfMonth(int year, int month, {int day = 1}) {
-    int totalDayOfMonth = totalDaysOfMonth(year, month);
+    final int totalDayOfMonth = totalDaysOfMonth(year, month);
     int result = 0;
     DateTime tempDateTime = DateTime(year, month, day);
     for (int i = day; i <= totalDayOfMonth; i++) {
@@ -164,7 +164,7 @@ class GlobalFunction {
   }) async {
     await Fluttertoast.showToast(
       msg: message.toString(),
-      backgroundColor: (isError) ? Colors.red : (isSuccess) ? Colors.green : backgroungColor,
+      backgroundColor: isError ? Colors.red : isSuccess ? Colors.green : backgroungColor,
       textColor: (isError || isSuccess) ? Colors.white : textColor,
       fontSize: fontSize,
       toastLength: isLongDuration ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT,
@@ -176,12 +176,12 @@ class GlobalFunction {
     @required GlobalKey<ScaffoldState> scaffoldKey,
   }) async {
     DateTime _currentBackPressTime;
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
     if (_currentBackPressTime == null ||
-        now.difference(_currentBackPressTime) > Duration(seconds: 2)) {
+        now.difference(_currentBackPressTime) > const Duration(seconds: 2)) {
       _currentBackPressTime = now;
       await globalF.showToast(message: 'Tekan Sekali Lagi Untuk Keluar Aplikasi');
-      print("Press Again To Close Application");
+      // print('Press Again To Close Application');
       return Future.value(false);
     } else {
       return Future.value(true);

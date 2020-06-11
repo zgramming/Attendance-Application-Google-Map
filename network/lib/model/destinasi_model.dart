@@ -10,6 +10,16 @@ class DestinasiModel {
     this.status,
   });
 
+  factory DestinasiModel.fromJson(Map<String, dynamic> json) => DestinasiModel(
+        idDestinasi: json['id_destinasi'].toString(),
+        idUser: json['id_user'].toString(),
+        namaDestinasi: json['nama_destinasi'].toString(),
+        latitude: double.parse(json['latitude']),
+        longitude: double.parse(json['longitude']),
+        keterangan: json['keterangan'].toString(),
+        image: json['image'].toString(),
+        status: json['status'].toString(),
+      );
   String idDestinasi;
   String idUser;
   String namaDestinasi;
@@ -18,17 +28,6 @@ class DestinasiModel {
   String keterangan;
   String image;
   String status;
-
-  factory DestinasiModel.fromJson(Map<String, dynamic> json) => DestinasiModel(
-        idDestinasi: json['id_destinasi'].toString(),
-        idUser: json['id_user'].toString(),
-        namaDestinasi: json['nama_destinasi'].toString(),
-        latitude: double.parse(json['latitude']),
-        longitude: double.parse(json["longitude"]),
-        keterangan: json['keterangan'].toString(),
-        image: json['image'].toString(),
-        status: json['status'].toString(),
-      );
 
   Map<String, dynamic> toJson() => {
         'id_destinasi': idDestinasi,

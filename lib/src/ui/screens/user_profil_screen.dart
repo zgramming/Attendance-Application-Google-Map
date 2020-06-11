@@ -31,7 +31,7 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
               selector: (_, provider) => provider.isLoading,
               builder: (_, isLoading, __) {
                 return isLoading
-                    ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                    ? const LoadingFutureBuilder(isLinearProgressIndicator: false)
                     : InkWell(
                         onTap: () => _userUpdateFullName(context),
                         child: const Icon(FontAwesomeIcons.check),
@@ -57,7 +57,7 @@ class _UserProfilScreenState extends State<UserProfilScreen> {
                       builder: (_, isImageLoading, __) {
                         final appConfig2 = appConfig;
                         return isImageLoading
-                            ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                            ? const LoadingFutureBuilder(isLinearProgressIndicator: false)
                             : Stack(
                                 children: [
                                   InkWell(
