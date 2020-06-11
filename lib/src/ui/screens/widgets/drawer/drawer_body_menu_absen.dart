@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
 import 'package:provider/provider.dart';
-import 'package:global_template/global_template.dart';
-
-import './drawer_body_menu.dart';
-
-import '../../maps_screen.dart';
 
 import '../../../../providers/absen_provider.dart';
-import '../../../../providers/user_provider.dart';
 import '../../../../providers/maps_provider.dart';
+import '../../../../providers/user_provider.dart';
+import '../../maps_screen.dart';
+import './drawer_body_menu.dart';
 
 class DrawerBodyMenuAbsen extends StatefulWidget {
   const DrawerBodyMenuAbsen({
@@ -51,13 +49,13 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
       future: alreadyAbsen,
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return LinearProgressIndicator();
+          return const LinearProgressIndicator();
         }
         if (snapshot.hasError) {
           return InkWell(
             onTap: _refreshMenuAbsen,
             child: Text(
-              "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+              '${snapshot.error.toString()} , Tap Untuk Refresh Data',
               textAlign: TextAlign.center,
             ),
           );
@@ -69,9 +67,9 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
                 selector: (_, provider) => provider.isLoading,
                 builder: (_, isLoading, __) {
                   return DrawerBodyMenu(
-                    wordUppercase: "M",
+                    wordUppercase: 'M',
                     singleWordUppercase: true,
-                    subtitle: isLoading ? "Loading..." : "Absen Masuk",
+                    subtitle: isLoading ? 'Loading...' : 'Absen Masuk',
                     onTap: isLoading
                         ? null
                         : (snapshot.data == 2) ? null : (snapshot.data == 1) ? null : onTapAbsen,
@@ -82,9 +80,9 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
                 selector: (_, provider) => provider.isLoading,
                 builder: (_, isLoading, __) {
                   return DrawerBodyMenu(
-                    wordUppercase: "P",
+                    wordUppercase: 'P',
                     singleWordUppercase: true,
-                    subtitle: isLoading ? "Loading..." : "Absen Pulang",
+                    subtitle: isLoading ? 'Loading...' : 'Absen Pulang',
                     onTap: isLoading
                         ? null
                         : (snapshot.data == 2) ? null : (snapshot.data != 1) ? null : onTapPulang,
@@ -94,12 +92,12 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
             ],
           );
         }
-        return Text("No Data");
+        return const Text('No Data');
       },
     );
   }
 
-  void onTapAbsen() async {
+  Future<void> onTapAbsen() async {
     //! Membuat Button Menjadi Disable , Untuk Prevent Double Click
     context.read<GlobalProvider>().setLoading(true);
     try {
@@ -110,12 +108,12 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
           .then((_) => context.read<GlobalProvider>().setLoading(false))
           .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
     } catch (e) {
-      globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
       context.read<GlobalProvider>().setLoading(false);
     }
   }
 
-  void onTapPulang() async {
+  Future<void> onTapPulang() async {
     context.read<GlobalProvider>().setLoading(true);
     try {
       await context.read<MapsProvider>().getCurrentPosition();
@@ -125,7 +123,7 @@ class _DrawerBodyMenuAbsenState extends State<DrawerBodyMenuAbsen> {
           .then((_) => context.read<GlobalProvider>().setLoading(false))
           .then((_) => Navigator.of(context).pushNamed(MapScreen.routeNamed));
     } catch (e) {
-      globalF.showToast(message: e, isError: true);
+      await globalF.showToast(message: e.toString(), isError: true);
       context.read<GlobalProvider>().setLoading(false);
     }
   }

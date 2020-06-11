@@ -18,17 +18,18 @@ class AbsenProvider extends ChangeNotifier {
       final resultList = setTableAttendance(result, dateTime);
       return resultList;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
   List<AbsensiModel> setTableAttendance(List<AbsensiModel> value, DateTime dateTime) {
-    int totalDay = globalF.totalDaysOfMonth(dateTime.year, dateTime.month);
+    final int totalDay = globalF.totalDaysOfMonth(dateTime.year, dateTime.month);
 
-    List<AbsensiModel> tempList = [];
+    final List<AbsensiModel> tempList = [];
     for (int i = 1; i <= totalDay; i++) {
-      final result = value.firstWhere((element) => element.tanggalAbsen.day == i,
-          orElse: () => AbsensiModel(jamAbsenMasuk: "-", jamAbsenPulang: "-"));
+      final AbsensiModel result = value.firstWhere(
+          (AbsensiModel element) => element.tanggalAbsen.day == i,
+          orElse: () => AbsensiModel(jamAbsenMasuk: '-', jamAbsenPulang: '-'));
       tempList.add(result);
     }
     return tempList;
@@ -51,7 +52,7 @@ class AbsenProvider extends ChangeNotifier {
       );
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -70,7 +71,7 @@ class AbsenProvider extends ChangeNotifier {
       );
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -89,7 +90,7 @@ class AbsenProvider extends ChangeNotifier {
       );
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -99,7 +100,7 @@ class AbsenProvider extends ChangeNotifier {
       final List<DestinasiModel> tempList = result;
       _listDestinasi = tempList;
     } catch (e) {
-      throw e;
+      rethrow;
     }
     notifyListeners();
   }
@@ -116,7 +117,7 @@ class AbsenProvider extends ChangeNotifier {
       setSelectedDestination(idDestinasi);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -126,37 +127,47 @@ class AbsenProvider extends ChangeNotifier {
       deleteDestination(idDestinasi);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
   Future<void> saveSelectedDestinationUser(String idUser, {String isSelected}) async {
     try {
-      final result = await destinasiAPI.getDestinationById(idUser: idUser, isSelected: isSelected);
+      final List<DestinasiModel> result =
+          await destinasiAPI.getDestinationById(idUser: idUser, isSelected: isSelected);
       if (result.isNotEmpty || result != null) {
-        print("Berhasil Mendapatkan Destinasi Kamu ... , Menyimpan Sementara Destinasi Kamu...");
-        result.forEach((element) => _destinasiModel = element);
+        print('Berhasil Mendapatkan Destinasi Kamu ... , Menyimpan Sementara Destinasi Kamu...');
+        // result.forEach((DestinasiModel element) => _destinasiModel = element);
+        for (final DestinasiModel item in result) {
+          _destinasiModel = item;
+        }
       } else {
-        throw "Tidak Dapat Menemukan Lokasi User";
+        throw 'Tidak Dapat Menemukan Lokasi User';
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
     notifyListeners();
   }
 
   void filterListDestination(String query) {
     List<DestinasiModel> tempList = [];
-    List<DestinasiModel> notSelectedDestination =
-        _listDestinasi.where((element) => element.status != "t").toList();
+    final List<DestinasiModel> notSelectedDestination =
+        _listDestinasi.where((DestinasiModel element) => element.status != 't').toList();
     if (query.isEmpty) {
       tempList = [];
     } else {
-      notSelectedDestination.forEach((element) {
-        if (element.namaDestinasi.toLowerCase().contains(query.toLowerCase())) {
-          tempList.add(element);
+      // notSelectedDestination.forEach((DestinasiModel element) {
+      //   if (element.namaDestinasi.toLowerCase().contains(query.toLowerCase())) {
+      //     tempList.add(element);
+      //   }
+      // });
+
+      for (final DestinasiModel item in notSelectedDestination) {
+        if (item.namaDestinasi.toLowerCase().contains(query.toLowerCase())) {
+          tempList.add(item);
         }
-      });
+      }
     }
     _filteredListDestinasi = tempList;
 
@@ -164,19 +175,19 @@ class AbsenProvider extends ChangeNotifier {
   }
 
   void resetFilterListDestination() {
-    List<DestinasiModel> tempList = [];
+    final List<DestinasiModel> tempList = [];
     _filteredListDestinasi = tempList;
     notifyListeners();
   }
 
   void setSelectedDestination(String idDestinasi) {
-    List<DestinasiModel> tempList = [];
-    for (var item in _listDestinasi) {
-      if (item.status == "t") {
+    final List<DestinasiModel> tempList = [];
+    for (final DestinasiModel item in _listDestinasi) {
+      if (item.status == 't') {
         item.status = null;
       }
       if (item.idDestinasi == idDestinasi) {
-        item.status = "t";
+        item.status = 't';
       }
       tempList.add(item);
     }
@@ -186,7 +197,7 @@ class AbsenProvider extends ChangeNotifier {
   }
 
   void deleteDestination(String idDestinasi) {
-    _listDestinasi.removeWhere((element) => element.idDestinasi == idDestinasi);
+    _listDestinasi.removeWhere((DestinasiModel element) => element.idDestinasi == idDestinasi);
     notifyListeners();
   }
 }

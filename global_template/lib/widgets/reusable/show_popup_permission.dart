@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 
 class PopupPermission extends StatelessWidget {
-  PopupPermission({
+  const PopupPermission({
     @required this.typePermission,
     this.buttonTitleAccept = 'Setuju',
     this.iconClose = Icons.close,
@@ -13,12 +13,13 @@ class PopupPermission extends StatelessWidget {
     this.closeOnBackButton = false,
     this.showCloseButton = true,
   });
+
   final String buttonTitleAccept;
   final String typePermission;
   final IconData iconClose;
   final IconData iconPermission;
-  final Function onClose;
-  final Function onAccept;
+  final void Function() onClose;
+  final void Function() onAccept;
   final bool closeOnBackButton;
   final bool showCloseButton;
   @override

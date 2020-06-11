@@ -14,7 +14,7 @@ class FabChangeMode extends StatelessWidget {
         selector: (_, provider) => provider.isChangeMode,
         builder: (_, value, __) {
           return AnimatedSwitcher(
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             switchInCurve: Curves.decelerate,
             switchOutCurve: Curves.decelerate,
             child: Icon(

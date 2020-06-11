@@ -25,7 +25,7 @@ class _LiveClockState extends State<LiveClock> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           return Text(
-            "${globalF.formatHoursMinutesSeconds(snapshot.data)}",
+            globalF.formatHoursMinutesSeconds(snapshot.data),
             style: appTheme.subtitle2(context).copyWith(
                   color: colorPallete.white,
                   fontWeight: FontWeight.bold,
@@ -33,7 +33,7 @@ class _LiveClockState extends State<LiveClock> {
           );
         }
         return Text(
-            "${globalF.formatYearMonthDaySpecific(DateTime.now())} ${globalF.formatHoursMinutes(DateTime.now())}");
+            '${globalF.formatYearMonthDaySpecific(DateTime.now())} ${globalF.formatHoursMinutes(DateTime.now())}');
       },
     );
   }

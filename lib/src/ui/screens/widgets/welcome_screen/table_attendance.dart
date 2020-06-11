@@ -1,15 +1,13 @@
-import 'package:network/network.dart';
 import 'package:flutter/material.dart';
-import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:global_template/global_template.dart';
+import 'package:network/network.dart';
 import 'package:provider/provider.dart';
-
-import './table_attendance_body.dart';
-
-import '../../shimmer/shimmer_table_attendance.dart';
 
 import '../../../../providers/absen_provider.dart';
 import '../../../../providers/user_provider.dart';
+import '../../shimmer/shimmer_table_attendance.dart';
+import './table_attendance_body.dart';
 
 class TableAttendance extends StatefulWidget {
   @override
@@ -65,10 +63,10 @@ class _TableAttendanceState extends State<TableAttendance> {
                   style: appTheme.button(context),
                   child: Row(
                     children: [
-                      rowHeader(context, "Tanggal", flex: 2),
-                      rowHeader(context, "Datang"),
-                      rowHeader(context, "Pulang"),
-                      rowHeader(context, "Durasi"),
+                      rowHeader(context, 'Tanggal', flex: 2),
+                      rowHeader(context, 'Datang'),
+                      rowHeader(context, 'Pulang'),
+                      rowHeader(context, 'Durasi'),
                     ],
                   ),
                 ),
@@ -86,7 +84,7 @@ class _TableAttendanceState extends State<TableAttendance> {
                         return InkWell(
                           onTap: _refreshMenu,
                           child: Text(
-                            "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+                            '${snapshot.error.toString()} , Tap Untuk Refresh Data',
                             textAlign: TextAlign.center,
                           ),
                         );
@@ -95,7 +93,7 @@ class _TableAttendanceState extends State<TableAttendance> {
                         return ListView.builder(
                           itemCount: snapshot.data.length,
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           padding: const EdgeInsets.all(0),
                           itemBuilder: (BuildContext context, int index) {
                             final result = snapshot.data[index];
@@ -107,7 +105,7 @@ class _TableAttendanceState extends State<TableAttendance> {
                           },
                         );
                       }
-                      return Text('no data');
+                      return const Text('no data');
                     },
                   );
                 },
@@ -126,7 +124,7 @@ class _TableAttendanceState extends State<TableAttendance> {
     int flex = 1,
     TextAlign textAlign = TextAlign.center,
   }) {
-    var text = Text(
+    final text = Text(
       result,
       textAlign: textAlign,
       style: TextStyle(color: colorPallete.white, fontWeight: FontWeight.bold),

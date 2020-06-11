@@ -3,18 +3,17 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
 
-import './widgets/welcome_screen/fab.dart';
+import '../../function/common_function.dart';
 import './widgets/drawer/drawer_custom.dart';
-import './widgets/welcome_screen/user_profile.dart';
-import './widgets/welcome_screen/button_attendance.dart';
-import './widgets/welcome_screen/card_overall_monthly.dart';
 import './widgets/welcome_screen/animated_table_calendar.dart';
 import './widgets/welcome_screen/animation/appbar_animated_color.dart';
-
-import '../../function/common_function.dart';
+import './widgets/welcome_screen/button_attendance.dart';
+import './widgets/welcome_screen/card_overall_monthly.dart';
+import './widgets/welcome_screen/fab.dart';
+import './widgets/welcome_screen/user_profile.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  static const routeNamed = "/welcome-screen";
+  static const routeNamed = '/welcome-screen';
 
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
@@ -37,7 +36,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             if (!gpsPermission) {
               showDialog(context: context, child: commonF.showPermissionGPS());
             } else {
-              print("Permission Success");
+              print('Permission Success');
             }
           });
         }
@@ -49,7 +48,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     WidgetsBinding.instance.addObserver(this);
   }
 
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.paused) {
       commonF.initClosePermission(context);
     } else if (state == AppLifecycleState.resumed) {
@@ -96,12 +96,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               bottom: 10,
               child: ScaleTransition(
                 scale: _buttonAbsentController,
-                child: ButtonAttendance(),
+                child: const ButtonAttendance(),
               ),
             ),
             AppBarAnimatedColor(
               controller: _appbarController,
-              leading: FlutterLogo(
+              leading: const FlutterLogo(
                 size: kToolbarHeight / 1.5,
               ),
             ),

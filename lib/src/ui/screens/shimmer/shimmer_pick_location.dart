@@ -15,7 +15,7 @@ class ShimmerPickLocatation extends StatelessWidget {
             decoration: BoxDecoration(border: Border.all()),
             child: ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              leading: CircleAvatar(backgroundColor: Colors.white, radius: 30),
+              leading: const CircleAvatar(backgroundColor: Colors.white, radius: 30),
               title: Container(
                 height: 10,
                 color: Colors.white,
@@ -26,7 +26,7 @@ class ShimmerPickLocatation extends StatelessWidget {
               ),
               trailing: Wrap(
                 spacing: 5,
-                children: [
+                children: const <Widget>[
                   CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: sizeIcon,

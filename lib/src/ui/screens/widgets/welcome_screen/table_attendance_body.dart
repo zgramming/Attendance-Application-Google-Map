@@ -55,8 +55,8 @@ class TableAttendanceBody extends StatelessWidget {
     double fontSize = 11,
     FontWeight fontWeight = FontWeight.w600,
   }) {
-    var text = Text(
-      result ?? "-",
+    final text = Text(
+      result ?? '-',
       style: appTheme.caption(context).copyWith(fontWeight: fontWeight, fontSize: fontSize),
       textAlign: textAlign,
     );
@@ -64,11 +64,11 @@ class TableAttendanceBody extends StatelessWidget {
       flex: flex,
       child: fittedText
           ? Padding(
-              padding: padding ?? EdgeInsets.all(0),
+              padding: padding ?? const EdgeInsets.all(0),
               child: FittedBox(child: text),
             )
           : Padding(
-              padding: padding ?? EdgeInsets.all(0),
+              padding: padding ?? const EdgeInsets.all(0),
               child: text,
             ),
       fit: FlexFit.tight,

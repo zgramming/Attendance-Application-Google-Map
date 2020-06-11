@@ -17,7 +17,7 @@ class ShimmerButtonAttendance extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Flexible(fit: FlexFit.tight, child: Container(height: 15, color: Colors.white)),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Flexible(fit: FlexFit.tight, child: Container(height: 15, color: Colors.white)),
               ],
             ),
@@ -26,7 +26,7 @@ class ShimmerButtonAttendance extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Flexible(fit: FlexFit.tight, child: Container(height: 15, color: Colors.white)),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Flexible(fit: FlexFit.tight, child: Container(height: 15, color: Colors.white)),
               ],
             ),

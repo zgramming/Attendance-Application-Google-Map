@@ -23,7 +23,7 @@ class AbsensiApi {
         }
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }
@@ -58,7 +58,7 @@ class AbsensiApi {
         }
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }
@@ -91,7 +91,7 @@ class AbsensiApi {
         }
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
 
     return result;

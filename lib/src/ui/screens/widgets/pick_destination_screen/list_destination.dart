@@ -22,13 +22,12 @@ class ListDestination extends StatelessWidget {
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         leading: ShowImageNetwork(
-          imageUrl: result.image == null
-              ? AppConfig.defaultImageNetwork
-              : "${appConfig.baseImageApiUrl}/destinasi/${result.image}",
+          imageUrl: AppConfig.defaultImageNetwork,
           fit: BoxFit.cover,
           isCircle: true,
           imageCircleRadius: 30,
         ),
+        // leading: Text(result.image.length),
         title: Text(
           result.namaDestinasi,
           style: appTheme.subtitle2(context).copyWith(fontWeight: FontWeight.bold),
@@ -42,7 +41,7 @@ class ListDestination extends StatelessWidget {
                 radius: sizeIcon,
                 backgroundColor: colorPallete.green,
                 foregroundColor: colorPallete.white,
-                child: Icon(FontAwesomeIcons.check, size: sizeIcon),
+                child: const Icon(FontAwesomeIcons.check, size: sizeIcon),
               ),
             ),
             InkWell(
@@ -51,7 +50,7 @@ class ListDestination extends StatelessWidget {
                 radius: sizeIcon,
                 foregroundColor: colorPallete.white,
                 backgroundColor: colorPallete.red,
-                child: Icon(FontAwesomeIcons.trash, size: sizeIcon),
+                child: const Icon(FontAwesomeIcons.trash, size: sizeIcon),
               ),
             ),
           ],
@@ -60,7 +59,7 @@ class ListDestination extends StatelessWidget {
     );
   }
 
-  void _destinationUpdateStatus(BuildContext context, String idDestinasi) async {
+  Future<void> _destinationUpdateStatus(BuildContext context, String idDestinasi) async {
     final absenProvider = context.read<AbsenProvider>();
     final globalProvider = context.read<GlobalProvider>();
     final userProvider = context.read<UserProvider>();
@@ -71,23 +70,23 @@ class ListDestination extends StatelessWidget {
         idUser: userProvider.user.idUser,
       );
       globalProvider.setLoading(false);
-      globalF.showToast(message: result, isSuccess: true);
+      await globalF.showToast(message: result, isSuccess: true);
     } catch (e) {
-      globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
       globalProvider.setLoading(false);
     }
   }
 
-  void _destinationDelete(BuildContext context, String idDestinasi) async {
+  Future<void> _destinationDelete(BuildContext context, String idDestinasi) async {
     final absenProvider = context.read<AbsenProvider>();
     final globalProvider = context.read<GlobalProvider>();
     try {
       globalProvider.setLoading(true);
       final result = await absenProvider.destinationDelete(idDestinasi);
       globalProvider.setLoading(false);
-      globalF.showToast(message: result, isSuccess: true);
+      await globalF.showToast(message: result, isSuccess: true);
     } catch (e) {
-      globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
     }
   }
 }

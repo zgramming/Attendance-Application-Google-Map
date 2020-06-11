@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
+import 'package:provider/provider.dart';
 
-import '../../../../providers/user_provider.dart';
-import '../../../../providers/maps_provider.dart';
 import '../../../../providers/absen_provider.dart';
+import '../../../../providers/maps_provider.dart';
+import '../../../../providers/user_provider.dart';
 
 class AddDestinationForm extends StatelessWidget {
   const AddDestinationForm({
@@ -25,14 +25,14 @@ class AddDestinationForm extends StatelessWidget {
           TextFormFieldCustom(
             controller: _nameDestinationController,
             onSaved: (value) => '',
-            prefixIcon: Icon(Icons.add_location),
-            hintText: "Nama Lokasi Absen",
+            prefixIcon: const Icon(Icons.add_location),
+            hintText: 'Nama Lokasi Absen',
             autoFocus: true,
           ),
           Row(
             children: [
-              Spacer(),
-              FlatButton(onPressed: () => Navigator.of(context).pop(), child: Text('Batal')),
+              const Spacer(),
+              FlatButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Batal')),
               Selector<GlobalProvider, bool>(
                 selector: (_, provider) => provider.isLoading,
                 builder: (_, isLoading, __) {
@@ -42,7 +42,7 @@ class AddDestinationForm extends StatelessWidget {
                         ? LoadingFutureBuilder(isLinearProgressIndicator: false)
                         : FlatButton(
                             onPressed: () => _destinationRegister(context),
-                            child: Text('Simpan'),
+                            child: const Text('Simpan'),
                             color: colorPallete.primaryColor,
                             textTheme: ButtonTextTheme.primary,
                           ),
@@ -56,15 +56,17 @@ class AddDestinationForm extends StatelessWidget {
     );
   }
 
-  void _destinationRegister(BuildContext context) async {
+  Future<void> _destinationRegister(BuildContext context) async {
     final userProvider = context.read<UserProvider>();
     final mapsProvider = context.read<MapsProvider>();
     final absenProvider = context.read<AbsenProvider>();
     final globalProvider = context.read<GlobalProvider>();
     if (mapsProvider.cameraPosition == null) {
-      globalF.showToast(message: "Belum Memilih Destinasi", isError: true, isLongDuration: true);
+      await globalF.showToast(
+          message: 'Belum Memilih Destinasi', isError: true, isLongDuration: true);
     } else if (_nameDestinationController.text.isEmpty) {
-      globalF.showToast(message: "Nama Destinasi Belum Diisi", isError: true, isLongDuration: true);
+      await globalF.showToast(
+          message: 'Nama Destinasi Belum Diisi', isError: true, isLongDuration: true);
     } else {
       try {
         globalProvider.setLoading(true);
@@ -74,13 +76,13 @@ class AddDestinationForm extends StatelessWidget {
           latitude: mapsProvider.cameraPosition.target.latitude,
           longitude: mapsProvider.cameraPosition.target.longitude,
         );
-        globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
+        await globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
         _nameDestinationController.clear();
         globalProvider.setLoading(false);
 
         Navigator.of(context).pop();
       } catch (e) {
-        globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+        await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
         globalProvider.setLoading(false);
       }
     }

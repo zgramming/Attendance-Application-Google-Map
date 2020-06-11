@@ -28,7 +28,7 @@ class CardCalendar extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               side: DateTime.now().day == index + 1
                   ? BorderSide(color: colorPallete.accentColor, width: 3)
-                  : BorderSide(color: Colors.transparent),
+                  : const BorderSide(color: Colors.transparent),
             ),
             child: InkWell(
               onTap: () => '',
@@ -39,7 +39,7 @@ class CardCalendar extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "${index + 1}",
+                        '${index + 1}',
                         style: appTheme.headline5(context).copyWith(
                               fontWeight: FontWeight.bold,
                               color: commonF.isWeekend(

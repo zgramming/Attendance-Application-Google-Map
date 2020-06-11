@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../welcome_screen.dart';
 import '../../../../providers/user_provider.dart';
+import '../../welcome_screen.dart';
 
 class FormUser extends StatefulWidget {
+  const FormUser({@required this.formKey});
   final GlobalKey<FormState> formKey;
-  FormUser({@required this.formKey});
   @override
   _FormUserState createState() => _FormUserState();
 }
@@ -24,11 +24,11 @@ class _FormUserState extends State<FormUser> {
         TextFormFieldCustom(
           onSaved: (value) => username = value,
           disableOutlineBorder: false,
-          labelText: "Username",
-          prefixIcon: Icon(FontAwesomeIcons.userCircle),
+          labelText: 'Username',
+          prefixIcon: const Icon(FontAwesomeIcons.userCircle),
           radius: 50,
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         TextFormFieldCustom(
           onSaved: (value) => password = value,
           isPassword: true,
@@ -37,7 +37,7 @@ class _FormUserState extends State<FormUser> {
           radius: 50,
           textInputAction: TextInputAction.done,
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isRegister,
           builder: (_, isRegister, __) {
@@ -45,7 +45,7 @@ class _FormUserState extends State<FormUser> {
               visible: isRegister ? true : false,
               child: TextFormFieldCustom(
                 onSaved: (value) => fullName = value,
-                prefixIcon: Icon(FontAwesomeIcons.user),
+                prefixIcon: const Icon(FontAwesomeIcons.user),
                 labelText: 'Nama Lengkap',
                 disableOutlineBorder: false,
                 radius: 50,
@@ -54,7 +54,7 @@ class _FormUserState extends State<FormUser> {
             );
           },
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Selector2<GlobalProvider, GlobalProvider, Tuple2<bool, bool>>(
           selector: (_, loading, register) => Tuple2(loading.isLoading, register.isRegister),
           builder: (_, value, __) {
@@ -62,16 +62,16 @@ class _FormUserState extends State<FormUser> {
                 ? LoadingFutureBuilder(isLinearProgressIndicator: false)
                 : ButtonCustom(
                     onPressed: _validate,
-                    buttonTitle: value.item2 ? " Register" : "Login",
+                    buttonTitle: value.item2 ? ' Register' : 'Login',
                   );
           },
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isRegister,
           builder: (_, isRegister, __) {
             return OutlineButton(
-              child: Text(isRegister ? "Ayo Login" : "Belum Punya Akun ?"),
+              child: Text(isRegister ? 'Ayo Login' : 'Belum Punya Akun ?'),
               onPressed: () => context.read<GlobalProvider>().setRegister(!isRegister),
             );
           },
@@ -82,7 +82,7 @@ class _FormUserState extends State<FormUser> {
     );
   }
 
-  void _validate() async {
+  Future<void> _validate() async {
     final globalProvider = context.read<GlobalProvider>();
     final userProvider = context.read<UserProvider>();
     try {
@@ -98,23 +98,23 @@ class _FormUserState extends State<FormUser> {
 
           globalProvider.setRegister(false);
           globalProvider.setLoading(false);
-          globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
-          print("SUccess Register");
+          await globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
+          print('SUccess Register');
         } else {
           final result = await userAPI.userLogin(
             username: username,
             password: password,
           );
           await userProvider.saveSessionUser(list: result);
-          Future.delayed(Duration(milliseconds: 500));
+          await Future.delayed(const Duration(milliseconds: 500));
           globalProvider.setLoading(false);
-          Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
+          await Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
         }
       } else {
-        return null;
+        return;
       }
     } catch (e) {
-      globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
       globalProvider.setLoading(false);
     }
   }

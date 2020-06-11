@@ -24,7 +24,7 @@ class GSlideTransitionState extends State<GSlideTransition> with TickerProviderS
   void initState() {
     Offset offset;
     if (widget.position == AnimateFrom.FromBottom) {
-      offset = Offset(0.0, -100);
+      offset = const Offset(0.0, -100);
     } else if (widget.position == AnimateFrom.FromTop) {
       offset = Offset(0.0, 100);
     } else if (widget.position == AnimateFrom.FromLeft) {

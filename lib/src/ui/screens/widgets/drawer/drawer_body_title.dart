@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
 
 class DrawerBodyTitle extends StatelessWidget {
+  const DrawerBodyTitle({@required this.title});
   final String title;
-
-  DrawerBodyTitle({@required this.title});
 
   @override
   Widget build(BuildContext context) {

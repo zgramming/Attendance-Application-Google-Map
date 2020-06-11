@@ -17,7 +17,7 @@ class UserProfile extends StatelessWidget {
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          children: <Widget>[
             Text(
               'Selamat Datang',
               style: appTheme.headline5(context).copyWith(
@@ -51,7 +51,7 @@ class UserProfile extends StatelessWidget {
                                     child: ShowImageNetwork(
                                       imageUrl: value.image.isEmpty
                                           ? AppConfig.defaultImageNetwork
-                                          : "${appConfig.baseImageApiUrl}/user/${value.image}",
+                                          : '${appConfig.baseImageApiUrl}/user/${value.image}',
                                       isCircle: true,
                                       padding: const EdgeInsets.all(20),
                                       fit: BoxFit.cover,
@@ -64,7 +64,7 @@ class UserProfile extends StatelessWidget {
                                       backgroundColor: colorPallete.accentColor,
                                       foregroundColor: colorPallete.white,
                                       radius: 10,
-                                      child: Icon(
+                                      child: const Icon(
                                         FontAwesomeIcons.cameraRetro,
                                         size: 10,
                                       ),
@@ -84,7 +84,7 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-  void _userUpdateImage(BuildContext context) async {
+  Future<void> _userUpdateImage(BuildContext context) async {
     final _picker = ImagePicker();
 
     final globalProvider = context.read<GlobalProvider>();
@@ -96,17 +96,17 @@ class UserProfile extends StatelessWidget {
       maxWidth: 600,
     );
     if (imagePicker == null) {
-      return null;
+      return;
     } else {
       final imageFile = File(imagePicker.path);
       try {
         globalProvider.setImageLoading(true);
         final result = await userProvider.userUpdateImage(userProvider.user.idUser, imageFile);
         await userProvider.saveSessionUser(list: result);
-        globalF.showToast(message: "Berhasil Update Gambar Profile ", isSuccess: true);
+        await globalF.showToast(message: 'Berhasil Update Gambar Profile ', isSuccess: true);
         globalProvider.setImageLoading(false);
       } catch (e) {
-        globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+        await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
         globalProvider.setImageLoading(false);
       }
     }

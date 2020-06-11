@@ -22,7 +22,7 @@ class CardOverallMonthly extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: colorPallete.black.withOpacity(.5),
-              offset: Offset(1.5, 3),
+              offset: const Offset(1.5, 3),
               blurRadius: 2,
             ),
           ],
@@ -30,7 +30,7 @@ class CardOverallMonthly extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.only(top: 8.0, left: 12.0),
           child: Column(
-            children: [
+            children: const <Widget>[
               TitlePerformance(),
               ContentPerformance(),
             ],

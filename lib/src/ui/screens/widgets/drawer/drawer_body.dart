@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:global_template/global_template.dart';
+import 'package:provider/provider.dart';
 
-import './drawer_body_menu.dart';
-import './drawer_body_title.dart';
-import './drawer_body_menu_absen.dart';
-
-import '../../login_screen.dart';
-import '../../user_profil_screen.dart';
-import '../../add_destination_screen.dart';
-import '../../pick_destination_screen.dart';
-
-import '../../../../providers/user_provider.dart';
 import '../../../../providers/maps_provider.dart';
+import '../../../../providers/user_provider.dart';
+import '../../add_destination_screen.dart';
+import '../../login_screen.dart';
+import '../../pick_destination_screen.dart';
+import '../../user_profil_screen.dart';
+import './drawer_body_menu.dart';
+import './drawer_body_menu_absen.dart';
+import './drawer_body_title.dart';
 
 class DrawerBody extends StatelessWidget {
   const DrawerBody({
@@ -25,38 +23,38 @@ class DrawerBody extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 12),
-        DrawerBodyTitle(title: "Absen"),
-        DrawerBodyMenuAbsen(),
-        DrawerBodyTitle(title: "Destinasi"),
+        const DrawerBodyTitle(title: 'Absen'),
+        const DrawerBodyMenuAbsen(),
+        const DrawerBodyTitle(title: 'Destinasi'),
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isLoading,
           builder: (_, isLoading, __) {
             return DrawerBodyMenu(
               icon: Icons.add_location,
-              subtitle: isLoading ? "Loading..." : "Tambah Lokasi Absen",
+              subtitle: isLoading ? 'Loading...' : 'Tambah Lokasi Absen',
               onTap: isLoading ? null : () => goToAddDestination(context),
             );
           },
         ),
         DrawerBodyMenu(
           icon: FontAwesomeIcons.searchLocation,
-          subtitle: "Pilih Lokasi Absen ",
+          subtitle: 'Pilih Lokasi Absen ',
           onTap: () => Navigator.of(context).pushNamed(PickDestinationScreen.routeNamed),
         ),
-        DrawerBodyTitle(title: "Akun"),
+        const DrawerBodyTitle(title: 'Akun'),
         DrawerBodyMenu(
           icon: FontAwesomeIcons.user,
-          subtitle: "Profil",
+          subtitle: 'Profil',
           onTap: () => Navigator.of(context).pushNamed(UserProfilScreen.routeNamed),
         ),
         DrawerBodyMenu(
           icon: FontAwesomeIcons.userTimes,
-          subtitle: "Hapus Akun",
+          subtitle: 'Hapus Akun',
           onTap: () => _userDelete(context),
         ),
         DrawerBodyMenu(
           icon: FontAwesomeIcons.signOutAlt,
-          subtitle: "Keluar",
+          subtitle: 'Keluar',
           onTap: () => _userLogout(context),
         ),
       ],
@@ -64,25 +62,25 @@ class DrawerBody extends StatelessWidget {
     );
   }
 
-  void _userLogout(BuildContext context) async {
+  Future<void> _userLogout(BuildContext context) async {
     await context.read<UserProvider>().removeSessionUser();
-    Navigator.of(context).pushReplacementNamed(LoginScreen.routeNamed);
+    await Navigator.of(context).pushReplacementNamed(LoginScreen.routeNamed);
   }
 
-  void _userDelete(BuildContext context) async {
+  Future<void> _userDelete(BuildContext context) async {
     await context.read<UserProvider>().userDelete(idUser: context.read<UserProvider>().user.idUser);
     await context.read<UserProvider>().removeSessionUser();
-    Navigator.of(context).pushReplacementNamed(LoginScreen.routeNamed);
+    await Navigator.of(context).pushReplacementNamed(LoginScreen.routeNamed);
   }
 
-  void goToAddDestination(BuildContext context) async {
+  Future<void> goToAddDestination(BuildContext context) async {
     context.read<GlobalProvider>().setLoading(true);
     try {
       await context.read<MapsProvider>().getCurrentPosition();
       context.read<GlobalProvider>().setLoading(false);
-      Navigator.of(context).pushNamed(AddDestinationScreen.routeNamed);
+      await Navigator.of(context).pushNamed(AddDestinationScreen.routeNamed);
     } catch (e) {
-      globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
       context.read<GlobalProvider>().setLoading(false);
     }
   }

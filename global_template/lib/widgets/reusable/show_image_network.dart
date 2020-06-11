@@ -53,7 +53,7 @@ class ShowImageNetwork extends StatelessWidget {
           imageUrl: imageUrl ?? "https://flutter.dev/images/catalog-widget-placeholder.png",
           height: sizes.height(context) / imageHeight,
           width: sizes.width(context) / imageWidth,
-          errorWidget: (context, url, error) {
+          errorWidget: (BuildContext context, String url, dynamic error) {
             print('From Cached Network Image ${error.toString()}');
             print('From Cached Network Image ${url.toString()}');
             return Center(

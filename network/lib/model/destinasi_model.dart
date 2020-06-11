@@ -1,13 +1,4 @@
 class DestinasiModel {
-  String idDestinasi;
-  String idUser;
-  String namaDestinasi;
-  double latitude;
-  double longitude;
-  String keterangan;
-  String image;
-  String status;
-
   DestinasiModel({
     this.idDestinasi,
     this.idUser,
@@ -19,25 +10,34 @@ class DestinasiModel {
     this.status,
   });
 
+  String idDestinasi;
+  String idUser;
+  String namaDestinasi;
+  double latitude;
+  double longitude;
+  String keterangan;
+  String image;
+  String status;
+
   factory DestinasiModel.fromJson(Map<String, dynamic> json) => DestinasiModel(
-        idDestinasi: json["id_destinasi"],
-        idUser: json["id_user"],
-        namaDestinasi: json["nama_destinasi"],
-        latitude: double.parse(json["latitude"]),
+        idDestinasi: json['id_destinasi'].toString(),
+        idUser: json['id_user'].toString(),
+        namaDestinasi: json['nama_destinasi'].toString(),
+        latitude: double.parse(json['latitude']),
         longitude: double.parse(json["longitude"]),
-        keterangan: json["keterangan"],
-        image: json["image"],
-        status: json["status"],
+        keterangan: json['keterangan'].toString(),
+        image: json['image'].toString(),
+        status: json['status'].toString(),
       );
 
   Map<String, dynamic> toJson() => {
-        "id_destinasi": idDestinasi,
-        "id_user": idUser,
-        "nama_destinasi": namaDestinasi,
-        "latitude": latitude,
-        "longitude": longitude,
-        "keterangan": keterangan,
-        "image": image,
-        "status": status,
+        'id_destinasi': idDestinasi,
+        'id_user': idUser,
+        'nama_destinasi': namaDestinasi,
+        'latitude': latitude,
+        'longitude': longitude,
+        'keterangan': keterangan,
+        'image': image,
+        'status': status,
       };
 }

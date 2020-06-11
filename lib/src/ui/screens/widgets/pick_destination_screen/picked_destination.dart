@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../../providers/absen_provider.dart';
 import '../../../../function/common_function.dart';
+import '../../../../providers/absen_provider.dart';
 
 class PickedDestination extends StatelessWidget {
   const PickedDestination({
@@ -16,11 +16,11 @@ class PickedDestination extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(
+        borderRadius: const BorderRadius.vertical(
           top: Radius.circular(30),
         ),
         color: colorPallete.white,
-        boxShadow: [
+        boxShadow: const <BoxShadow>[
           BoxShadow(color: Colors.black87, blurRadius: 3),
         ],
       ),
@@ -28,11 +28,11 @@ class PickedDestination extends StatelessWidget {
         children: [
           Text(
             'Lokasi Absen',
-            style: appTheme.headline6(context).copyWith(fontFamily: "Righteous", fontSize: 18),
+            style: appTheme.headline6(context).copyWith(fontFamily: 'Righteous', fontSize: 18),
           ),
           Consumer<AbsenProvider>(builder: (_, listDestinasi, __) {
             final selectedDestinasi =
-                listDestinasi.listDestinasi.where((element) => element.status == "t").toList();
+                listDestinasi.listDestinasi.where((element) => element.status == 't').toList();
             return ListView.builder(
               itemCount: selectedDestinasi.length,
               shrinkWrap: true,
@@ -43,9 +43,7 @@ class PickedDestination extends StatelessWidget {
                   child: Row(
                     children: [
                       ShowImageNetwork(
-                        imageUrl: value.image == null
-                            ? AppConfig.defaultImageNetwork
-                            : "${appConfig.baseImageApiUrl}/destinasi/${value.image}",
+                        imageUrl: AppConfig.defaultImageNetwork,
                         fit: BoxFit.cover,
                         isCircle: true,
                       ),
@@ -61,12 +59,12 @@ class PickedDestination extends StatelessWidget {
                                   appTheme.subtitle2(context).copyWith(fontWeight: FontWeight.bold),
                             ),
                             subtitle: Text(
-                              value.keterangan ?? "-",
+                              value.keterangan ?? '-',
                               style: appTheme.caption(context),
                             ),
                             trailing: InkWell(
                               onTap: () => _openGoogleMap(value.latitude, value.longitude),
-                              child: CircleAvatar(
+                              child: const CircleAvatar(
                                 child: Icon(FontAwesomeIcons.mapMarkerAlt),
                               ),
                             ),
@@ -85,11 +83,11 @@ class PickedDestination extends StatelessWidget {
     );
   }
 
-  void _openGoogleMap(double latitude, double longitude) async {
+  Future<void> _openGoogleMap(double latitude, double longitude) async {
     try {
       await commonF.openGoogleMap(latitude, longitude);
     } catch (e) {
-      globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
     }
   }
 }

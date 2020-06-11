@@ -180,7 +180,7 @@ class GlobalFunction {
     if (_currentBackPressTime == null ||
         now.difference(_currentBackPressTime) > Duration(seconds: 2)) {
       _currentBackPressTime = now;
-      globalF.showToast(message: 'Tekan Sekali Lagi Untuk Keluar Aplikasi');
+      await globalF.showToast(message: 'Tekan Sekali Lagi Untuk Keluar Aplikasi');
       print("Press Again To Close Application");
       return Future.value(false);
     } else {

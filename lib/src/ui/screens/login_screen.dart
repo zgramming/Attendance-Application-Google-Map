@@ -4,7 +4,7 @@ import 'package:global_template/global_template.dart';
 import './widgets/login_screen/form.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const routeNamed = "/login-screen";
+  static const routeNamed = '/login-screen';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           child: FormUser(formKey: _formKey),
           vsync: this,
           curve: Curves.linearToEaseOut,
-          duration: Duration(milliseconds: 1500),
+          duration: const Duration(milliseconds: 1500),
         ),
         background: Container(color: colorPallete.primaryColor),
       ),

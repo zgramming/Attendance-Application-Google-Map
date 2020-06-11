@@ -1,28 +1,28 @@
 import 'dart:async';
-import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import './widgets/pick_destination_screen/add_destination_form.dart';
+import 'package:provider/provider.dart';
 
 import '../../providers/maps_provider.dart';
 
+import './widgets/pick_destination_screen/add_destination_form.dart';
+
 class AddDestinationScreen extends StatefulWidget {
-  static const routeNamed = "/add-destination-screen";
+  static const String routeNamed = '/add-destination-screen';
   @override
   _AddDestinationScreenState createState() => _AddDestinationScreenState();
 }
 
 class _AddDestinationScreenState extends State<AddDestinationScreen> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
-  TextEditingController _searchLocationController = TextEditingController();
-  TextEditingController _nameDestinationController = TextEditingController();
+  final TextEditingController _searchLocationController = TextEditingController();
+  final TextEditingController _nameDestinationController = TextEditingController();
 
   double iconSize = 40;
 
@@ -41,14 +41,14 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
         title: const Text('Tambah Lokasi'),
         actions: [
           InkWell(
-            onTap: () => showModalBottomSheet(
+            onTap: () => showModalBottomSheet<dynamic>(
               context: context,
               builder: (_) => AddDestinationForm(
                 nameDestinationController: _nameDestinationController,
               ),
             ),
             child: const Padding(
-              padding: const EdgeInsets.only(right: 16.0),
+              padding: EdgeInsets.only(right: 16.0),
               child: Icon(
                 FontAwesomeIcons.check,
                 size: 18.0,
@@ -73,7 +73,7 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
                 },
                 onCameraMove: (position) =>
                     context.read<MapsProvider>().setTrackingCameraPosition(position),
-                onCameraIdle: () => print("Stop Camera"),
+                onCameraIdle: () => print('Stop Camera'),
               );
             },
           ),
@@ -89,13 +89,13 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: EdgeInsets.only(top: kToolbarHeight, right: 40, left: 40),
+              padding: const EdgeInsets.only(top: kToolbarHeight, right: 40, left: 40),
               child: TextFormFieldCustom(
                 controller: _searchLocationController,
                 onSaved: (value) => print(value),
                 onFieldSubmitted: (value) => _moveCameraByAddress(value),
                 onChanged: _onChangedSearcLocation,
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   FontAwesomeIcons.searchLocation,
                   size: 18,
                 ),
@@ -104,16 +104,16 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
                   builder: (_, showClearTextField, __) {
                     return showClearTextField
                         ? IconButton(
-                            icon: Icon(FontAwesomeIcons.times),
+                            icon: const Icon(FontAwesomeIcons.times),
                             onPressed: _clearSearchLocation,
                             iconSize: 18,
                             color: colorPallete.weekEnd,
                           )
-                        : SizedBox();
+                        : const SizedBox();
                   },
                 ),
                 textInputAction: TextInputAction.search,
-                hintText: "Cari Lokasi Absen...",
+                hintText: 'Cari Lokasi Absen...',
                 disableOutlineBorder: false,
                 hintStyle: appTheme.caption(context),
               ),
@@ -126,7 +126,7 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
 
   Future<void> _gotToCenterUser() async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(
+    await controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(
@@ -139,27 +139,28 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
     );
   }
 
-  void _moveCameraByAddress(String address) async {
+  Future<void> _moveCameraByAddress(String address) async {
     try {
-      List<Placemark> placemark = await Geolocator().placemarkFromAddress(address.toLowerCase());
+      final List<Placemark> placemark =
+          await Geolocator().placemarkFromAddress(address.toLowerCase());
       if (placemark != null) {
         final GoogleMapController controller = await _controller.future;
-        Position position = placemark[0].position;
-        controller
+        final Position position = placemark[0].position;
+        await controller
             .animateCamera(CameraUpdate.newLatLng(LatLng(position.latitude, position.longitude)));
         print(placemark[0].toJson());
       } else {
-        throw "Destinasi Tidak Ditemukan";
+        throw 'Destinasi Tidak Ditemukan';
       }
     } on PlatformException catch (err) {
-      if (err.code == "ERROR_GEOCODNG_ADDRESSNOTFOUND") {
-        globalF.showToast(
-            message: "Destinasi Tidak Ditemukan", isError: true, isLongDuration: true);
+      if (err.code == 'ERROR_GEOCODNG_ADDRESSNOTFOUND') {
+        await globalF.showToast(
+            message: 'Destinasi Tidak Ditemukan', isError: true, isLongDuration: true);
       } else {
-        globalF.showToast(message: err.code, isError: true, isLongDuration: true);
+        await globalF.showToast(message: err.code, isError: true, isLongDuration: true);
       }
     } catch (e) {
-      globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
     }
   }
 

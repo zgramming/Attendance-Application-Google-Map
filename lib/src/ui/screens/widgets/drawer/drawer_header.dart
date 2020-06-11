@@ -20,15 +20,15 @@ class DrawerHeaderCustom extends StatelessWidget {
             children: [
               ShowImageNetwork(
                 imageUrl: value.image.isEmpty
-                    ? "https://flutter.io/images/catalog-widget-placeholder.png"
-                    : "${appConfig.baseImageApiUrl}/user/${value.image}",
+                    ? 'https://flutter.io/images/catalog-widget-placeholder.png'
+                    : '${appConfig.baseImageApiUrl}/user/${value.image}',
                 fit: BoxFit.cover,
                 imageRadius: 0,
               ),
               Positioned(
                 child: Container(
                   padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(color: Colors.black54),
+                  decoration: const BoxDecoration(color: Colors.black54),
                   child: Text(
                     value.username,
                     maxLines: 1,

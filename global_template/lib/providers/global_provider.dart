@@ -103,7 +103,7 @@ class GlobalProvider extends ChangeNotifier {
   }
 
   bool get obsecurePassword => _obsecurePassword;
-  setObsecurePassword(bool value) {
+  void setObsecurePassword(bool value) {
     _obsecurePassword = !value;
     notifyListeners();
   }

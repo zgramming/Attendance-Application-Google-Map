@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:global_template/global_template.dart';
 import 'package:network/network.dart';
 import 'package:provider/provider.dart';
-import 'package:global_template/global_template.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import './card_calendar.dart';
-
-import '../../shimmer/shimmer_calendar_horizontal.dart';
-
 import '../../../../providers/user_provider.dart';
+import '../../shimmer/shimmer_calendar_horizontal.dart';
+import './card_calendar.dart';
 
 class CalendarHorizontal extends StatefulWidget {
   @override
@@ -59,13 +57,14 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                     builder:
                         (BuildContext context, AsyncSnapshot<List<AbsensiStatusModel>> snapshot) {
                       if (snapshot.connectionState != ConnectionState.done) {
-                        return ShimmerCalendarHorizontal();
+                        return const ShimmerCalendarHorizontal();
                       }
                       if (snapshot.hasError) {
+                        final error = snapshot.error;
                         return InkWell(
                           onTap: _refreshMenu,
                           child: Text(
-                            "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+                            '${error.toString()} , Tap Untuk Refresh Data',
                             textAlign: TextAlign.center,
                           ),
                         );
@@ -94,12 +93,12 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                           ),
                         );
                       }
-                      return Text('No Data');
+                      return const Text('No Data');
                     },
                   );
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
             crossAxisAlignment: CrossAxisAlignment.stretch,
           ),
@@ -125,7 +124,7 @@ class _CalendarHorizontalState extends State<CalendarHorizontal> {
                     onTap: () => itemScrollController.scrollTo(
                       index: dateTime.day,
                       alignment: .6,
-                      duration: Duration(seconds: 1),
+                      duration: const Duration(seconds: 1),
                     ),
                   );
                 },

@@ -10,15 +10,15 @@ class SubtitlePerformance extends StatelessWidget {
     return Flexible(
       fit: FlexFit.tight,
       child: Row(
-        children: [
-          const Flexible(
+        children: const <Widget>[
+          Flexible(
             child: Text(
               'Hari Kerja',
               textAlign: TextAlign.center,
             ),
             fit: FlexFit.tight,
           ),
-          const Flexible(
+          Flexible(
             child: Text(
               'Tepat Waktu',
               textAlign: TextAlign.center,

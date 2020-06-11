@@ -63,7 +63,7 @@ class UserApi {
     try {
       result = await reusableRequestServer.requestServer(() async {
         final String _nameFileFromAPI = "file";
-        var stream = new http.ByteStream(Stream.castFrom(imageFile.openRead()));
+        var stream = http.ByteStream(Stream.castFrom(imageFile.openRead()));
         final length = await imageFile.length();
         final uri = Uri.parse(
           "${appConfig.baseApiUrl}/${appConfig.userController}/userUpdateImage",
@@ -91,7 +91,7 @@ class UserApi {
         }
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }
@@ -106,7 +106,7 @@ class UserApi {
           '${appConfig.baseApiUrl}/${appConfig.userController}/userUpdateFullName',
           headers: appConfig.headersApi,
           body: {
-            "id_user":"$idUser",
+            "id_user": "$idUser",
             "full_name": "$fullName",
           });
       final Map<String, dynamic> responseJson = json.decode(response.body);
@@ -137,7 +137,7 @@ class UserApi {
         }
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }

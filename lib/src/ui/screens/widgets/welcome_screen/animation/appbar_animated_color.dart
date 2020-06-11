@@ -3,9 +3,9 @@ import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AppBarAnimatedColor extends StatefulWidget {
+  const AppBarAnimatedColor({@required this.controller, this.leading});
   final Widget leading;
   final AnimationController controller;
-  AppBarAnimatedColor({@required this.controller, this.leading});
   @override
   _AppBarAnimatedColorState createState() => _AppBarAnimatedColorState();
 }

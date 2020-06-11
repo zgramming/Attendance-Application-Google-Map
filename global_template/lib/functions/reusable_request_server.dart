@@ -24,4 +24,4 @@ class ReusableRequestServer<T> {
   }
 }
 
-final reusableRequestServer = ReusableRequestServer();
+final ReusableRequestServer<dynamic> reusableRequestServer = ReusableRequestServer<dynamic>();

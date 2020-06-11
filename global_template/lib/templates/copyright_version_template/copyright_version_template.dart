@@ -9,7 +9,7 @@ class CopyRightVersion extends StatelessWidget {
   final Color backgroundColor;
   final bool showOnlyVersion;
   CopyRightVersion({
-    this.copyRight = "Copyright \u00a9 Zeffry. All Right Reserved",
+    this.copyRight = "Copyright \u00a9 Zeffry Reynando",
     this.colorText = Colors.white,
     this.backgroundColor,
     this.showOnlyVersion = false,
@@ -33,6 +33,13 @@ class CopyRightVersion extends StatelessWidget {
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ),
+
+
+
+
+
+
+            
             SizedBox(height: 5),
             Text(
               showOnlyVersion ? '' : copyRight,

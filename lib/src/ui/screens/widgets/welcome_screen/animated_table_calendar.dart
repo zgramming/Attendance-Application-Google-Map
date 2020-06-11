@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
 
-import './table_attendance.dart';
 import './calendar_horizontal.dart';
+import './table_attendance.dart';
 
 class AnimatedCalendarAndTable extends StatelessWidget {
   @override
@@ -16,7 +16,7 @@ class AnimatedCalendarAndTable extends StatelessWidget {
           secondChild: Container(
             child: CalendarHorizontal(),
           ),
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
           crossFadeState: value ? CrossFadeState.showFirst : CrossFadeState.showSecond,
           firstCurve: Curves.decelerate,
           secondCurve: Curves.fastOutSlowIn,

@@ -8,21 +8,21 @@ class MapsProvider extends ChangeNotifier {
 
   Future<void> getCurrentPosition() async {
     try {
-      Position lastPosition = await Geolocator().getLastKnownPosition();
+      final Position lastPosition = await Geolocator().getLastKnownPosition();
       if (lastPosition != null) {
-        print("Success Get Last Position...");
+        print('Success Get Last Position...');
         _currentPosition = lastPosition;
       } else {
-        final currentPosition = await Geolocator().getCurrentPosition();
+        final Position currentPosition = await Geolocator().getCurrentPosition();
         if (currentPosition != null) {
-          print("Success Get Your Current Position...");
+          print('Success Get Your Current Position...');
           _currentPosition = currentPosition;
         } else {
           throw "Can't Get Your Position";
         }
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
     notifyListeners();
   }

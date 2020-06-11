@@ -1,32 +1,30 @@
 import 'dart:async';
 
-import 'package:intl/intl.dart';
-import 'package:tuple/tuple.dart';
-import 'package:network/network.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import './widgets/welcome_screen/button_attendance.dart';
-
-import '../screens/welcome_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:network/network.dart';
+import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../function/common_function.dart';
 import '../../providers/absen_provider.dart';
-import '../../providers/user_provider.dart';
 import '../../providers/maps_provider.dart';
+import '../../providers/user_provider.dart';
+import '../screens/welcome_screen.dart';
+import './widgets/welcome_screen/button_attendance.dart';
 
 class MapScreen extends StatefulWidget {
-  static const routeNamed = "/map-screen";
+  static const routeNamed = '/map-screen';
   @override
   _MapScreenState createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
   StreamSubscription<Position> _positionStream;
 
@@ -41,7 +39,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void dispose() {
     _positionStream?.cancel();
-    print("Dispose Stream Listen");
+    print('Dispose Stream Listen');
     super.dispose();
   }
 
@@ -109,7 +107,7 @@ class _MapScreenState extends State<MapScreen> {
                   onTap: () => Navigator.of(context).pop(),
                   child: CircleAvatar(
                     backgroundColor: colorPallete.white,
-                    child: Icon(FontAwesomeIcons.times),
+                    child: const Icon(FontAwesomeIcons.times),
                   ),
                 ),
                 top: sizes.statusBarHeight(context) + 10,
@@ -124,7 +122,7 @@ class _MapScreenState extends State<MapScreen> {
             onTap: _goToCenterUser,
             child: CircleAvatar(
               backgroundColor: colorPallete.white,
-              child: Icon(Icons.my_location),
+              child: const Icon(Icons.my_location),
             ),
           ),
         ),
@@ -155,19 +153,19 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  trackingLocation() {
-    var locationOptions = LocationOptions();
-    Stream<Position> positionStream = Geolocator().getPositionStream(locationOptions);
+  void trackingLocation() {
+    const locationOptions = LocationOptions();
+    final Stream<Position> positionStream = Geolocator().getPositionStream(locationOptions);
     _positionStream = positionStream.listen((Position position) {
       context.read<MapsProvider>().setTrackingLocation(position);
       print(
-          " Tracking :Lat=${position.latitude} Long=${position.longitude} Accuracy=${position.accuracy} Speed=${position.speed} Mocked=${position.mocked}");
-    }, onError: (error) => print("Error Handling Listen Stream ${error.toString()}"));
+          ' Tracking :Lat=${position.latitude} Long=${position.longitude} Accuracy=${position.accuracy} Speed=${position.speed} Mocked=${position.mocked}');
+    }, onError: (dynamic error) => print('Error Handling Listen Stream ${error.toString()}'));
   }
 
   Future<void> _goToCenterUser() async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(
+    await controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(
@@ -180,7 +178,7 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _validateAbsen({
+  Future<void> _validateAbsen({
     @required double distanceTwoLocation,
     @required double radius,
     @required bool isAbsentIn,
@@ -196,7 +194,7 @@ class _MapScreenState extends State<MapScreen> {
         try {
           globalProvider.setLoading(true);
           final trueTime = await commonF.getTrueTime();
-          final timeFormat = DateFormat("HH:mm:ss").format(trueTime);
+          final timeFormat = DateFormat('HH:mm:ss').format(trueTime);
           String result;
           if (isAbsentIn) {
             result = await absenProvider.absensiMasuk(
@@ -214,19 +212,19 @@ class _MapScreenState extends State<MapScreen> {
               updateDate: trueTime,
             );
           }
-          globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
+          await globalF.showToast(message: result, isSuccess: true, isLongDuration: true);
           globalProvider.setLoading(false);
-          Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
+          await Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeNamed);
         } catch (e) {
-          globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+          await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
           globalProvider.setLoading(false);
         }
       } else {
-        globalF.showToast(message: "Anda Diluar Jangkauan Absensi", isError: true);
+        await globalF.showToast(message: 'Anda Diluar Jangkauan Absensi', isError: true);
       }
     } else {
-      globalF.showToast(
-        message: "Anda Terdeteksi Menggunakan Mock Location",
+      await globalF.showToast(
+        message: 'Anda Terdeteksi Menggunakan Mock Location',
         isError: true,
         isLongDuration: true,
       );

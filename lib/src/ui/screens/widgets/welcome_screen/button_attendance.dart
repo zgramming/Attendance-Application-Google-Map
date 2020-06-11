@@ -1,26 +1,24 @@
-import 'package:network/network.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
+import 'package:network/network.dart';
+import 'package:provider/provider.dart';
 
-import '../live_clock.dart';
-
-import '../../maps_screen.dart';
-import '../../shimmer/shimmer_button_absent.dart';
-
-import '../../../../providers/user_provider.dart';
 import '../../../../providers/absen_provider.dart';
 import '../../../../providers/maps_provider.dart';
+import '../../../../providers/user_provider.dart';
+import '../../maps_screen.dart';
+import '../../shimmer/shimmer_button_absent.dart';
+import '../live_clock.dart';
 
 class ButtonAttendance extends StatefulWidget {
-  final Function onTapAbsen;
-  final Function onTapPulang;
-  final Color backgroundColor;
-  ButtonAttendance({
+  const ButtonAttendance({
     this.onTapAbsen,
     this.onTapPulang,
     this.backgroundColor = Colors.white,
   });
+  final Function onTapAbsen;
+  final Function onTapPulang;
+  final Color backgroundColor;
   @override
   _ButtonAttendanceState createState() => _ButtonAttendanceState();
 }
@@ -58,7 +56,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
               setState(() {});
             },
             child: Text(
-              "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+              '${snapshot.error.toString()} , Tap Untuk Refresh Data',
               textAlign: TextAlign.center,
             ),
           );
@@ -71,12 +69,12 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
               children: [
                 const SizedBox(height: 5),
                 Row(
-                  children: [
-                    const Text(
+                  children: const <Widget>[
+                    Text(
                       'Absen Masuk',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    const Text(
+                    Text(
                       'Absen Pulang',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -97,7 +95,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                                     ? null
                                     : (snapshot.data == 1) ? null : widget.onTapAbsen ?? goToMaps,
                             padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                            child: isLoading ? Text("Loading...") : LiveClock(),
+                            child: isLoading ? const Text('Loading...') : LiveClock(),
                           );
                         },
                       ),
@@ -108,7 +106,7 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
                         builder: (_, isLoading, __) {
                           return ButtonCustom(
                             padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                            child: isLoading ? Text("Loading...") : LiveClock(),
+                            child: isLoading ? const Text('Loading...') : LiveClock(),
                             onPressed: isLoading
                                 ? null
                                 : (snapshot.data == 2)
@@ -124,12 +122,12 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
             ),
           );
         }
-        return Text('No Data');
+        return const Text('No Data');
       },
     );
   }
 
-  void goToMaps() async {
+  Future<void> goToMaps() async {
     final globalProvider = context.read<GlobalProvider>();
     final absenProvider = context.read<AbsenProvider>();
     final userProvider = context.read<UserProvider>();
@@ -137,11 +135,11 @@ class _ButtonAttendanceState extends State<ButtonAttendance> {
     try {
       globalProvider.setLoading(true);
       await mapsProvider.getCurrentPosition();
-      await absenProvider.saveSelectedDestinationUser(userProvider.user.idUser, isSelected: "t");
+      await absenProvider.saveSelectedDestinationUser(userProvider.user.idUser, isSelected: 't');
       globalProvider.setLoading(false);
-      Navigator.of(context).pushNamed(MapScreen.routeNamed);
+      await Navigator.of(context).pushNamed(MapScreen.routeNamed);
     } catch (e) {
-      globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
+      await globalF.showToast(message: e.toString(), isError: true, isLongDuration: true);
       globalProvider.setLoading(false);
     }
   }

@@ -1,20 +1,18 @@
-import 'package:tuple/tuple.dart';
-import 'package:network/network.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:global_template/global_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import './shimmer/shimmer_pick_location.dart';
-
-import './widgets/pick_destination_screen/picked_destination.dart';
-import './widgets/pick_destination_screen/list_destination.dart';
+import 'package:global_template/global_template.dart';
+import 'package:network/network.dart';
+import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../providers/absen_provider.dart';
 import '../../providers/user_provider.dart';
+import './shimmer/shimmer_pick_location.dart';
+import './widgets/pick_destination_screen/list_destination.dart';
+import './widgets/pick_destination_screen/picked_destination.dart';
 
 class PickDestinationScreen extends StatefulWidget {
-  static const routeNamed = "/pick-destination-screen";
+  static const routeNamed = '/pick-destination-screen';
 
   @override
   _PickDestinationScreenState createState() => _PickDestinationScreenState();
@@ -46,8 +44,8 @@ class _PickDestinationScreenState extends State<PickDestinationScreen> {
               child: TextFormFieldCustom(
                 onSaved: (value) => '',
                 disableOutlineBorder: false,
-                prefixIcon: Icon(FontAwesomeIcons.searchLocation),
-                hintText: "Cari Lokasi Absen...",
+                prefixIcon: const Icon(FontAwesomeIcons.searchLocation),
+                hintText: 'Cari Lokasi Absen...',
                 controller: _searchLocationController,
                 onChanged: _onChangedSearcLocation,
                 suffixIcon: Selector<GlobalProvider, bool>(
@@ -55,12 +53,12 @@ class _PickDestinationScreenState extends State<PickDestinationScreen> {
                   builder: (_, isShowClearTextField, __) {
                     return isShowClearTextField
                         ? IconButton(
-                            icon: Icon(FontAwesomeIcons.times),
+                            icon: const Icon(FontAwesomeIcons.times),
                             onPressed: _clearSearchLocation,
                             iconSize: 18,
                             color: colorPallete.weekEnd,
                           )
-                        : SizedBox();
+                        : const SizedBox();
                   },
                 ),
               ),
@@ -85,9 +83,9 @@ class _PickDestinationScreenState extends State<PickDestinationScreen> {
                     ),
                     builder: (_, value, __) {
                       final resultList =
-                          (value.item2.length != 0 || _searchLocationController.text.isNotEmpty)
+                          (value.item2.isNotEmpty || _searchLocationController.text.isNotEmpty)
                               ? value.item2
-                              : value.item1.where((element) => element.status != "t").toList();
+                              : value.item1.where((element) => element.status != 't').toList();
                       return (value.item3)
                           ? LoadingFutureBuilder(isLinearProgressIndicator: false)
                           : ListView.builder(
@@ -103,7 +101,7 @@ class _PickDestinationScreenState extends State<PickDestinationScreen> {
               },
             ),
           ),
-          PickedDestination()
+          const PickedDestination()
         ],
       ),
     );

@@ -17,28 +17,32 @@ class UserProvider extends ChangeNotifier {
   Future<void> saveSessionUser({
     @required List<UserModel> list,
   }) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    final encodeSession = jsonEncode(list.map((e) => e.toJson()).toList());
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final String encodeSession = jsonEncode(list.map((UserModel e) => e.toJson()).toList());
     await pref.setString(userKey, encodeSession);
-    _getSessionUser();
+    await _getSessionUser();
     notifyListeners();
   }
 
   Future<void> _getSessionUser() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    final SharedPreferences pref = await SharedPreferences.getInstance();
     final String getEncodeSession = pref.getString(userKey);
     if (getEncodeSession == null) {
-      return null;
+      return;
     } else {
-      final List decodeSession = json.decode(getEncodeSession);
+      final List decodeSession = json.decode(getEncodeSession) as List;
       final List<UserModel> user = decodeSession.map((e) => UserModel.fromJson(e)).toList();
-      user.forEach((element) => _user = element);
+      // user.forEach((element) => _user = element);
+
+      for (final item in user) {
+        _user = item;
+      }
       notifyListeners();
     }
   }
 
   Future<void> removeSessionUser() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    final SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.remove(userKey);
     await _getSessionUser();
     notifyListeners();
@@ -46,10 +50,11 @@ class UserProvider extends ChangeNotifier {
 
   Future<List<UserModel>> userUpdateImage(String idUser, File image) async {
     try {
-      final result = await userAPI.userUpdateImage(idUser: idUser, imageFile: image);
+      final List<UserModel> result =
+          await userAPI.userUpdateImage(idUser: idUser, imageFile: image);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -58,7 +63,7 @@ class UserProvider extends ChangeNotifier {
       final result = await userAPI.userUpdateFullName(idUser: idUser, fullName: fullName);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -67,7 +72,7 @@ class UserProvider extends ChangeNotifier {
       final result = await userAPI.userDelete(idUser: idUser);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

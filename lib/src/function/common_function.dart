@@ -11,43 +11,43 @@ import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:location_permissions/location_permissions.dart';
 
 class CommonFunction {
-  void initPermission(BuildContext ctx) async {
-    final geolocationStatus = await getGeolocationPermission();
-    final gpsStatus = await getGPSService();
+  Future<void> initPermission(BuildContext ctx) async {
+    final GeolocationStatus geolocationStatus = await getGeolocationPermission();
+    final bool gpsStatus = await getGPSService();
     if (geolocationStatus != GeolocationStatus.granted) {
-      showDialog(context: ctx, child: showPermissionLocation());
+      await showDialog<dynamic>(context: ctx, child: showPermissionLocation());
     } else if (!gpsStatus) {
-      showDialog(context: ctx, child: showPermissionGPS());
+      await showDialog<dynamic>(context: ctx, child: showPermissionGPS());
     }
   }
 
-  void initClosePermission(BuildContext context) async {
-    final geolocationStatus = await getGeolocationPermission();
-    final gpsStatus = await getGPSService();
+  Future<void> initClosePermission(BuildContext context) async {
+    final GeolocationStatus geolocationStatus = await getGeolocationPermission();
+    final bool gpsStatus = await getGPSService();
     if (geolocationStatus != GeolocationStatus.granted) {
       Navigator.of(context).pop();
-      print("Tutup Popup Lokasi");
+      print('Tutup Popup Lokasi');
     } else if (!gpsStatus) {
       Navigator.of(context).pop();
-      print("Tutup Popup GPS");
+      print('Tutup Popup GPS');
     }
   }
 
-  showPermissionGPS() {
+  Widget showPermissionGPS() {
     return PopupPermission(
-      typePermission: "GPS",
+      typePermission: 'GPS',
       iconPermission: FontAwesomeIcons.mapMarkedAlt,
       showCloseButton: false,
       onAccept: () async {
-        final AndroidIntent intent = const AndroidIntent(action: 'action_location_source_settings');
+        const AndroidIntent intent = AndroidIntent(action: 'action_location_source_settings');
         await intent.launch();
       },
     );
   }
 
-  showPermissionLocation() {
+  Widget showPermissionLocation() {
     return PopupPermission(
-      typePermission: "Lokasi",
+      typePermission: 'Lokasi',
       iconPermission: FontAwesomeIcons.locationArrow,
       showCloseButton: false,
       onAccept: () async => await LocationPermissions().openAppSettings(),
@@ -60,9 +60,9 @@ class CommonFunction {
     try {
       result = await reusableRequestServer.requestServer(() async => await Geolocator()
           .checkGeolocationPermissionStatus(
-              locationPermission: GeolocationPermission.locationAlways));
+              locationPermission: GeolocationPermission.locationAlways)) as GeolocationStatus;
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }
@@ -71,9 +71,9 @@ class CommonFunction {
     bool result;
     try {
       result = await reusableRequestServer
-          .requestServer(() async => await Geolocator().isLocationServiceEnabled());
+          .requestServer(() async => await Geolocator().isLocationServiceEnabled()) as bool;
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }
@@ -88,7 +88,7 @@ class CommonFunction {
     int typeCalculate = 1,
     bool isKm = false,
   }) {
-    var calculate = GreatCircleDistance.fromDegrees(
+    final GreatCircleDistance calculate = GreatCircleDistance.fromDegrees(
       latitude1: position.latitude,
       longitude1: position.longitude,
       latitude2: destinasiModel.latitude,
@@ -138,13 +138,13 @@ class CommonFunction {
   //* Berguna Untuk Mendapatkan tingkat akurasi yang tinggi saat absensi
   //* Mencegah user memanipulasi tanggal/jam di device mereka , dan membuat waktu absen tidak akurat.
   Future<DateTime> getTrueTime() async {
-    var result;
     try {
-      result = await reusableRequestServer.requestServer(() async => await NTP.now());
+      final DateTime result =
+          await reusableRequestServer.requestServer(() async => await NTP.now()) as DateTime;
+      return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
-    return result;
   }
 
   bool handleScrollNotification(
@@ -158,13 +158,13 @@ class CommonFunction {
         switch (userScroll.direction) {
           case ScrollDirection.forward:
             if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
-              Future.delayed(Duration(seconds: 0), () => controllerButton.forward());
+              Future<void>.delayed(const Duration(seconds: 0), () => controllerButton.forward());
             }
 
             break;
           case ScrollDirection.reverse:
             if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
-              Future.delayed(Duration(seconds: 0), () => controllerButton.reverse());
+              Future<void>.delayed(const Duration(seconds: 0), () => controllerButton.reverse());
             }
             break;
           case ScrollDirection.idle:
@@ -173,11 +173,11 @@ class CommonFunction {
       }
       if (notification.metrics.pixels <= 0) {
         if (appBarController.status == AnimationStatus.completed) {
-          Future.delayed(Duration(seconds: 0), () => appBarController.reverse());
+          Future<void>.delayed(const Duration(seconds: 0), () => appBarController.reverse());
         }
       } else {
         if (appBarController.status != AnimationStatus.completed) {
-          Future.delayed(Duration(seconds: 0), () => appBarController.forward());
+          Future<void>.delayed(const Duration(seconds: 0), () => appBarController.forward());
         }
       }
     }
@@ -187,8 +187,8 @@ class CommonFunction {
 
   //* Fungsi Untuk Membuat Icon Berdasarkan Status Absensi User
   Widget setStatusAbsenIcon(List<AbsensiStatusModel> data, int day) {
-    final result = data.firstWhere(
-      (element) => element.tanggalAbsen.day == day + 1,
+    final AbsensiStatusModel result = data.firstWhere(
+      (AbsensiStatusModel element) => element.tanggalAbsen.day == day + 1,
       orElse: () => AbsensiStatusModel(
         tanggalAbsen: DateTime(DateTime.now().year, DateTime.now().month, day + 1),
       ),
@@ -196,16 +196,16 @@ class CommonFunction {
     Widget icon;
     if (result.status != null) {
       //* Jika Status Absen Tepat Waktu
-      if (result.status.toLowerCase() == "o") {
-        icon = CircleAvatar(
+      if (result.status.toLowerCase() == 'o') {
+        icon = const CircleAvatar(
           child: Icon(FontAwesomeIcons.calendarCheck, size: 8),
           radius: 8,
           backgroundColor: Colors.green,
           foregroundColor: Colors.white,
         );
         //* Jika Status Absen Telat
-      } else if (result.status.toLowerCase() == "t") {
-        icon = CircleAvatar(
+      } else if (result.status.toLowerCase() == 't') {
+        icon = const CircleAvatar(
           child: Icon(FontAwesomeIcons.calendarMinus, size: 8),
           radius: 8,
           backgroundColor: Colors.orange,
@@ -214,7 +214,7 @@ class CommonFunction {
 
         //* Jika Status Absen Alpha
       } else {
-        icon = CircleAvatar(
+        icon = const CircleAvatar(
           child: Icon(FontAwesomeIcons.calendarTimes, size: 8),
           radius: 8,
           backgroundColor: Colors.red,
@@ -222,22 +222,22 @@ class CommonFunction {
         );
       }
     } else {
-      icon = SizedBox();
+      icon = const SizedBox();
     }
     return icon;
   }
 
   String getDayName(DateTime dateTime, int indexDay) {
-    final result = globalF.formatDay(DateTime(dateTime.year, dateTime.month, indexDay + 1));
+    final String result = globalF.formatDay(DateTime(dateTime.year, dateTime.month, indexDay + 1));
     return result;
   }
 
   Color isWeekend(DateTime dateTime, int indexDay, {Color colorWeekend, Color colorWeekDay}) {
-    final daysName = getDayName(dateTime, indexDay);
-    if (daysName.toLowerCase() == "sabtu" ||
-        daysName.toLowerCase() == "minggu" ||
-        daysName.toLowerCase() == "sab" ||
-        daysName.toLowerCase() == "min") {
+    final String daysName = getDayName(dateTime, indexDay);
+    if (daysName.toLowerCase() == 'sabtu' ||
+        daysName.toLowerCase() == 'minggu' ||
+        daysName.toLowerCase() == 'sab' ||
+        daysName.toLowerCase() == 'min') {
       return colorWeekend ?? colorPallete.weekEnd;
     } else {
       return colorWeekDay;
@@ -246,7 +246,7 @@ class CommonFunction {
 
   Future<void> openGoogleMap(double latitude, double longitude) async {
     final String googleMapUrl =
-        "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
     try {
       if (await canLaunch(googleMapUrl)) {
         await launch(googleMapUrl);
@@ -254,9 +254,9 @@ class CommonFunction {
         throw 'Could not open the map.';
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }
 
-final commonF = CommonFunction();
+final CommonFunction commonF = CommonFunction();

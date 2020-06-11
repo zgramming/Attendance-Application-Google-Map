@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:global_template/global_template.dart';
 
 class DrawerBodyMenu extends StatelessWidget {
+  const DrawerBodyMenu({
+    @required this.subtitle,
+    this.onTap,
+    this.icon,
+    this.avatarColor,
+    this.iconColor,
+    this.wordUppercase = '',
+    this.singleWordUppercase = false,
+  });
   final IconData icon;
   final bool singleWordUppercase;
   final Color avatarColor;
@@ -9,15 +18,6 @@ class DrawerBodyMenu extends StatelessWidget {
   final String wordUppercase;
   final String subtitle;
   final Function onTap;
-  DrawerBodyMenu({
-    @required this.subtitle,
-    this.onTap,
-    this.icon,
-    this.avatarColor,
-    this.iconColor,
-    this.wordUppercase = "",
-    this.singleWordUppercase = false,
-  });
 
   @override
   Widget build(BuildContext context) {

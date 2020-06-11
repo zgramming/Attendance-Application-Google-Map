@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './drawer_header.dart';
 import './drawer_body.dart';
+import './drawer_header.dart';
 
 class DrawerCustom extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class DrawerCustom extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: const <Widget>[
             DrawerHeaderCustom(),
             DrawerBody(),
           ],

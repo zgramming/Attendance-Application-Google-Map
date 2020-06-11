@@ -1,14 +1,12 @@
-import 'package:network/network.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:global_template/global_template.dart';
+import 'package:network/network.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
-import './subtitle_performance.dart';
-
-import '../../shimmer/shimmer_performance_monthly.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../providers/user_provider.dart';
+import '../../shimmer/shimmer_performance_monthly.dart';
+import './subtitle_performance.dart';
 
 class ContentPerformance extends StatefulWidget {
   const ContentPerformance({
@@ -46,7 +44,7 @@ class _ContentPerformanceState extends State<ContentPerformance> {
               return InkWell(
                 onTap: _refrehsMenu,
                 child: Text(
-                  "${snapshot.error.toString()} , Tap Untuk Refresh Data",
+                  '${snapshot.error.toString()} , Tap Untuk Refresh Data',
                   textAlign: TextAlign.center,
                 ),
               );
@@ -62,7 +60,7 @@ class _ContentPerformanceState extends State<ContentPerformance> {
                       circularStrokeCap: CircularStrokeCap.round,
                       lineWidth: 8,
                       center: Text(
-                        "${snapshot.data[0].percentace}%",
+                        '${snapshot.data[0].percentace}%',
                         style: appTheme.headline5(context).copyWith(
                               color: colorPallete.white,
                               fontWeight: FontWeight.bold,
@@ -77,14 +75,14 @@ class _ContentPerformanceState extends State<ContentPerformance> {
                     fit: FlexFit.tight,
                     flex: 2,
                     child: DefaultTextStyle(
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontFamily: 'VarelaRound',
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          SubtitlePerformance(),
+                          const SubtitlePerformance(),
                           Flexible(
                             flex: 2,
                             child: Row(
@@ -123,7 +121,7 @@ class _ContentPerformanceState extends State<ContentPerformance> {
                 ],
               );
             }
-            return Text('No Data');
+            return const Text('No Data');
           },
         ),
       ),

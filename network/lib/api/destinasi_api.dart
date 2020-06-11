@@ -27,7 +27,7 @@ class DestinasiApi {
         }
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }
@@ -57,7 +57,7 @@ class DestinasiApi {
         }
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }
@@ -81,7 +81,7 @@ class DestinasiApi {
         }
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }
@@ -102,7 +102,7 @@ class DestinasiApi {
         }
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return result;
   }
