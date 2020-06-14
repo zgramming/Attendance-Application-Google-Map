@@ -59,7 +59,7 @@ class _FormUserState extends State<FormUser> {
           selector: (_, loading, register) => Tuple2(loading.isLoading, register.isRegister),
           builder: (_, value, __) {
             return value.item1
-                ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                ? const LoadingFutureBuilder(isLinearProgressIndicator: false)
                 : ButtonCustom(
                     onPressed: _validate,
                     buttonTitle: value.item2 ? ' Register' : 'Login',

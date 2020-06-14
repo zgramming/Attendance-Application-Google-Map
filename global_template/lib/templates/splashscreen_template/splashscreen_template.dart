@@ -51,7 +51,7 @@ class _SplashScreenTemplateState extends State<SplashScreenTemplate> {
             flex: 10,
             child: widget.image,
           ),
-          Flexible(
+          const Flexible(
             flex: 2,
             child: Align(
               alignment: Alignment.center,

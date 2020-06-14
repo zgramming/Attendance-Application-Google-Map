@@ -42,7 +42,7 @@ class PickedDestination extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Row(
                     children: [
-                      ShowImageNetwork(
+                      const ShowImageNetwork(
                         imageUrl: AppConfig.defaultImageNetwork,
                         fit: BoxFit.cover,
                         isCircle: true,

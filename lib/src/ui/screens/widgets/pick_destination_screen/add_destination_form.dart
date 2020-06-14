@@ -39,7 +39,7 @@ class AddDestinationForm extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: isLoading
-                        ? LoadingFutureBuilder(isLinearProgressIndicator: false)
+                        ? const LoadingFutureBuilder(isLinearProgressIndicator: false)
                         : FlatButton(
                             onPressed: () => _destinationRegister(context),
                             child: const Text('Simpan'),
