@@ -18,6 +18,7 @@ Open `Android/app/src/main/AndroidManifest.xml` and replace the API key with you
                android:value="YOUR KEY HERE"/>
 ```
 ### IOS
+
 Specify your API key in the application delegate `ios/Runner/AppDelegate.m`:
 
 ```
@@ -54,6 +55,13 @@ import GoogleMaps
   }
 }
 ```
+### Google Map API Key
+Change Google Map API Key with your in `global_template/lib/variable/config/app_config.dart`
+
+```
+    static const apiKeyGoogleMap = 'YOUR API KEY';
+```
+
 ## Installing
 
 1. Git clone **https://github.com/zgramming/Attendance-Application-Google-Map**
