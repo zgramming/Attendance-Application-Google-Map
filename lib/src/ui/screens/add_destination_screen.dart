@@ -7,7 +7,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/maps_provider.dart';
 
 import './widgets/pick_destination_screen/add_destination_form.dart';
@@ -20,13 +19,15 @@ class AddDestinationScreen extends StatefulWidget {
 
 class _AddDestinationScreenState extends State<AddDestinationScreen> {
   final Completer<GoogleMapController> _controller = Completer();
-
   final TextEditingController _searchLocationController = TextEditingController();
   final TextEditingController _nameDestinationController = TextEditingController();
 
-  double iconSize = 40;
+  static const double markerSize = 40;
+  static const double iconTimesSize = 18;
+  static const double iconActionAppbarSize = 18.0;
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+
   @override
   void dispose() {
     _searchLocationController.dispose();
@@ -48,10 +49,10 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
               ),
             ),
             child: const Padding(
-              padding: EdgeInsets.only(right: 16.0),
+              padding: EdgeInsets.only(right: 8.0),
               child: Icon(
                 FontAwesomeIcons.check,
-                size: 18.0,
+                size: iconActionAppbarSize,
               ),
             ),
           ),
@@ -81,10 +82,10 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
             child: Icon(
               FontAwesomeIcons.mapMarkerAlt,
               color: colorPallete.primaryColor,
-              size: iconSize,
+              size: markerSize,
             ),
-            top: (sizes.height(context) - iconSize - kToolbarHeight) / 2.25,
-            right: (sizes.width(context) - iconSize) / 2,
+            top: (sizes.height(context) - markerSize - kToolbarHeight) / 2.25,
+            right: (sizes.width(context) - markerSize) / 2,
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -106,7 +107,7 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
                         ? IconButton(
                             icon: const Icon(FontAwesomeIcons.times),
                             onPressed: _clearSearchLocation,
-                            iconSize: 18,
+                            iconSize: iconTimesSize,
                             color: colorPallete.weekEnd,
                           )
                         : const SizedBox();
