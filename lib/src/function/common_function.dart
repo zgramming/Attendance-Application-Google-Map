@@ -15,9 +15,9 @@ class CommonFunction {
     final GeolocationStatus geolocationStatus = await getGeolocationPermission();
     final bool gpsStatus = await getGPSService();
     if (geolocationStatus != GeolocationStatus.granted) {
-      await showDialog<dynamic>(context: ctx, child: showPermissionLocation());
+      await showDialog(context: ctx, builder: (ctxDialog) => showPermissionLocation());
     } else if (!gpsStatus) {
-      await showDialog<dynamic>(context: ctx, child: showPermissionGPS());
+      await showDialog(context: ctx, builder: (ctxDialog) => showPermissionGPS());
     }
   }
 
