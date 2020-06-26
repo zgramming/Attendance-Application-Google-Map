@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:global_template/global_template.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+
 import '../../providers/maps_provider.dart';
 
 import './widgets/pick_destination_screen/add_destination_form.dart';
