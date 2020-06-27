@@ -76,6 +76,7 @@ import GoogleMaps
 ## Feature
 
 - [x] Tracking user location
+- [x] Autocomplete From Geolocator Package
 - [x] Absent only at certain radius [radius color will be green if user inside radius otherwise radius color will be purple]
 - [x] Detecting mockup location
 - [x] Add destination based on user choose in maps
