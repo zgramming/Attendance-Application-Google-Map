@@ -55,12 +55,6 @@ import GoogleMaps
   }
 }
 ```
-### Google Map API Key
-Change Google Map API Key with your in `global_template/lib/variable/config/app_config.dart`. It will be used for autocompleted Search Address
-
-```
-    static const apiKeyGoogleMap = 'YOUR API KEY';
-```
 
 ## Installing
 
