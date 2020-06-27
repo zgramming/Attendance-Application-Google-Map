@@ -1,10 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:global_template/global_template.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapsProvider extends ChangeNotifier {
   Position _currentPosition;
   Position get currentPosition => _currentPosition;
+
+  List<Placemark> _autocompleteAddress = [];
+  List<Placemark> get autocompleteAddress => _autocompleteAddress;
+
+  Future<List<Placemark>> getAutocompleteAddress({@required String query}) async {
+    try {
+      final result = await Geolocator().placemarkFromAddress(
+        query,
+        localeIdentifier: '${AppConfig.languageID}_${AppConfig.countryCodeID}',
+      );
+      _autocompleteAddress = result;
+      print(result.length);
+      return result;
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   Future<void> getCurrentPosition() async {
     try {
