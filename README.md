@@ -55,12 +55,6 @@ import GoogleMaps
   }
 }
 ```
-### Google Map API Key
-Change Google Map API Key with your in `global_template/lib/variable/config/app_config.dart`. It will be used for autocompleted Search Address
-
-```
-    static const apiKeyGoogleMap = 'YOUR API KEY';
-```
 
 ## Installing
 
@@ -82,6 +76,7 @@ Change Google Map API Key with your in `global_template/lib/variable/config/app_
 ## Feature
 
 - [x] Tracking user location
+- [x] Autocomplete From Geolocator Package
 - [x] Absent only at certain radius [radius color will be green if user inside radius otherwise radius color will be purple]
 - [x] Detecting mockup location
 - [x] Add destination based on user choose in maps
