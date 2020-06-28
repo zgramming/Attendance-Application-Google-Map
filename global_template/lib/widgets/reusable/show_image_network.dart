@@ -59,7 +59,6 @@ class ShowImageNetwork extends StatelessWidget {
                 icon: const Icon(
                   Icons.error,
                 ),
-                // TODO(ErrorImageNetwork): Kalau PopUp sudah jadi , implementasikan disini
                 onPressed: () => '',
               ),
             );
