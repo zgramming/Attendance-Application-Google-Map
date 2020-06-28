@@ -32,13 +32,11 @@ class UserProvider extends ChangeNotifier {
     } else {
       final List decodeSession = json.decode(getEncodeSession) as List;
       final List<UserModel> user = decodeSession.map((e) => UserModel.fromJson(e)).toList();
-      // user.forEach((element) => _user = element);
-
       for (final item in user) {
         _user = item;
       }
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> removeSessionUser() async {
