@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:global_template/global_template.dart';
+import 'package:location_permissions/location_permissions.dart';
 
 import '../../function/common_function.dart';
 import './widgets/drawer/drawer_custom.dart';
@@ -30,15 +32,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     SchedulerBinding.instance.addPostFrameCallback((_) {
       commonF.getGeolocationPermission().then((locationPermission) {
         if (locationPermission != GeolocationStatus.granted) {
-          showDialog(context: context, child: commonF.showPermissionLocation());
-        } else {
-          commonF.getGPSService().then((gpsPermission) {
-            if (!gpsPermission) {
-              showDialog(context: context, child: commonF.showPermissionGPS());
-            } else {
-              print('Permission Success');
-            }
-          });
+          LocationPermissions().requestPermissions().then((value) {});
+          // showDialog(context: context, child: commonF.showPermissionLocation());
+        }
+      });
+      commonF.getGPSService().then((gpsPermission) {
+        print('Welcome Permission gps $gpsPermission');
+        if (!gpsPermission) {
+          showDialog(context: context, child: commonF.showPermissionGPS());
         }
       });
     });
@@ -67,6 +68,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    print(appConfig.baseApiUrl);
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) => commonF.handleScrollNotification(
         notification,

@@ -14,20 +14,22 @@ class CommonFunction {
   Future<void> initPermission(BuildContext ctx) async {
     final GeolocationStatus geolocationStatus = await getGeolocationPermission();
     final bool gpsStatus = await getGPSService();
-    if (geolocationStatus != GeolocationStatus.granted) {
-      await showDialog(context: ctx, builder: (ctxDialog) => showPermissionLocation());
+    print('Hello status $gpsStatus');
+    if (geolocationStatus == GeolocationStatus.denied) {
+      await LocationPermissions().requestPermissions();
     } else if (!gpsStatus) {
       await showDialog(context: ctx, builder: (ctxDialog) => showPermissionGPS());
     }
   }
 
   Future<void> initClosePermission(BuildContext context) async {
-    final GeolocationStatus geolocationStatus = await getGeolocationPermission();
+    final locationPermission = await LocationPermissions().checkPermissionStatus();
     final bool gpsStatus = await getGPSService();
-    if (geolocationStatus != GeolocationStatus.granted) {
+    if (locationPermission != PermissionStatus.granted) {
       Navigator.of(context).pop();
       print('Tutup Popup Lokasi');
-    } else if (!gpsStatus) {
+    }
+    if (!gpsStatus) {
       Navigator.of(context).pop();
       print('Tutup Popup GPS');
     }
