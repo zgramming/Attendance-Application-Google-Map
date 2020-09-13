@@ -44,13 +44,15 @@ class ListDestination extends StatelessWidget {
                 child: const Icon(FontAwesomeIcons.check, size: sizeIcon),
               ),
             ),
-            InkWell(
-              onTap: () => _destinationDelete(context, result.idDestinasi),
-              child: CircleAvatar(
-                radius: sizeIcon,
-                foregroundColor: colorPallete.white,
-                backgroundColor: colorPallete.red,
-                child: const Icon(FontAwesomeIcons.trash, size: sizeIcon),
+            Visibility(
+              child: InkWell(
+                onTap: () => _destinationDelete(context, result.idDestinasi),
+                child: CircleAvatar(
+                  radius: sizeIcon,
+                  foregroundColor: colorPallete.white,
+                  backgroundColor: colorPallete.red,
+                  child: const Icon(FontAwesomeIcons.trash, size: sizeIcon),
+                ),
               ),
             ),
           ],

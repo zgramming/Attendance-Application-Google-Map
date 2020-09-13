@@ -41,37 +41,42 @@ class UserProfile extends StatelessWidget {
                     Selector<GlobalProvider, bool>(
                       selector: (_, globalProvider) => globalProvider.isImageLoading,
                       builder: (_, isImageLoading, __) {
-                        return isImageLoading
-                            ? const LoadingFutureBuilder(isLinearProgressIndicator: false)
-                            : Stack(
-                                children: [
-                                  InkWell(
-                                    onTap: () => _userUpdateImage(context),
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: ShowImageNetwork(
-                                      imageUrl: value.image.isEmpty
-                                          ? AppConfig.defaultImageNetwork
-                                          : '${appConfig.baseImageApiUrl}/user/${value.image}',
-                                      isCircle: true,
-                                      padding: const EdgeInsets.all(20),
-                                      fit: BoxFit.cover,
+                        if (isImageLoading) {
+                          return const LoadingFutureBuilder(isLinearProgressIndicator: false);
+                        } else {
+                          return Visibility(
+                            visible: false,
+                            child: Stack(
+                              children: [
+                                InkWell(
+                                  onTap: () => _userUpdateImage(context),
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: ShowImageNetwork(
+                                    imageUrl: value.image.isEmpty
+                                        ? AppConfig.defaultImageNetwork
+                                        : '${appConfig.baseImageApiUrl}/user/${value.image}',
+                                    isCircle: true,
+                                    padding: const EdgeInsets.all(20),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: CircleAvatar(
+                                    backgroundColor: colorPallete.accentColor,
+                                    foregroundColor: colorPallete.white,
+                                    radius: 10,
+                                    child: const Icon(
+                                      FontAwesomeIcons.cameraRetro,
+                                      size: 10,
                                     ),
                                   ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: CircleAvatar(
-                                      backgroundColor: colorPallete.accentColor,
-                                      foregroundColor: colorPallete.white,
-                                      radius: 10,
-                                      child: const Icon(
-                                        FontAwesomeIcons.cameraRetro,
-                                        size: 10,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              );
+                                )
+                              ],
+                            ),
+                          );
+                        }
                       },
                     ),
                   ],

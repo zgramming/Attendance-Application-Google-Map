@@ -29,10 +29,12 @@ class DrawerBody extends StatelessWidget {
         Selector<GlobalProvider, bool>(
           selector: (_, provider) => provider.isLoading,
           builder: (_, isLoading, __) {
-            return DrawerBodyMenu(
-              icon: Icons.add_location,
-              subtitle: isLoading ? 'Loading...' : 'Tambah Lokasi Absen',
-              onTap: isLoading ? null : () => goToAddDestination(context),
+            return Visibility(
+              child: DrawerBodyMenu(
+                icon: Icons.add_location,
+                subtitle: isLoading ? 'Loading...' : 'Tambah Lokasi Absen',
+                onTap: isLoading ? null : () => goToAddDestination(context),
+              ),
             );
           },
         ),
@@ -42,10 +44,13 @@ class DrawerBody extends StatelessWidget {
           onTap: () => Navigator.of(context).pushNamed(PickDestinationScreen.routeNamed),
         ),
         const DrawerBodyTitle(title: 'Akun'),
-        DrawerBodyMenu(
-          icon: FontAwesomeIcons.user,
-          subtitle: 'Profil',
-          onTap: () => Navigator.of(context).pushNamed(UserProfilScreen.routeNamed),
+        Visibility(
+          visible: false,
+          child: DrawerBodyMenu(
+            icon: FontAwesomeIcons.user,
+            subtitle: 'Profil',
+            onTap: () => Navigator.of(context).pushNamed(UserProfilScreen.routeNamed),
+          ),
         ),
         DrawerBodyMenu(
           icon: FontAwesomeIcons.userTimes,
